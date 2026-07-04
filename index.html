@@ -132,7 +132,7 @@
 <footer>
   <b>Friends of St Johns Pl</b> is a neighborhood project caring for the 50 street trees on St Johns Place between Underhill &amp; Washington Avenues in Prospect Heights, Brooklyn.<br>
   Species, trunk sizes, and inspection dates come from the official <a href="https://tree-map.nycgovparks.org/">NYC Tree Map</a> (NYC Parks). Tree-bed measurements and condition notes are from our July 2026 block survey — click any tree to see its card. Marker numbers follow the survey walk: #1–25 from Washington Ave to Underhill Ave, #26–50 back along the other side.<br>
-  Want to help water, mulch, or adopt a tree? Notes you add here stay in your own browser — say hi on the block instead 🌳
+  Want to help? Adopt a tree, and tap a care button after you water or mulch — care check-ins are shared with the whole block. Personal notes stay in your own browser. 🌳
 </footer>
 
 <script>
@@ -355,8 +355,10 @@ function renderPanel(){
     <label>My notes (bed size, condition…)</label>
     <textarea id="notes" placeholder="e.g. bed 62 × 108 in, crabgrass, needs compost">${esc(r.notes)}</textarea>
     <label>Record care / observation</label>
+    ${CARE_API?`<input type="text" id="steward" placeholder="Your name or initials — shows in the shared block log" value="${esc(localStorage.getItem('stewardName')||'')}" style="margin-bottom:6px">`:''}
     <div class="carebtns">${CARE.map(c=>`<button onclick="logCare('${c[0]}','${c[1]}')">${c[0]} ${c[1]}</button>`).join('')}</div>
     <ul class="log" id="log"></ul>
+    <div id="blockLog"></div>
     ${ADOPTED[t.id]
       ? `<div class="adopted-tag">💚 Adopted by <b>${esc(ADOPTED[t.id])}</b></div>`
       : t.dead ? '' : `
@@ -372,8 +374,20 @@ function renderPanel(){
       </div>`}`;
   document.getElementById('nick').addEventListener('input',e=>{rec(t.id).nick=e.target.value;save();});
   document.getElementById('notes').addEventListener('input',e=>{rec(t.id).notes=e.target.value;save();});
+  const st=document.getElementById('steward');
+  if(st) st.addEventListener('input',e=>localStorage.setItem('stewardName',e.target.value));
   renderLog();
 }
+
+/* ---------------- shared care log (Google Sheet via Apps Script) ---------------- */
+const CARE_API=''; // Apps Script web app URL (/exec) — enables the shared block log
+let CARELOG=[];
+function loadCareLog(){
+  if(!CARE_API) return;
+  fetch(CARE_API).then(r=>r.json()).then(rows=>{ CARELOG=Array.isArray(rows)?rows:[]; renderLog(); }).catch(()=>{});
+}
+loadCareLog();
+setInterval(loadCareLog, 5*60*1000);
 
 /* ---------------- adopt a tree ---------------- */
 const ADOPT_EMAIL='friendsofstjohnspl@gmail.com';
@@ -419,11 +433,30 @@ function renderLog(){
   const r=rec(selectedId);
   ul.innerHTML=r.log.map((e,i)=>`<li><span>${e.emoji} ${esc(e.label)}</span><span style="color:#999">${e.date}</span><button class="del" onclick="delLog(${i})">✕</button></li>`).reverse().join('')
     || '<li class="hint" style="border:none">No entries yet.</li>';
+  const bl=document.getElementById('blockLog');
+  if(bl){
+    if(!CARE_API){ bl.innerHTML=''; }
+    else{
+      const shared=CARELOG.filter(e=>String(e.id)===String(selectedId)).slice(-6).reverse();
+      bl.innerHTML='<label>Block activity — everyone\'s check-ins</label>'+
+        (shared.length
+          ? '<ul class="log">'+shared.map(e=>`<li><span>${esc(e.action)}</span><span style="color:#999">${esc(e.by)||'a neighbor'} · ${new Date(e.t).toLocaleDateString('en-US',{month:'short',day:'numeric'})}</span></li>`).join('')+'</ul>'
+          : '<p class="hint" style="margin:4px 0 0">No shared check-ins for this tree yet — be the first!</p>');
+    }
+  }
 }
 function logCare(emoji,label){
   if(!selectedId)return;
   rec(selectedId).log.push({emoji,label,date:new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})});
   save(); renderLog();
+  if(CARE_API){
+    const t=nodeById[selectedId].t;
+    const by=(localStorage.getItem('stewardName')||'').trim();
+    CARELOG.push({t:new Date().toISOString(), id:String(t.id), walk:t.walk, action:emoji+' '+label, by});
+    renderLog();
+    fetch(CARE_API,{method:'POST',body:JSON.stringify({treeId:t.id,walk:t.walk,species:t.sp,addr:t.addr,action:emoji+' '+label,by})})
+      .catch(()=>{});
+  }
 }
 function delLog(i){ rec(selectedId).log.splice(i,1); save(); renderLog(); }
 
