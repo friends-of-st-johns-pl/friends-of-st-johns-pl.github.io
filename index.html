@@ -123,8 +123,9 @@
 <div id="printNotes"></div>
 
 <footer>
-  Live data from the <a href="https://tree-map.nycgovparks.org/">NYC Tree Map</a> (NYC Parks), fetched July 3, 2026 — species, trunk diameters, and inspection dates are the same records you see when you click a tree on the official map.<br>
-  All 50 trees from your July 3, 2026 field survey. Marker numbers follow the walk: #1–25 from 816 Washington Ave to Underhill Ave, #26–50 back along the other side. Bed measurements and notes are on each tree's card. Everything you write is saved in this browser — use Export to back it up.
+  <b>Friends of St Johns Pl</b> is a neighborhood project caring for the 50 street trees on St Johns Place between Underhill &amp; Washington Avenues in Prospect Heights, Brooklyn.<br>
+  Species, trunk sizes, and inspection dates come from the official <a href="https://tree-map.nycgovparks.org/">NYC Tree Map</a> (NYC Parks). Tree-bed measurements and condition notes are from our July 2026 block survey — click any tree to see its card. Marker numbers follow the survey walk: #1–25 from Washington Ave to Underhill Ave, #26–50 back along the other side.<br>
+  Want to help water, mulch, or adopt a tree? Notes you add here stay in your own browser — say hi on the block instead 🌳
 </footer>
 
 <script>
@@ -323,7 +324,7 @@ function esc(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;');}
 function renderPanel(){
   if(!selectedId){
     panel.innerHTML=`<h2>Block journal</h2>
-      <p class="hint">Click any tree (numbers follow your survey walk: #1–25 out from 816 Washington Ave, #26–50 back on the other side) to open its card. Every bed measurement and note from your spreadsheet is on the cards.</p>
+      <p class="hint">Click any tree (numbers follow the survey walk: #1–25 out from Washington Ave, #26–50 back on the other side) to open its card — every bed measurement and note from the July 2026 block survey is there.</p>
       <label>Notes for the whole block</label>
       <textarea id="journal">${esc(store.journal)}</textarea>`;
     document.getElementById('journal').addEventListener('input',e=>{store.journal=e.target.value;save();});
