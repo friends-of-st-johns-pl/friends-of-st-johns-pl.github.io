@@ -340,7 +340,7 @@ function renderPanel(){
     <h2>${t.sp}${t.dead?' <span class="badge b-Dead">dead</span>':''}</h2>
     <p class="latin">${esc(t.latin)||'&nbsp;'}</p>
     <div class="meta">
-      <span class="walkno">walk #${t.walk}</span> &nbsp;📍 ${t.addr} · ${t.side==='N'?'north':'south'} side<br>
+      <span class="walkno">#${t.walk}</span> &nbsp;📍 ${t.addr} · ${t.side==='N'?'north':'south'} side<br>
       ${t.meas?`📐 tree bed: <b>${t.meas} in</b><br>`:''}
       ⌀ ${t.dbh}″ trunk &nbsp;·&nbsp; ${t.guard?'🛡 has tree guard':'no tree guard'}<br>
       ${t.planted?`🌱 planted ${t.planted}<br>`:''}
