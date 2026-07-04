@@ -131,8 +131,7 @@
 
 <footer>
   <b>Friends of St Johns Pl</b> is a neighborhood project caring for the 50 street trees on St Johns Place between Underhill &amp; Washington Avenues in Prospect Heights, Brooklyn.<br>
-  Species, trunk sizes, and inspection dates come from the official <a href="https://tree-map.nycgovparks.org/">NYC Tree Map</a> (NYC Parks). Tree-bed measurements and condition notes are from our July 2026 block survey — click any tree to see its card. Marker numbers follow the survey walk: #1–25 from Washington Ave to Underhill Ave, #26–50 back along the other side.<br>
-  Want to help? Adopt a tree, and tap a care button after you water or mulch — care check-ins are shared with the whole block. Personal notes stay in your own browser. 🌳
+  Species, trunk sizes, and inspection dates come from the official <a href="https://tree-map.nycgovparks.org/">NYC Tree Map</a> (NYC Parks). Tree-bed measurements and condition notes are from our July 2026 block survey — click any tree to see its card. Marker numbers follow the survey walk: #1–25 from Washington Ave to Underhill Ave, #26–50 back along the other side.
 </footer>
 
 <script>
@@ -279,6 +278,23 @@ TREES.forEach(t=>{
   nodeById[t.id]={g,x,y,r,t};
 });
 
+/* the empty tree pit just before #25 (from the survey) — dashed outline, links to the GoFundMe */
+(function(){
+  const a=TREES.find(t=>t.walk===24), b=TREES.find(t=>t.walk===25);
+  if(!a||!b) return;
+  const x=(X(a.lon)+X(b.lon))/2, y=(Y(a.lat)+Y(b.lat))/2;
+  const g=el('g',{class:'tree'},gTrees);
+  el('circle',{cx:x,cy:y,r:7,fill:'#fdfbf5',stroke:'#b08d57','stroke-width':1.6,'stroke-dasharray':'3 2.5'},g);
+  const plus=el('text',{x,y:y+3.6,'text-anchor':'middle','font-size':10,fill:'#b08d57','font-family':'Arial'},g); plus.textContent='+';
+  g.addEventListener('mousemove',ev=>{
+    tooltip.style.display='block';
+    tooltip.style.left=(ev.clientX+14)+'px'; tooltip.style.top=(ev.clientY+12)+'px';
+    tooltip.innerHTML='<b>Empty tree pit</b><br>Room for a new street tree here — tap to help fund it 🌳';
+  });
+  g.addEventListener('mouseleave',()=>tooltip.style.display='none');
+  g.addEventListener('click',()=>window.open('https://www.gofundme.com/f/help-us-beautify-st-johns-pl-with-new-trees','_blank','noopener'));
+})();
+
 function refreshBadges(){
   for(const id in nodeById){
     const n=nodeById[id];
@@ -384,16 +400,26 @@ const CARE_API=''; // Apps Script web app URL (/exec) — enables the shared blo
 let CARELOG=[];
 function loadCareLog(){
   if(!CARE_API) return;
-  fetch(CARE_API).then(r=>r.json()).then(rows=>{ CARELOG=Array.isArray(rows)?rows:[]; renderLog(); }).catch(()=>{});
+  fetch(CARE_API).then(r=>r.json()).then(data=>{
+    CARELOG=Array.isArray(data)?data:(data&&data.care)||[];
+    if(data && data.adopted){ SHEET_ADOPTED=data.adopted; applyAdopted(); }
+    renderLog();
+  }).catch(()=>{});
 }
 loadCareLog();
 setInterval(loadCareLog, 5*60*1000);
 
 /* ---------------- adopt a tree ---------------- */
 const ADOPT_EMAIL='friendsofstjohnspl@gmail.com';
-let ADOPTED={};
+/* approved adoptions come from the group's Google Sheet ("Adoptions" tab,
+   Approved? = yes) merged over adoptions.json (manual override in the repo) */
+let ADOPTED={}, ADOPTED_JSON={}, SHEET_ADOPTED={};
+function applyAdopted(){
+  ADOPTED=Object.assign({},ADOPTED_JSON,SHEET_ADOPTED);
+  refreshAdopted(); if(selectedId)renderPanel(); renderPrintNotes();
+}
 fetch('adoptions.json',{cache:'no-store'}).then(r=>r.ok?r.json():{}).then(j=>{
-  ADOPTED=j||{}; refreshAdopted(); if(selectedId)renderPanel(); renderPrintNotes();
+  ADOPTED_JSON=j||{}; applyAdopted();
 }).catch(()=>{});
 function refreshAdopted(){
   for(const id in nodeById){
@@ -418,8 +444,11 @@ function submitAdopt(){
     _subject: subject, _template:'table', _captcha:'false',
     tree:`#${t.walk} ${t.sp}, ${t.addr} (NYC Tree Map id ${t.id})`,
     name, email: email||'—', phone: phone||'—',
-    to_approve:`Edit adoptions.json in the GitHub repo and add:  "${t.id}": "${initials}"`
+    to_approve:`Open the group Google Sheet → Adoptions tab → type "yes" in the Approved? column of this request's row.`
   };
+  if(CARE_API){
+    fetch(CARE_API,{method:'POST',body:JSON.stringify({type:'adopt',treeId:t.id,walk:t.walk,species:t.sp,addr:t.addr,name,email,phone,initials})}).catch(()=>{});
+  }
   fetch('https://formsubmit.co/ajax/'+ADOPT_EMAIL,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify(body)})
     .then(r=>{ if(!r.ok) throw new Error(); return r.json(); })
     .then(()=>{ document.getElementById('adoptForm').innerHTML='<b>🌳 Request sent!</b><p class="hint" style="margin:6px 0 0">Thanks '+esc(name)+' — the block crew will reach out to confirm, and this tree will show as adopted once approved.</p>'; })
@@ -454,7 +483,7 @@ function logCare(emoji,label){
     const by=(localStorage.getItem('stewardName')||'').trim();
     CARELOG.push({t:new Date().toISOString(), id:String(t.id), walk:t.walk, action:emoji+' '+label, by});
     renderLog();
-    fetch(CARE_API,{method:'POST',body:JSON.stringify({treeId:t.id,walk:t.walk,species:t.sp,addr:t.addr,action:emoji+' '+label,by})})
+    fetch(CARE_API,{method:'POST',body:JSON.stringify({type:'care',treeId:t.id,walk:t.walk,species:t.sp,addr:t.addr,action:emoji+' '+label,by})})
       .catch(()=>{});
   }
 }

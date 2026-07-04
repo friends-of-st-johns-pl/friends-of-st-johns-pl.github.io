@@ -1,8 +1,14 @@
 /**
- * Friends of St Johns Pl — shared care log
+ * Friends of St Johns Pl — shared care log + adoption approvals
  *
- * Web app backing the "Record care" buttons on friends-of-st-johns-pl.github.io.
- * POST appends a check-in row to the sheet; GET returns all check-ins as JSON.
+ * Web app backing friends-of-st-johns-pl.github.io.
+ *  - POST {type:'care', ...}  → appends a check-in row to the "Care Log" tab
+ *  - POST {type:'adopt', ...} → appends a request row to the "Adoptions" tab
+ *  - GET → JSON {care:[...], adopted:{treeId: initials}}
+ *
+ * APPROVING AN ADOPTION: open the "Adoptions" tab and type  yes  in the
+ * "Approved?" column of the request's row (edit the Initials cell if you
+ * like). The website updates within a few minutes.
  *
  * Setup (one time, ~2 minutes, from the Google Sheet):
  *  1. Extensions → Apps Script, delete any starter code, paste this file.
@@ -13,30 +19,52 @@
  */
 
 const SHEET_ID = '1pRPoAeNzxIz72kwsld8zjTGHKZFKVgq4czUoBJ0Sgi8';
-const HEADERS = ['Timestamp', 'Tree ID', 'Walk #', 'Species', 'Address', 'Action', 'By'];
+const CARE_HEADERS = ['Timestamp', 'Tree ID', 'Walk #', 'Species', 'Address', 'Action', 'By'];
+const ADOPT_HEADERS = ['Timestamp', 'Tree ID', 'Walk #', 'Species', 'Address',
+                       'Name', 'Email', 'Phone', 'Initials', 'Approved?'];
 
-function sheet_() {
-  const sh = SpreadsheetApp.openById(SHEET_ID).getSheets()[0];
-  if (sh.getLastRow() === 0) sh.appendRow(HEADERS);
+function tab_(name, headers) {
+  const ss = SpreadsheetApp.openById(SHEET_ID);
+  let sh = ss.getSheetByName(name);
+  if (!sh) sh = ss.insertSheet(name);
+  if (sh.getLastRow() === 0) {
+    sh.appendRow(headers);
+    sh.getRange(1, 1, 1, headers.length).setFontWeight('bold');
+    sh.setFrozenRows(1);
+  }
   return sh;
 }
 
 function doPost(e) {
   const d = JSON.parse(e.postData.contents);
-  const action = String(d.action || '').slice(0, 80);
-  const by = String(d.by || '').slice(0, 60);
-  if (!d.treeId || !action) throw new Error('missing fields');
-  sheet_().appendRow([new Date(), String(d.treeId), d.walk || '', String(d.species || '').slice(0, 60),
-                      String(d.addr || '').slice(0, 80), action, by]);
+  const s = function (v, n) { return String(v == null ? '' : v).slice(0, n); };
+  if (d.type === 'adopt') {
+    if (!d.treeId || !d.name) throw new Error('missing fields');
+    tab_('Adoptions', ADOPT_HEADERS).appendRow([
+      new Date(), String(d.treeId), d.walk || '', s(d.species, 60), s(d.addr, 80),
+      s(d.name, 80), s(d.email, 80), s(d.phone, 40), s(d.initials, 12), '']);
+  } else {
+    if (!d.treeId || !d.action) throw new Error('missing fields');
+    tab_('Care Log', CARE_HEADERS).appendRow([
+      new Date(), String(d.treeId), d.walk || '', s(d.species, 60), s(d.addr, 80),
+      s(d.action, 80), s(d.by, 60)]);
+  }
   return ContentService.createTextOutput(JSON.stringify({ ok: true }))
     .setMimeType(ContentService.MimeType.JSON);
 }
 
 function doGet() {
-  const rows = sheet_().getDataRange().getValues();
-  const out = rows.slice(1).map(function (r) {
-    return { t: r[0], id: String(r[1]), walk: r[2], action: r[5], by: r[6] };
+  const care = tab_('Care Log', CARE_HEADERS).getDataRange().getValues().slice(1)
+    .map(function (r) { return { t: r[0], id: String(r[1]), walk: r[2], action: r[5], by: r[6] }; });
+  const adopted = {};
+  tab_('Adoptions', ADOPT_HEADERS).getDataRange().getValues().slice(1).forEach(function (r) {
+    const ok = String(r[9]).trim().toLowerCase();
+    if (ok === 'yes' || ok === 'y' || ok === 'true' || ok === 'x' || ok === 'approved') {
+      const initials = String(r[8]).trim() ||
+        String(r[5]).trim().split(/\s+/).map(function (w) { return w[0]; }).join('.').toUpperCase() + '.';
+      adopted[String(r[1])] = initials;
+    }
   });
-  return ContentService.createTextOutput(JSON.stringify(out))
+  return ContentService.createTextOutput(JSON.stringify({ care: care, adopted: adopted }))
     .setMimeType(ContentService.MimeType.JSON);
 }

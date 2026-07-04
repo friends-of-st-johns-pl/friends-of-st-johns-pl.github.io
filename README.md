@@ -12,21 +12,20 @@ Just open `index.html` — it's a single self-contained file, no build or server
 
 ## Adopt-a-tree: approving requests
 
-Visitors can request to adopt a tree from its card. Requests are emailed to
-**friendsofstjohnspl@gmail.com** (via [FormSubmit](https://formsubmit.co) — the very first
-request triggers a one-time activation email; click the link in it once).
+Visitors can request to adopt a tree from its card. Each request:
 
-To approve a request, edit [`adoptions.json`](adoptions.json) (pencil icon on GitHub)
-and add the line included in the request email, e.g.:
+- is emailed to **friendsofstjohnspl@gmail.com** (via [FormSubmit](https://formsubmit.co) —
+  the very first request triggers a one-time activation email; click the link in it once), and
+- is logged as a row in the **Adoptions** tab of the group's Google Sheet
+  (once the Apps Script web app below is deployed).
 
-```json
-{
-  "2402587": "R.A."
-}
-```
+**To approve:** open the Google Sheet → **Adoptions** tab → type `yes` in the
+**Approved?** column of that request's row. Tweak the **Initials** cell if you
+want different initials shown. The site picks it up within a few minutes and the
+tree shows **💚 Adopted by R.A.** on the map, its card, and the printed poster.
 
-Commit the change — the site updates within a minute and the tree shows
-**💚 Adopted by R.A.** on the map, its card, and the printed poster.
+(`adoptions.json` in this repo still works as a manual override — sheet entries
+win if a tree appears in both.)
 
 ## Shared care log (Google Sheet)
 
