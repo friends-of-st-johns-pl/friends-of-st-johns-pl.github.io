@@ -25,6 +25,8 @@
   button{font-family:inherit;font-size:13px;border:1px solid var(--green);background:var(--green);color:#fff;border-radius:20px;padding:7px 16px;cursor:pointer}
   button.ghost{background:#fff;color:var(--green-dark)}
   button:hover{filter:brightness(1.08)}
+  a.donate{display:inline-block;background:var(--accent);color:#fff;border-radius:20px;padding:7px 16px;font-size:13px;text-decoration:none;font-weight:600}
+  a.donate:hover{filter:brightness(1.08)}
 
   .layout{display:flex;gap:18px;max-width:1400px;margin:0 auto;padding:0 24px 30px;align-items:flex-start}
   .mapwrap{flex:1 1 68%;background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:14px;box-shadow:0 2px 10px rgba(0,0,0,.05)}
@@ -112,6 +114,7 @@
   <button class="ghost" onclick="exportNotes()">⬇ Export my notes</button>
   <button class="ghost" onclick="document.getElementById('importFile').click()">⬆ Import notes</button>
   <input type="file" id="importFile" accept=".json" style="display:none" onchange="importNotes(this)">
+  <a class="donate" href="https://www.gofundme.com/f/help-us-beautify-st-johns-pl-with-new-trees" target="_blank" rel="noopener">🌳 Donate — help plant new trees</a>
 </div>
 
 <div class="layout">
