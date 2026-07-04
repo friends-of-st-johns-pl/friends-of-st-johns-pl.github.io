@@ -4,20 +4,19 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Friends of St Johns Pl</title>
+<link rel="icon" type="image/png" sizes="64x64" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <style>
   :root{
-    --green:#217e38; --green-dark:#175c28; --cream:#faf7f0; --ink:#26221b;
-    --paper:#ffffff; --line:#e3ddd0; --accent:#e07a2f;
+    --green:#3E5D4B; --green-dark:#2F4A3B; --cream:#f7f3e7; --ink:#26221b;
+    --paper:#fffdf6; --line:#e3ddd0; --accent:#DE8A4A; --cream-text:#F2ECDB;
   }
   *{box-sizing:border-box}
   body{margin:0;font-family:Georgia,'Times New Roman',serif;background:var(--cream);color:var(--ink)}
 
-  header{padding:28px 36px 10px;text-align:center}
-  header .kicker{font-family:-apple-system,BlinkMacSystemFont,Arial,sans-serif;letter-spacing:.22em;text-transform:uppercase;font-size:12px;color:var(--green);font-weight:700}
-  h1{font-size:44px;margin:6px 0 4px;font-weight:400}
-  h1[contenteditable]:focus{outline:2px dashed var(--green);outline-offset:4px}
-  .subtitle{font-style:italic;color:#6b6355;margin:0;font-size:17px}
-  .rule{width:90px;height:4px;background:var(--green);margin:16px auto 12px}
+  header{padding:30px 24px 26px;text-align:center;background:var(--green);-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  header img.logo{width:min(330px,72vw);height:auto;display:block;margin:0 auto -6px}
+  .subtitle{font-style:italic;color:var(--cream-text);margin:0 0 14px;font-size:16.5px;opacity:.92}
   a.insta{display:inline-block;background:linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);color:#fff;border-radius:20px;padding:6px 16px;font-family:-apple-system,BlinkMacSystemFont,Arial,sans-serif;font-size:13px;font-weight:600;text-decoration:none}
   a.insta:hover{filter:brightness(1.1)}
 
@@ -78,8 +77,8 @@
   .street-label{fill:#a89f8c;font-family:-apple-system,Arial,sans-serif;font-weight:600;letter-spacing:.18em;text-transform:uppercase}
   .nick-label{fill:#26221b;font-family:Georgia,serif;font-style:italic;text-anchor:middle;paint-order:stroke;stroke:#fff;stroke-width:3px;stroke-linejoin:round}
 
-  footer{text-align:center;font-family:-apple-system,Arial,sans-serif;font-size:11.5px;color:#a09884;padding:8px 20px 34px;line-height:1.7}
-  footer a{color:var(--green)}
+  footer{text-align:center;font-family:-apple-system,Arial,sans-serif;font-size:11.5px;color:var(--cream-text);background:var(--green);padding:20px 20px 26px;line-height:1.8;margin-top:12px;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  footer a{color:#EFD27E}
 
   /* ---------- PRINT: poster page + field-notes pages ---------- */
   #printNotes{display:none}
@@ -87,8 +86,8 @@
     @page{margin:11mm}
     body{background:#fff}
     .toolbar,.panel,#tooltip,.no-print{display:none !important}
-    header{padding-top:0}
-    h1{font-size:38px}
+    header{padding:14px 0 12px}
+    header img.logo{width:240px}
     .layout{display:block;padding:0}
     .mapwrap{border:none;box-shadow:none;padding:0}
     .legend .item.dim{opacity:1}
@@ -105,9 +104,8 @@
 <body>
 
 <header>
-  <h1 id="posterTitle" contenteditable="true" spellcheck="false">Friends of St Johns Pl</h1>
+  <img class="logo" src="logo.png" alt="Friends of St Johns Pl">
   <p class="subtitle">St Johns Place, between Underhill &amp; Washington Ave — Prospect Heights, Brooklyn</p>
-  <div class="rule"></div>
   <a class="insta" href="https://www.instagram.com/friendsofstjohnspl/" target="_blank" rel="noopener">📷 Follow us — @friendsofstjohnspl</a>
 </header>
 
@@ -536,7 +534,7 @@ function renderPrintNotes(){
 
 /* ---------------- export / import ---------------- */
 function exportNotes(){
-  const blob=new Blob([JSON.stringify({title:document.getElementById('posterTitle').textContent,exported:new Date().toISOString(),...store},null,2)],{type:'application/json'});
+  const blob=new Blob([JSON.stringify({title:'Friends of St Johns Pl',exported:new Date().toISOString(),...store},null,2)],{type:'application/json'});
   const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='block-tree-notes.json'; a.click();
 }
 /* tree care day sign-up view */
@@ -548,11 +546,6 @@ function toggleSignup(){
 }
 /* deep link: …/#signup opens the form view directly */
 if(location.hash.toLowerCase()==='#signup') toggleSignup();
-
-/* poster title persistence */
-const titleEl=document.getElementById('posterTitle');
-if(localStorage.getItem('blockPosterTitle')) titleEl.textContent=localStorage.getItem('blockPosterTitle');
-titleEl.addEventListener('input',()=>localStorage.setItem('blockPosterTitle',titleEl.textContent));
 
 refreshBadges(); renderPanel(); updateStats(); renderPrintNotes(); save();
 </script>
