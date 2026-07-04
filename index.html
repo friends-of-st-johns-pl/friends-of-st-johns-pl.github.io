@@ -53,6 +53,11 @@
   .log li .del{cursor:pointer;color:#bbb;border:none;background:none;padding:0 4px;font-size:14px}
   .log li .del:hover{color:#c0392b}
   .hint{font-size:12.5px;color:#999;font-style:italic}
+  .adopted-tag{background:#eef6ef;border:1px solid #cfe3d2;color:var(--green-dark);border-radius:8px;padding:8px 12px;font-size:13.5px;margin-top:14px}
+  #adoptForm{background:#f7f4ea;border:1px solid var(--line);border-radius:8px;padding:12px;margin-top:10px}
+  #adoptForm label{margin-top:8px}
+  #adoptMsg{font-size:13px;margin-top:8px}
+  .adopt-heart{font-size:9px}
 
   #tooltip{position:fixed;pointer-events:none;background:#26221b;color:#fff;font-family:-apple-system,Arial,sans-serif;font-size:12px;padding:6px 10px;border-radius:6px;display:none;z-index:10;max-width:240px;line-height:1.5}
 
@@ -265,7 +270,7 @@ TREES.forEach(t=>{
     const rrec=store.trees[t.id];
     tooltip.style.display='block';
     tooltip.style.left=(ev.clientX+14)+'px'; tooltip.style.top=(ev.clientY+12)+'px';
-    tooltip.innerHTML=`<b>#${t.walk} ${rrec&&rrec.nick?rrec.nick+' — ':''}${t.sp}</b>${t.dead?' — DEAD':''}<br>${t.addr}<br>${t.meas?'bed '+t.meas+' in · ':''}${t.dbh}″ trunk${t.guard?' · tree guard':''}`;
+    tooltip.innerHTML=`<b>#${t.walk} ${rrec&&rrec.nick?rrec.nick+' — ':''}${t.sp}</b>${t.dead?' — DEAD':''}<br>${t.addr}<br>${t.meas?'bed '+t.meas+' in · ':''}${t.dbh}″ trunk${t.guard?' · tree guard':''}${ADOPTED[t.id]?'<br>💚 Adopted by '+ADOPTED[t.id]:''}`;
   });
   g.addEventListener('mouseleave',()=>tooltip.style.display='none');
   nodeById[t.id]={g,x,y,r,t};
@@ -348,10 +353,63 @@ function renderPanel(){
     <textarea id="notes" placeholder="e.g. bed 62 × 108 in, crabgrass, needs compost">${esc(r.notes)}</textarea>
     <label>Record care / observation</label>
     <div class="carebtns">${CARE.map(c=>`<button onclick="logCare('${c[0]}','${c[1]}')">${c[0]} ${c[1]}</button>`).join('')}</div>
-    <ul class="log" id="log"></ul>`;
+    <ul class="log" id="log"></ul>
+    ${ADOPTED[t.id]
+      ? `<div class="adopted-tag">💚 Adopted by <b>${esc(ADOPTED[t.id])}</b></div>`
+      : t.dead ? '' : `
+      <button class="ghost no-print" style="margin-top:14px" onclick="document.getElementById('adoptForm').style.display='block';this.style.display='none'">💚 Adopt this tree</button>
+      <div id="adoptForm" style="display:none" class="no-print">
+        <b style="font-size:14px">Adopt #${t.walk} ${t.sp}</b>
+        <p class="hint" style="margin:4px 0 0">Adopters help water &amp; keep the bed tidy. We'll be in touch to confirm — leave an email and/or phone.</p>
+        <label>Your name *</label><input type="text" id="adName" autocomplete="name">
+        <label>Email</label><input type="text" id="adEmail" autocomplete="email" placeholder="you@example.com">
+        <label>Phone</label><input type="text" id="adPhone" autocomplete="tel" placeholder="(718) …">
+        <button style="margin-top:10px" onclick="submitAdopt()">Send adoption request</button>
+        <div id="adoptMsg"></div>
+      </div>`}`;
   document.getElementById('nick').addEventListener('input',e=>{rec(t.id).nick=e.target.value;save();});
   document.getElementById('notes').addEventListener('input',e=>{rec(t.id).notes=e.target.value;save();});
   renderLog();
+}
+
+/* ---------------- adopt a tree ---------------- */
+const ADOPT_EMAIL='friendsofstjohnspl@gmail.com';
+let ADOPTED={};
+fetch('adoptions.json',{cache:'no-store'}).then(r=>r.ok?r.json():{}).then(j=>{
+  ADOPTED=j||{}; refreshAdopted(); if(selectedId)renderPanel(); renderPrintNotes();
+}).catch(()=>{});
+function refreshAdopted(){
+  for(const id in nodeById){
+    const n=nodeById[id];
+    let h=n.g.querySelector('.adopt-heart');
+    if(ADOPTED[id]){ if(!h){h=el('text',{class:'adopt-heart',x:n.x-n.r-6,y:n.y+3},n.g); h.textContent='💚';} }
+    else if(h) h.remove();
+  }
+}
+function submitAdopt(){
+  const t=nodeById[selectedId].t;
+  const name=document.getElementById('adName').value.trim();
+  const email=document.getElementById('adEmail').value.trim();
+  const phone=document.getElementById('adPhone').value.trim();
+  const msg=document.getElementById('adoptMsg');
+  if(!name){ msg.innerHTML='<span style="color:#c0392b">Please add your name.</span>'; return; }
+  if(!email && !phone){ msg.innerHTML='<span style="color:#c0392b">Please add an email or a phone number.</span>'; return; }
+  const initials=name.split(/\s+/).map(w=>w[0]).join('.').toUpperCase()+'.';
+  msg.textContent='Sending…';
+  const subject=`Adopt-a-tree request: #${t.walk} ${t.sp} (${t.addr})`;
+  const body={
+    _subject: subject, _template:'table', _captcha:'false',
+    tree:`#${t.walk} ${t.sp}, ${t.addr} (NYC Tree Map id ${t.id})`,
+    name, email: email||'—', phone: phone||'—',
+    to_approve:`Edit adoptions.json in the GitHub repo and add:  "${t.id}": "${initials}"`
+  };
+  fetch('https://formsubmit.co/ajax/'+ADOPT_EMAIL,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify(body)})
+    .then(r=>{ if(!r.ok) throw new Error(); return r.json(); })
+    .then(()=>{ document.getElementById('adoptForm').innerHTML='<b>🌳 Request sent!</b><p class="hint" style="margin:6px 0 0">Thanks '+esc(name)+' — the block crew will reach out to confirm, and this tree will show as adopted once approved.</p>'; })
+    .catch(()=>{
+      const mail=`mailto:${ADOPT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(`Name: ${name}\nEmail: ${email||'—'}\nPhone: ${phone||'—'}\nTree: #${t.walk} ${t.sp}, ${t.addr} (id ${t.id})`)}`;
+      msg.innerHTML=`Couldn't send automatically — <a href="${mail}">tap here to email us instead</a>.`;
+    });
 }
 function renderLog(){
   const ul=document.getElementById('log'); if(!ul||!selectedId)return;
@@ -387,7 +445,7 @@ function renderPrintNotes(){
     html+=`<h2>Field notes — tree by tree</h2>`+annotated.map(t=>{
       const r=store.trees[t.id];
       return `<div class="pn-tree">
-        <h3>#${t.walk} ${r.nick?esc(r.nick)+' · ':''}${t.sp} <span style="color:#888;font-weight:400">— ${t.addr}${t.meas?` · bed ${t.meas} in`:''}</span></h3>
+        <h3>#${t.walk} ${r.nick?esc(r.nick)+' · ':''}${t.sp} <span style="color:#888;font-weight:400">— ${t.addr}${t.meas?` · bed ${t.meas} in`:''}${ADOPTED[t.id]?` · adopted by ${esc(ADOPTED[t.id])}`:''}</span></h3>
         ${r.notes?`<p style="white-space:pre-wrap">${esc(r.notes)}</p>`:''}
         ${r.log.length?`<p class="pn-log">${r.log.map(e=>`${e.emoji} ${esc(e.label)} (${e.date})`).join(' · ')}</p>`:''}
       </div>`;
