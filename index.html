@@ -558,6 +558,8 @@ function toggleSignup(){
   v.style.display=open?'block':'none';
   if(open) v.scrollIntoView({behavior:'smooth',block:'start'});
 }
+/* deep link: …/#signup opens the form view directly */
+if(location.hash.toLowerCase()==='#signup') toggleSignup();
 
 /* poster title persistence */
 const titleEl=document.getElementById('posterTitle');
