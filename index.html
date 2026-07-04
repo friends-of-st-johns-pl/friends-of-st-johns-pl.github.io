@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Friends of St Johns Pl</title>
+<style>
+  :root{
+    --green:#217e38; --green-dark:#175c28; --cream:#faf7f0; --ink:#26221b;
+    --paper:#ffffff; --line:#e3ddd0; --accent:#e07a2f;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:Georgia,'Times New Roman',serif;background:var(--cream);color:var(--ink)}
+
+  header{padding:28px 36px 10px;text-align:center}
+  header .kicker{font-family:-apple-system,BlinkMacSystemFont,Arial,sans-serif;letter-spacing:.22em;text-transform:uppercase;font-size:12px;color:var(--green);font-weight:700}
+  h1{font-size:44px;margin:6px 0 4px;font-weight:400}
+  h1[contenteditable]:focus{outline:2px dashed var(--green);outline-offset:4px}
+  .subtitle{font-style:italic;color:#6b6355;margin:0;font-size:17px}
+  .rule{width:90px;height:4px;background:var(--green);margin:16px auto}
+
+  .toolbar{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;align-items:center;padding:6px 20px 14px;font-family:-apple-system,Arial,sans-serif}
+  .chip{background:#fff;border:1px solid var(--line);border-radius:20px;padding:5px 14px;font-size:13px;color:#555}
+  .chip b{color:var(--green-dark)}
+  button{font-family:inherit;font-size:13px;border:1px solid var(--green);background:var(--green);color:#fff;border-radius:20px;padding:7px 16px;cursor:pointer}
+  button.ghost{background:#fff;color:var(--green-dark)}
+  button:hover{filter:brightness(1.08)}
+
+  .layout{display:flex;gap:18px;max-width:1400px;margin:0 auto;padding:0 24px 30px;align-items:flex-start}
+  .mapwrap{flex:1 1 68%;background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:14px;box-shadow:0 2px 10px rgba(0,0,0,.05)}
+  svg{width:100%;height:auto;display:block}
+
+  .legend{display:flex;flex-wrap:wrap;gap:6px 14px;padding:12px 6px 2px;font-family:-apple-system,Arial,sans-serif;font-size:12.5px}
+  .legend .item{display:flex;align-items:center;gap:6px;cursor:pointer;padding:2px 6px;border-radius:12px;user-select:none}
+  .legend .item.dim{opacity:.3}
+  .legend .item:hover{background:#f1ede2}
+  .legend .swatch{width:13px;height:13px;border-radius:50%;flex:none;border:1px solid rgba(0,0,0,.2)}
+
+  .panel{flex:0 0 335px;position:sticky;top:14px;background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:18px;font-family:-apple-system,Arial,sans-serif;box-shadow:0 2px 10px rgba(0,0,0,.05)}
+  .panel h2{font-family:Georgia,serif;margin:0 0 2px;font-size:24px;font-weight:400}
+  .panel .latin{font-style:italic;color:#777;font-size:13px;margin:0 0 10px}
+  .meta{font-size:13px;color:#555;line-height:1.75;margin-bottom:12px}
+  .meta a{color:var(--green-dark)}
+  .walkno{display:inline-block;background:var(--ink);color:#fff;border-radius:10px;padding:1px 9px;font-size:11.5px;font-weight:600}
+  label{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:#8a8272;margin:12px 0 4px;font-weight:600}
+  input[type=text],textarea{width:100%;border:1px solid var(--line);border-radius:6px;padding:8px;font-family:Georgia,serif;font-size:14px;background:#fffdf8}
+  textarea{min-height:84px;resize:vertical}
+  textarea#journal{min-height:300px}
+  .carebtns{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+  .carebtns button{background:#eef6ef;color:var(--green-dark);border:1px solid #cfe3d2;border-radius:8px;padding:6px 10px;font-size:12.5px}
+  .log{list-style:none;margin:8px 0 0;padding:0;font-size:13px}
+  .log li{display:flex;justify-content:space-between;gap:8px;padding:5px 2px;border-bottom:1px dashed var(--line)}
+  .log li .del{cursor:pointer;color:#bbb;border:none;background:none;padding:0 4px;font-size:14px}
+  .log li .del:hover{color:#c0392b}
+  .hint{font-size:12.5px;color:#999;font-style:italic}
+
+  #tooltip{position:fixed;pointer-events:none;background:#26221b;color:#fff;font-family:-apple-system,Arial,sans-serif;font-size:12px;padding:6px 10px;border-radius:6px;display:none;z-index:10;max-width:240px;line-height:1.5}
+
+  .tree{cursor:pointer;transition:opacity .15s}
+  .tree.dim{opacity:.15}
+  .tree circle.body:hover{stroke:#26221b;stroke-width:1.5}
+  .sel-ring{fill:none;stroke:var(--accent);stroke-width:2.5;stroke-dasharray:4 3}
+  .note-dot{fill:var(--accent);stroke:#fff;stroke-width:1}
+  .walk-label{fill:#7a7263;font-family:-apple-system,Arial,sans-serif;font-size:9.5px;font-weight:600;text-anchor:middle;paint-order:stroke;stroke:#fdfbf5;stroke-width:2.5px}
+  .street{stroke:#eae4d6;stroke-linecap:round}
+  .street-label{fill:#a89f8c;font-family:-apple-system,Arial,sans-serif;font-weight:600;letter-spacing:.18em;text-transform:uppercase}
+  .nick-label{fill:#26221b;font-family:Georgia,serif;font-style:italic;text-anchor:middle;paint-order:stroke;stroke:#fff;stroke-width:3px;stroke-linejoin:round}
+
+  footer{text-align:center;font-family:-apple-system,Arial,sans-serif;font-size:11.5px;color:#a09884;padding:8px 20px 34px;line-height:1.7}
+  footer a{color:var(--green)}
+
+  /* ---------- PRINT: poster page + field-notes pages ---------- */
+  #printNotes{display:none}
+  @media print{
+    @page{margin:11mm}
+    body{background:#fff}
+    .toolbar,.panel,#tooltip,.no-print{display:none !important}
+    header{padding-top:0}
+    h1{font-size:38px}
+    .layout{display:block;padding:0}
+    .mapwrap{border:none;box-shadow:none;padding:0}
+    .legend .item.dim{opacity:1}
+    #printNotes{display:block;page-break-before:always;font-family:Georgia,serif;padding:0 6mm}
+    #printNotes h2{font-weight:400;border-bottom:3px solid var(--green);padding-bottom:6px}
+    #printNotes .pn-tree{margin:14px 0;padding-bottom:10px;border-bottom:1px dashed #ccc;break-inside:avoid}
+    #printNotes .pn-tree h3{margin:0;font-weight:600;font-size:15px}
+    #printNotes .pn-tree p{margin:4px 0;font-size:13.5px}
+    #printNotes .pn-log{font-size:12.5px;color:#444}
+    footer{page-break-before:avoid}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="kicker">A Neighborhood Field Guide · NYC Urban Forest</div>
+  <h1 id="posterTitle" contenteditable="true" spellcheck="false">Friends of St Johns Pl</h1>
+  <p class="subtitle">St Johns Place, between Underhill &amp; Washington Ave — Prospect Heights, Brooklyn</p>
+  <div class="rule"></div>
+</header>
+
+<div class="toolbar no-print">
+  <span class="chip" id="statTrees"></span>
+  <span class="chip" id="statSpecies"></span>
+  <span class="chip" id="statBiggest"></span>
+  <span class="chip" id="statNotes"></span>
+  <button onclick="window.print()">🖨 Print poster</button>
+  <button class="ghost" onclick="exportNotes()">⬇ Export my notes</button>
+  <button class="ghost" onclick="document.getElementById('importFile').click()">⬆ Import notes</button>
+  <input type="file" id="importFile" accept=".json" style="display:none" onchange="importNotes(this)">
+</div>
+
+<div class="layout">
+  <div class="mapwrap">
+    <svg id="map" xmlns="http://www.w3.org/2000/svg"></svg>
+    <div class="legend" id="legend"></div>
+  </div>
+
+  <div class="panel" id="panel"></div>
+</div>
+
+<div id="tooltip"></div>
+<div id="printNotes"></div>
+
+<footer>
+  Live data from the <a href="https://tree-map.nycgovparks.org/">NYC Tree Map</a> (NYC Parks), fetched July 3, 2026 — species, trunk diameters, and inspection dates are the same records you see when you click a tree on the official map.<br>
+  All 50 trees from your July 3, 2026 field survey. Marker numbers follow the walk: #1–25 from 816 Washington Ave to Underhill Ave, #26–50 back along the other side. Bed measurements and notes are on each tree's card. Everything you write is saved in this browser — use Export to back it up.
+</footer>
+
+<script>
+const TREES = [{"id":13510056,"addr":"816 Washington Avenue","sp":"“Streetkeeper” thornless honeylocust","latin":"Gleditsia triacanthos var. inermis","dbh":3,"color":"#7DA422","guard":false,"planted":"Dec 2022","insp":null,"lat":40.673559644660166,"lon":-73.96321299455941,"walk":1,"side":"N","meas":"59 × 120","note":"","dead":false},{"id":2402587,"addr":"440 St Johns Place","sp":"Pin oak","latin":"Quercus palustris","dbh":25,"color":"#386703","guard":false,"planted":null,"insp":"Jul 2022","lat":40.67368643590901,"lon":-73.96382179832362,"walk":2,"side":"N","meas":"59 × 48","note":"Lots of bricks and rocks","dead":false},{"id":2402588,"addr":"418 St Johns Place","sp":"Green ash","latin":"Fraxinus pennsylvanica","dbh":24,"color":"#7ed6bb","guard":false,"planted":null,"insp":"May 2026","lat":40.67371154593707,"lon":-73.96394172032167,"walk":3,"side":"N","meas":"59 × 72","note":"pesticide application note","dead":false},{"id":2402589,"addr":"418 St Johns Place","sp":"Shingle oak","latin":"Quercus imbricaria","dbh":5,"color":"#386703","guard":true,"planted":null,"insp":"Aug 2021","lat":40.67375033721036,"lon":-73.9641269897776,"walk":4,"side":"N","meas":"62 × 120","note":"","dead":false},{"id":2402590,"addr":"408 St Johns Place","sp":"Littleleaf linden","latin":"Tilia cordata","dbh":24,"color":"#a25425","guard":false,"planted":null,"insp":"Aug 2021","lat":40.67377100808822,"lon":-73.9642257077725,"walk":5,"side":"N","meas":"61 × 120","note":"","dead":false},{"id":15196962,"addr":"408 St Johns Place","sp":"Willow oak","latin":"Quercus phellos","dbh":3,"color":"#386703","guard":true,"planted":"May 2024","insp":null,"lat":40.67380106675683,"lon":-73.96436926594792,"walk":6,"side":"N","meas":"62 × 120","note":"","dead":false},{"id":2402592,"addr":"408 St Johns Place","sp":"Pin oak","latin":"Quercus palustris","dbh":22,"color":"#386703","guard":false,"planted":null,"insp":"Aug 2021","lat":40.673821009559624,"lon":-73.9644645086246,"walk":7,"side":"N","meas":"62 × 120","note":"needs mulch and compost","dead":false},{"id":2402593,"addr":"392 St Johns Place","sp":"Paperbark maple","latin":"Acer griseum","dbh":3,"color":"#76BF54","guard":false,"planted":null,"insp":"Sep 2021","lat":40.67384633596085,"lon":-73.96458547269717,"walk":8,"side":"N","meas":"62 × 108","note":"has 1 shrub, needs pruning","dead":false},{"id":2402594,"addr":"392 St Johns Place","sp":"Willow oak","latin":"Quercus phellos","dbh":11,"color":"#386703","guard":false,"planted":null,"insp":"Sep 2021","lat":40.673864385917206,"lon":-73.96467167687007,"walk":9,"side":"N","meas":"62 × 108","note":"1 shrub","dead":false},{"id":2402595,"addr":"388 St Johns Place","sp":"Willow oak","latin":"Quercus phellos","dbh":11,"color":"#386703","guard":false,"planted":null,"insp":"Sep 2021","lat":40.6738884029865,"lon":-73.96478638479292,"walk":10,"side":"N","meas":"62 × 108","note":"2 shrubs","dead":false},{"id":2402596,"addr":"388 St Johns Place","sp":"Willow oak","latin":"Quercus phellos","dbh":10,"color":"#386703","guard":false,"planted":null,"insp":"Sep 2021","lat":40.673913511436474,"lon":-73.96490630676654,"walk":11,"side":"N","meas":"64 × 159","note":"lots of rocks","dead":false},{"id":2402597,"addr":"384 St Johns Place","sp":"Pin oak","latin":"Quercus palustris","dbh":27,"color":"#386703","guard":false,"planted":null,"insp":"Sep 2021","lat":40.67395361311252,"lon":-73.96509783516414,"walk":12,"side":"N","meas":"52 × 62","note":"lots of loose belgian blocks","dead":false},{"id":2402598,"addr":"380 St Johns Place","sp":"Green ash","latin":"Fraxinus pennsylvanica","dbh":24,"color":"#7ed6bb","guard":false,"planted":null,"insp":"Jul 2025","lat":40.67398126897888,"lon":-73.96522992382265,"walk":13,"side":"N","meas":"62 × 78","note":"lots of belgian blocks, can leave them","dead":false},{"id":2402599,"addr":"376 St Johns Place","sp":"Pin oak","latin":"Quercus palustris","dbh":25,"color":"#386703","guard":false,"planted":null,"insp":"Sep 2021","lat":40.67400150026089,"lon":-73.96532655705973,"walk":14,"side":"N","meas":"33 × 64","note":"blocks, can leave","dead":false},{"id":2402600,"addr":"372 St Johns Place","sp":"Japanese zelkova","latin":"Zelkova serrata","dbh":8,"color":"#099922","guard":false,"planted":null,"insp":"Sep 2021","lat":40.674027118948764,"lon":-73.96544891183163,"walk":15,"side":"N","meas":"52 × 61","note":"","dead":false},{"id":2402601,"addr":"364 St Johns Place","sp":"Pin oak","latin":"Quercus palustris","dbh":23,"color":"#386703","guard":false,"planted":null,"insp":"Sep 2021","lat":40.6740573936971,"lon":-73.96559351495954,"walk":16,"side":"N","meas":"52 × 62","note":"","dead":false},{"id":2402602,"addr":"358 St Johns Place","sp":"Green ash","latin":"Fraxinus pennsylvanica","dbh":17,"color":"#7ed6bb","guard":false,"planted":null,"insp":"Jul 2025","lat":40.67407544346947,"lon":-73.96567971967781,"walk":17,"side":"N","meas":"52 × 63","note":"","dead":false},{"id":2402603,"addr":"356 St Johns Place","sp":"Green ash","latin":"Fraxinus pennsylvanica","dbh":19,"color":"#7ed6bb","guard":false,"planted":null,"insp":"Jul 2025","lat":40.674091598879905,"lon":-73.96575688649997,"walk":18,"side":"N","meas":"45 × 37","note":"","dead":false},{"id":11838884,"addr":"352 St Johns Place","sp":"Sawtooth oak","latin":"Quercus acutissima","dbh":5,"color":"#386703","guard":false,"planted":null,"insp":"Nov 2025","lat":40.67415372401865,"lon":-73.96603470067097,"walk":19,"side":"N","meas":"","note":"in a rain garden, doesn’t need mulch","dead":false},{"id":2402604,"addr":"352 St Johns Place","sp":"Green ash","latin":"Fraxinus pennsylvanica","dbh":13,"color":"#7ed6bb","guard":false,"planted":null,"insp":"Jul 2025","lat":40.67417805738338,"lon":-73.96616983882255,"walk":20,"side":"N","meas":"62 × 43","note":"","dead":false},{"id":2402605,"addr":"340 St Johns Place","sp":"Thornless honeylocust","latin":"Gleditsia triacanthos var. inermis","dbh":9,"color":"#7DA422","guard":false,"planted":null,"insp":"Sep 2021","lat":40.6741971231461,"lon":-73.96626091091646,"walk":21,"side":"N","meas":"43 × 43","note":"loose blocks","dead":false},{"id":2402606,"addr":"340 St Johns Place","sp":"Thornless honeylocust","latin":"Gleditsia triacanthos var. inermis","dbh":9,"color":"#7DA422","guard":false,"planted":null,"insp":"Sep 2021","lat":40.67423554878026,"lon":-73.96644444531329,"walk":22,"side":"N","meas":"43 × 43","note":"loose blocks","dead":false},{"id":2402607,"addr":"326 St Johns Place","sp":"Thornless honeylocust","latin":"Gleditsia triacanthos var. inermis","dbh":9,"color":"#7DA422","guard":false,"planted":null,"insp":"Sep 2021","lat":40.674251995714755,"lon":-73.96652300406267,"walk":23,"side":"N","meas":"43 × 43","note":"","dead":false},{"id":2402608,"addr":"326 St Johns Place","sp":"Pin oak","latin":"Quercus palustris","dbh":11,"color":"#386703","guard":false,"planted":null,"insp":"Sep 2021","lat":40.674263712733314,"lon":-73.96657896749801,"walk":24,"side":"N","meas":"43 × 43","note":"","dead":false},{"id":2402610,"addr":"326 St Johns Place","sp":"Goldenrain tree","latin":"Koelreuteria paniculata","dbh":5,"color":"#928720","guard":false,"planted":null,"insp":"Sep 2021","lat":40.67430919594992,"lon":-73.9667962203533,"walk":25,"side":"N","meas":"62 × 120","note":"Empty tree pit right before it — could use a tree","dead":false},{"id":3654011,"addr":"325 St Johns Place","sp":"Pin oak","latin":"Quercus palustris","dbh":10,"color":"#386703","guard":true,"planted":null,"insp":"Sep 2021","lat":40.67444616597977,"lon":-73.96671516951174,"walk":26,"side":"S","meas":"60 × 88","note":"","dead":false},{"id":12189394,"addr":"325 St Johns Place","sp":"Kentucky coffeetree","latin":"Gymnocladus dioicus","dbh":3,"color":"#035505","guard":true,"planted":"Nov 2021","insp":null,"lat":40.674428806832196,"lon":-73.96663170579491,"walk":27,"side":"S","meas":"73 × 48","note":"woody tree coming out on the side","dead":false},{"id":3645116,"addr":"325 St Johns Place","sp":"Pin oak","latin":"Quercus palustris","dbh":14,"color":"#386703","guard":true,"planted":null,"insp":"Sep 2021","lat":40.67440768659729,"lon":-73.96653015858165,"walk":28,"side":"S","meas":"73 × 48","note":"","dead":false},{"id":3363901,"addr":"343 St Johns Place","sp":"Kentucky coffeetree","latin":"Gymnocladus dioicus","dbh":9,"color":"#035505","guard":false,"planted":null,"insp":"Jul 2024","lat":40.67432595456991,"lon":-73.96613718453868,"walk":29,"side":"S","meas":"58 × 94","note":"rain garden right after it to the east","dead":false},{"id":3641954,"addr":"349 St Johns Place","sp":"Green ash","latin":"Fraxinus pennsylvanica","dbh":13,"color":"#7ed6bb","guard":false,"planted":null,"insp":"Jul 2022","lat":40.674303676590625,"lon":-73.96603007291236,"walk":30,"side":"S","meas":"45 × 58","note":"needs block removal","dead":false},{"id":12190187,"addr":"355 St Johns Place","sp":"Kentucky coffeetree","latin":"Gymnocladus dioicus","dbh":3,"color":"#035505","guard":false,"planted":"Nov 2021","insp":null,"lat":40.674276047152304,"lon":-73.9658972277097,"walk":31,"side":"S","meas":"58 × 120","note":"margie ann’s garden, doesn’t need mulch","dead":false},{"id":3656380,"addr":"359 St Johns Place","sp":"Japanese zelkova","latin":"Zelkova serrata","dbh":11,"color":"#099922","guard":false,"planted":null,"insp":"Sep 2021","lat":40.67425724090582,"lon":-73.96580680814493,"walk":32,"side":"S","meas":"36 × 42","note":"one after the stump","dead":false},{"id":3639182,"addr":"369 St Johns Place","sp":"Pin oak","latin":"Quercus palustris","dbh":16,"color":"#386703","guard":false,"planted":null,"insp":"Aug 2022","lat":40.67420024393293,"lon":-73.96553277190789,"walk":33,"side":"S","meas":"66 × 61 + 36 × 36","note":"","dead":false},{"id":3356680,"addr":"383 St Johns Place","sp":"Pin oak","latin":"Quercus palustris","dbh":35,"color":"#386703","guard":false,"planted":null,"insp":"Dec 2023","lat":40.674152360175434,"lon":-73.9653025530835,"walk":34,"side":"S","meas":"63 × 87","note":"","dead":false},{"id":3649998,"addr":"383 St Johns Place","sp":"Pin oak","latin":"Quercus palustris","dbh":34,"color":"#386703","guard":false,"planted":null,"insp":"Feb 2026","lat":40.674138761807214,"lon":-73.96523717349376,"walk":35,"side":"S","meas":"72 × 98","note":"","dead":false},{"id":16931565,"addr":"391 St Johns Place","sp":"Dawn redwood","latin":"Metasequoia glyptostroboides","dbh":3,"color":"#BD5015","guard":false,"planted":"Nov 2025","insp":null,"lat":40.674123097788836,"lon":-73.96511838314483,"walk":36,"side":"S","meas":"65 × 121","note":"DEAD","dead":true},{"id":3359997,"addr":"395 St Johns Place","sp":"Dawn redwood","latin":"Metasequoia glyptostroboides","dbh":7,"color":"#BD5015","guard":false,"planted":null,"insp":"Sep 2021","lat":40.67408624802721,"lon":-73.96498469858592,"walk":37,"side":"S","meas":"69 × 118","note":"1 dead shrub","dead":false},{"id":3067634,"addr":"399 St Johns Place","sp":"Dawn redwood","latin":"Metasequoia glyptostroboides","dbh":9,"color":"#BD5015","guard":false,"planted":null,"insp":"Sep 2021","lat":40.674058189469854,"lon":-73.96484563801772,"walk":38,"side":"S","meas":"62 × 86","note":"2 living shrubs","dead":false},{"id":10230513,"addr":"399 St Johns Place","sp":"Dawn redwood","latin":"Metasequoia glyptostroboides","dbh":4,"color":"#BD5015","guard":false,"planted":"Dec 2019","insp":"Sep 2021","lat":40.67403749443068,"lon":-73.96475030816408,"walk":39,"side":"S","meas":"59 × 115","note":"1 dead, 1 living shrub — remove dead shrub","dead":false},{"id":3647627,"addr":"403 St Johns Place","sp":"Dawn redwood","latin":"Metasequoia glyptostroboides","dbh":8,"color":"#BD5015","guard":false,"planted":null,"insp":"Sep 2021","lat":40.67401796513888,"lon":-73.96465641226021,"walk":40,"side":"S","meas":"59 × 115","note":"2 dead shrubs","dead":false},{"id":10230920,"addr":"403 St Johns Place","sp":"Dawn redwood","latin":"Metasequoia glyptostroboides","dbh":3,"color":"#BD5015","guard":false,"planted":"Dec 2019","insp":"Jan 2024","lat":40.67399438294219,"lon":-73.9645430423034,"walk":41,"side":"S","meas":"59 × 115","note":"2 dead shrubs need removal","dead":false},{"id":3648953,"addr":"411 St Johns Place","sp":"Green ash","latin":"Fraxinus pennsylvanica","dbh":24,"color":"#7ed6bb","guard":false,"planted":null,"insp":"Jul 2025","lat":40.67395691428061,"lon":-73.96436290240048,"walk":42,"side":"S","meas":"65 × 124","note":"","dead":false},{"id":3353783,"addr":"415 St Johns Place","sp":"Green ash","latin":"Fraxinus pennsylvanica","dbh":20,"color":"#7ed6bb","guard":true,"planted":null,"insp":"Jul 2025","lat":40.67391568279444,"lon":-73.96416467942745,"walk":43,"side":"S","meas":"74 × 121","note":"","dead":false},{"id":3661851,"addr":"417 St Johns Place","sp":"Green ash","latin":"Fraxinus pennsylvanica","dbh":20,"color":"#7ed6bb","guard":false,"planted":null,"insp":"Jul 2025","lat":40.673886313664376,"lon":-73.96402348878621,"walk":44,"side":"S","meas":"63 × 59","note":"lots of loose belgian blocks","dead":false},{"id":3368013,"addr":"417 St Johns Place","sp":"“Green Leaf” Japanese flowering cherry","latin":"Prunus serrulata","dbh":9,"color":"#33be91","guard":false,"planted":null,"insp":"Sep 2021","lat":40.67385130276265,"lon":-73.96385517341103,"walk":45,"side":"S","meas":"159 × 63","note":"","dead":false},{"id":3640975,"addr":"427 St Johns Place","sp":"Green ash","latin":"Fraxinus pennsylvanica","dbh":22,"color":"#7ed6bb","guard":false,"planted":null,"insp":"Jul 2025","lat":40.67383206195117,"lon":-73.96376266881784,"walk":46,"side":"S","meas":"76 × 120","note":"","dead":false},{"id":3361760,"addr":"427 St Johns Place","sp":"Norway maple","latin":"Acer platanoides","dbh":13,"color":"#76BF54","guard":false,"planted":null,"insp":"Sep 2021","lat":40.67380963686795,"lon":-73.96365486413636,"walk":47,"side":"S","meas":"91 × 60","note":"","dead":false},{"id":3648401,"addr":"433  St Johns Place","sp":"Japanese zelkova","latin":"Zelkova serrata","dbh":7,"color":"#099922","guard":false,"planted":null,"insp":"Sep 2021","lat":40.67378612641639,"lon":-73.9635418433348,"walk":48,"side":"S","meas":"54 × 54","note":"","dead":false},{"id":708221,"addr":"810 Washington Avenue","sp":"Green ash","latin":"Fraxinus pennsylvanica","dbh":21,"color":"#7ed6bb","guard":false,"planted":null,"insp":"Jul 2025","lat":40.67375781768227,"lon":-73.96336064955807,"walk":49,"side":"S","meas":"85 × 65","note":"rat hole needs filling","dead":false},{"id":708222,"addr":"433 St Johns Place","sp":"Green ash","latin":"Fraxinus pennsylvanica","dbh":16,"color":"#7ed6bb","guard":false,"planted":null,"insp":"Sep 2021","lat":40.67372917884224,"lon":-73.96321202081963,"walk":50,"side":"S","meas":"60 × 61","note":"","dead":false}];
+TREES.forEach(t=>t.street='ST JOHNS PLACE');
+const BLDGS = [{"poly":[[-73.966696,40.673673],[-73.966668,40.673751],[-73.966642,40.673747],[-73.966641,40.673746],[-73.966632,40.673744],[-73.966618,40.673748],[-73.966617,40.673752],[-73.966595,40.673811],[-73.966617,40.673816],[-73.966618,40.673816],[-73.966632,40.673819],[-73.966641,40.673822],[-73.966642,40.673822],[-73.966641,40.673827],[-73.966632,40.673853],[-73.966618,40.673891],[-73.966617,40.673894],[-73.966595,40.67389],[-73.966531,40.673876],[-73.966506,40.67387],[-73.966531,40.673799],[-73.966506,40.673794],[-73.96643,40.67378],[-73.966425,40.673778],[-73.96643,40.67376],[-73.966425,40.673759],[-73.966401,40.673754],[-73.96637,40.673842],[-73.966357,40.67384],[-73.96635,40.673838],[-73.966345,40.673837],[-73.96632,40.673832],[-73.966319,40.673832],[-73.966296,40.673827],[-73.966271,40.673821],[-73.966296,40.673749],[-73.966319,40.673754],[-73.96632,40.673755],[-73.966329,40.673756],[-73.966345,40.673751],[-73.96635,40.673737],[-73.966357,40.673719],[-73.966363,40.6737],[-73.966357,40.673691],[-73.96635,40.67369],[-73.96632,40.673685],[-73.966319,40.673684],[-73.96632,40.673681],[-73.966329,40.67366],[-73.966345,40.673616],[-73.96635,40.673601],[-73.966363,40.673604],[-73.96637,40.673606],[-73.966401,40.673612],[-73.966425,40.673617],[-73.966506,40.673633],[-73.966531,40.673639],[-73.966617,40.673657],[-73.966618,40.673657],[-73.966632,40.67366],[-73.966641,40.673662],[-73.966642,40.673662],[-73.966668,40.673668]],"num":"285","stj":false},{"poly":[[-73.967026,40.673742],[-73.966945,40.673968],[-73.966909,40.673961],[-73.966886,40.673956],[-73.966807,40.67394],[-73.966795,40.673936],[-73.966772,40.673932],[-73.966709,40.673919],[-73.966699,40.673917],[-73.966696,40.673916],[-73.966693,40.673915],[-73.966692,40.673915],[-73.966668,40.67391],[-73.966641,40.673905],[-73.966617,40.6739],[-73.966615,40.673899],[-73.966617,40.673894],[-73.966641,40.673827],[-73.966668,40.673833],[-73.966692,40.673837],[-73.966699,40.673818],[-73.966696,40.673818],[-73.966695,40.673818],[-73.966693,40.673817],[-73.966695,40.673814],[-73.966696,40.67381],[-73.966699,40.673803],[-73.966709,40.673773],[-73.966699,40.673771],[-73.966696,40.673771],[-73.966695,40.67377],[-73.966696,40.673767],[-73.966699,40.673758],[-73.966692,40.673757],[-73.966668,40.673751],[-73.966692,40.673684],[-73.966693,40.673681],[-73.966695,40.673677],[-73.966696,40.673673],[-73.966699,40.673674],[-73.966709,40.673676],[-73.966772,40.673689],[-73.966795,40.673694],[-73.966807,40.673696],[-73.966886,40.673714],[-73.966909,40.673718],[-73.966945,40.673726]],"num":"","stj":false},{"poly":[[-73.966927,40.674026],[-73.966846,40.674248],[-73.966615,40.6742],[-73.966609,40.674199],[-73.966605,40.674198],[-73.96659,40.674195],[-73.966589,40.674195],[-73.966574,40.674192],[-73.966571,40.674191],[-73.966567,40.674191],[-73.966539,40.674185],[-73.966512,40.674179],[-73.966539,40.674105],[-73.966567,40.674111],[-73.966571,40.674111],[-73.966574,40.674101],[-73.966589,40.674104],[-73.96659,40.674101],[-73.966605,40.674057],[-73.966609,40.674059],[-73.966615,40.674038],[-73.966609,40.674037],[-73.966605,40.674036],[-73.96659,40.674033],[-73.966589,40.674033],[-73.966574,40.67403],[-73.966571,40.674029],[-73.966567,40.674028],[-73.966571,40.674017],[-73.966574,40.674009],[-73.966589,40.673966],[-73.96659,40.673962],[-73.966605,40.673965],[-73.966609,40.673966],[-73.966615,40.673967],[-73.966846,40.674011]],"num":"326","stj":true},{"poly":[[-73.96659,40.673962],[-73.966567,40.674028],[-73.966565,40.674035],[-73.966539,40.67403],[-73.966519,40.674025],[-73.966512,40.674044],[-73.966503,40.67407],[-73.966496,40.674088],[-73.966503,40.674098],[-73.966512,40.6741],[-73.966539,40.674105],[-73.966512,40.674179],[-73.966503,40.674178],[-73.966496,40.674175],[-73.966479,40.674172],[-73.966453,40.674166],[-73.966347,40.674144],[-73.966343,40.674144],[-73.966341,40.674143],[-73.966312,40.674137],[-73.966263,40.674127],[-73.966252,40.674125],[-73.966249,40.674124],[-73.966247,40.674124],[-73.966244,40.674123],[-73.966239,40.674122],[-73.966236,40.674121],[-73.966221,40.674118],[-73.966197,40.674112],[-73.966192,40.674111],[-73.966169,40.674106],[-73.966192,40.674044],[-73.966197,40.674026],[-73.966221,40.674031],[-73.966236,40.674034],[-73.966239,40.674028],[-73.966244,40.674029],[-73.966263,40.673979],[-73.966249,40.673976],[-73.966252,40.673968],[-73.966247,40.673967],[-73.966244,40.673967],[-73.966236,40.673965],[-73.966221,40.673962],[-73.966236,40.673922],[-73.966239,40.673914],[-73.966244,40.6739],[-73.966247,40.673892],[-73.966249,40.673893],[-73.966252,40.673894],[-73.966263,40.673896],[-73.966312,40.673906],[-73.966341,40.673912],[-73.966343,40.673912],[-73.966341,40.67392],[-73.966312,40.674001],[-73.966341,40.674007],[-73.966347,40.673989],[-73.966453,40.674012],[-73.966479,40.673938],[-73.966496,40.673943],[-73.966503,40.673944],[-73.966512,40.673946],[-73.966539,40.673952],[-73.966565,40.673957],[-73.966567,40.673958]],"num":"340","stj":true},{"poly":[[-73.966071,40.673848],[-73.966043,40.673925],[-73.966015,40.67392],[-73.966004,40.673917],[-73.966001,40.673925],[-73.965997,40.673936],[-73.965992,40.673951],[-73.96598,40.673984],[-73.965992,40.673987],[-73.965997,40.673989],[-73.966001,40.673989],[-73.965997,40.674001],[-73.966004,40.674003],[-73.966015,40.674005],[-73.966004,40.674036],[-73.966001,40.674043],[-73.965997,40.674054],[-73.965992,40.67407],[-73.96598,40.674068],[-73.965886,40.674048],[-73.965864,40.674043],[-73.965858,40.674042],[-73.965834,40.674037],[-73.965827,40.674036],[-73.965807,40.674031],[-73.965827,40.673976],[-73.965834,40.673957],[-73.965858,40.673962],[-73.965864,40.673963],[-73.965886,40.673903],[-73.965864,40.673899],[-73.965858,40.673898],[-73.965834,40.673893],[-73.965827,40.673891],[-73.965834,40.673872],[-73.965858,40.673803],[-73.965864,40.673805],[-73.965886,40.673809],[-73.96598,40.67383],[-73.965992,40.673832],[-73.965997,40.673833],[-73.966001,40.673834],[-73.966004,40.673835],[-73.966015,40.673837]],"num":"356","stj":true},{"poly":[[-73.966225,40.673879],[-73.966192,40.673973],[-73.966169,40.674036],[-73.966168,40.674039],[-73.966169,40.67404],[-73.966192,40.674044],[-73.966169,40.674106],[-73.966168,40.674106],[-73.966098,40.674092],[-73.966042,40.674081],[-73.966015,40.674075],[-73.965992,40.67407],[-73.966015,40.674005],[-73.966042,40.67401],[-73.966098,40.673853],[-73.966168,40.673868],[-73.966169,40.673868],[-73.966192,40.673873]],"num":"352","stj":true},{"poly":[[-73.965858,40.673803],[-73.965827,40.673891],[-73.965773,40.673879],[-73.965765,40.673877],[-73.965746,40.673927],[-73.965742,40.673937],[-73.965746,40.673938],[-73.965765,40.673943],[-73.965773,40.673944],[-73.965746,40.674018],[-73.965742,40.674018],[-73.965654,40.673999],[-73.965638,40.673995],[-73.96563,40.673993],[-73.965612,40.67399],[-73.96561,40.673989],[-73.965604,40.673988],[-73.9656,40.673987],[-73.965582,40.673983],[-73.965557,40.673978],[-73.965582,40.673913],[-73.9656,40.673917],[-73.965604,40.673904],[-73.96561,40.673906],[-73.965612,40.673906],[-73.96563,40.673909],[-73.965654,40.673845],[-73.965638,40.673842],[-73.96563,40.673841],[-73.965612,40.673837],[-73.96561,40.673836],[-73.965612,40.673827],[-73.96563,40.67378],[-73.965638,40.673757],[-73.965654,40.673762],[-73.965742,40.67378],[-73.965746,40.673781],[-73.965765,40.673785],[-73.965773,40.673786],[-73.965827,40.673797]],"num":"364","stj":true},{"poly":[[-73.965638,40.673757],[-73.965612,40.673827],[-73.965582,40.673821],[-73.965571,40.673817],[-73.965557,40.673855],[-73.96554,40.673904],[-73.965557,40.673908],[-73.965571,40.673911],[-73.965582,40.673913],[-73.965571,40.673943],[-73.965557,40.673978],[-73.96554,40.673975],[-73.965485,40.673963],[-73.965473,40.673961],[-73.965468,40.67396],[-73.965446,40.673955],[-73.965407,40.673947],[-73.965383,40.673942],[-73.965407,40.673876],[-73.965446,40.673885],[-73.965451,40.673886],[-73.965485,40.673794],[-73.965473,40.673792],[-73.96547,40.673791],[-73.965473,40.673785],[-73.965446,40.67378],[-73.965451,40.673766],[-73.965468,40.673722],[-73.96547,40.673723],[-73.965473,40.673724],[-73.965485,40.673726],[-73.96554,40.673737],[-73.965557,40.673741],[-73.965571,40.673744],[-73.965582,40.673746],[-73.965612,40.673752]],"num":"372","stj":true},{"poly":[[-73.966736,40.674541],[-73.966679,40.674696],[-73.966611,40.674682],[-73.966586,40.674676],[-73.966611,40.674607],[-73.966586,40.674602],[-73.966556,40.674596],[-73.966544,40.674628],[-73.966511,40.674621],[-73.966497,40.674657],[-73.966442,40.674645],[-73.966422,40.67464],[-73.966442,40.674585],[-73.966422,40.674581],[-73.96639,40.674574],[-73.966377,40.67461],[-73.966358,40.674607],[-73.96631,40.674596],[-73.966358,40.674461],[-73.966377,40.674465],[-73.96639,40.674468],[-73.966422,40.674476],[-73.966442,40.67448],[-73.966497,40.674491],[-73.966511,40.674494],[-73.966544,40.674501],[-73.966556,40.674503],[-73.966586,40.674509],[-73.966611,40.674515],[-73.966679,40.674529]],"num":"209","stj":false},{"poly":[[-73.966322,40.674449],[-73.966294,40.674526],[-73.966267,40.67452],[-73.966257,40.674544],[-73.966244,40.674541],[-73.966236,40.674564],[-73.966227,40.67459],[-73.96622,40.67461],[-73.966212,40.674632],[-73.96622,40.674637],[-73.966227,40.674639],[-73.966236,40.67464],[-73.966252,40.674643],[-73.966236,40.674689],[-73.966227,40.674715],[-73.96622,40.674714],[-73.966212,40.674712],[-73.96621,40.674712],[-73.966141,40.674696],[-73.96621,40.674502],[-73.966212,40.674499],[-73.96622,40.674477],[-73.966227,40.674457],[-73.966236,40.674431],[-73.966252,40.674435],[-73.966257,40.674436],[-73.966267,40.674438],[-73.966294,40.674444]],"num":"341","stj":true},{"poly":[[-73.966679,40.674696],[-73.966622,40.674851],[-73.966578,40.674843],[-73.966565,40.67484],[-73.966542,40.674836],[-73.966536,40.674834],[-73.966528,40.674832],[-73.966542,40.674795],[-73.966536,40.674794],[-73.966528,40.674793],[-73.966497,40.674786],[-73.966484,40.674783],[-73.966437,40.674773],[-73.966422,40.67481],[-73.96641,40.674808],[-73.966396,40.674805],[-73.966389,40.674803],[-73.966358,40.674797],[-73.966351,40.674795],[-73.966342,40.674793],[-73.966358,40.67475],[-73.966351,40.674749],[-73.966342,40.674747],[-73.966323,40.674742],[-73.966315,40.674766],[-73.966306,40.674764],[-73.966263,40.674755],[-73.966306,40.674636],[-73.966315,40.674638],[-73.966323,40.67464],[-73.966342,40.674644],[-73.966351,40.674646],[-73.966358,40.674648],[-73.966389,40.674655],[-73.966396,40.674656],[-73.966389,40.674671],[-73.966396,40.674673],[-73.96641,40.674676],[-73.966422,40.67464],[-73.966437,40.674644],[-73.966484,40.674655],[-73.966497,40.674657],[-73.966484,40.674692],[-73.966497,40.674695],[-73.966528,40.674702],[-73.966536,40.674704],[-73.966542,40.674705],[-73.966565,40.674709],[-73.966578,40.674698],[-73.966586,40.674676],[-73.966622,40.674684]],"num":"203","stj":false},{"poly":[[-73.965803,40.674341],[-73.965777,40.674412],[-73.965749,40.674406],[-73.965679,40.674602],[-73.965657,40.674598],[-73.965631,40.674593],[-73.965587,40.674582],[-73.965631,40.674459],[-73.965657,40.674387],[-73.965631,40.674381],[-73.965657,40.674311],[-73.965679,40.674316],[-73.965749,40.67433],[-73.965777,40.674336]],"num":"359","stj":true},{"poly":[[-73.965657,40.674311],[-73.965631,40.674381],[-73.965607,40.674377],[-73.965537,40.674573],[-73.965512,40.674568],[-73.96551,40.674568],[-73.965486,40.674563],[-73.965441,40.674554],[-73.965486,40.674426],[-73.96551,40.674358],[-73.965486,40.674352],[-73.96551,40.674284],[-73.965512,40.67428],[-73.965537,40.674286],[-73.965607,40.674301],[-73.965631,40.674306]],"num":"365","stj":true},{"poly":[[-73.966236,40.674431],[-73.96621,40.674502],[-73.966185,40.674497],[-73.966115,40.674691],[-73.966092,40.674687],[-73.966091,40.674687],[-73.966067,40.674682],[-73.966021,40.674672],[-73.966067,40.674546],[-73.966091,40.674479],[-73.966067,40.674474],[-73.966091,40.674405],[-73.966092,40.674401],[-73.966115,40.674406],[-73.966185,40.674421],[-73.96621,40.674426]],"num":"343","stj":true},{"poly":[[-73.966092,40.674401],[-73.966067,40.674474],[-73.966039,40.674467],[-73.965969,40.674662],[-73.965948,40.674658],[-73.965945,40.674657],[-73.965922,40.674652],[-73.965875,40.674641],[-73.965922,40.67451],[-73.965945,40.674446],[-73.965922,40.674441],[-73.965945,40.674379],[-73.965948,40.674371],[-73.965969,40.674376],[-73.966039,40.67439],[-73.966067,40.674396]],"num":"349","stj":true},{"poly":[[-73.965948,40.674371],[-73.965922,40.674441],[-73.965894,40.674435],[-73.965824,40.674631],[-73.965803,40.674627],[-73.9658,40.674627],[-73.965777,40.674622],[-73.96573,40.674612],[-73.965777,40.674482],[-73.9658,40.674418],[-73.965777,40.674412],[-73.9658,40.674349],[-73.965803,40.674341],[-73.965824,40.674346],[-73.965894,40.674361],[-73.965922,40.674366]],"num":"355","stj":true},{"poly":[[-73.965512,40.67428],[-73.965486,40.674352],[-73.965461,40.674347],[-73.965391,40.674542],[-73.965368,40.674538],[-73.965368,40.674252],[-73.965391,40.674256],[-73.965461,40.67427],[-73.965486,40.674275]],"num":"369","stj":true},{"poly":[[-73.96554,40.673673],[-73.965539,40.673673],[-73.965504,40.673666],[-73.965539,40.673569],[-73.96554,40.673566]],"num":"","stj":false},{"poly":[[-73.965237,40.673705],[-73.96521,40.673777],[-73.965197,40.673775],[-73.965181,40.673771],[-73.965167,40.673809],[-73.965168,40.67381],[-73.965181,40.673812],[-73.965197,40.673815],[-73.965181,40.67386],[-73.965168,40.673894],[-73.965167,40.673897],[-73.965154,40.673895],[-73.965131,40.67389],[-73.965128,40.673889],[-73.965122,40.673888],[-73.965115,40.673887],[-73.965111,40.673886],[-73.965103,40.673884],[-73.965089,40.673882],[-73.96506,40.673874],[-73.965089,40.673793],[-73.965111,40.673797],[-73.965115,40.673786],[-73.965122,40.673788],[-73.965128,40.673769],[-73.965131,40.67376],[-73.965128,40.67376],[-73.965115,40.673757],[-73.965111,40.673756],[-73.965103,40.673754],[-73.965115,40.673721],[-73.965128,40.673682],[-73.965131,40.673683],[-73.965154,40.673688],[-73.965167,40.673654],[-73.965168,40.67365],[-73.965197,40.673656],[-73.965223,40.673661],[-73.96521,40.673699]],"num":"384","stj":true},{"poly":[[-73.96504,40.673551],[-73.965025,40.673595],[-73.964977,40.673585],[-73.964971,40.673584],[-73.964962,40.673581],[-73.964971,40.673554],[-73.964977,40.673538],[-73.965025,40.673548]],"num":"392–406","stj":true},{"poly":[[-73.965128,40.673682],[-73.965115,40.673721],[-73.965103,40.673754],[-73.965101,40.673754],[-73.965089,40.673752],[-73.965075,40.673748],[-73.965064,40.673777],[-73.965065,40.673788],[-73.965075,40.67379],[-73.965089,40.673793],[-73.965075,40.673834],[-73.965065,40.67386],[-73.965064,40.673864],[-73.965061,40.673871],[-73.96506,40.673874],[-73.965046,40.673872],[-73.965025,40.673867],[-73.965018,40.673866],[-73.965014,40.673865],[-73.965005,40.673863],[-73.965003,40.673863],[-73.964993,40.67386],[-73.964978,40.673857],[-73.96495,40.673851],[-73.964978,40.67377],[-73.964993,40.673773],[-73.965003,40.673775],[-73.965014,40.673767],[-73.965025,40.673738],[-73.965018,40.673737],[-73.965014,40.673736],[-73.965003,40.673734],[-73.964993,40.673731],[-73.965003,40.673702],[-73.965018,40.67366],[-73.965025,40.673662],[-73.965046,40.673665],[-73.96506,40.673631],[-73.965061,40.673627],[-73.965064,40.673628],[-73.965065,40.673628],[-73.965075,40.67363],[-73.965089,40.673633],[-73.965101,40.673636],[-73.965103,40.673636],[-73.965115,40.673638],[-73.965101,40.673677],[-73.965103,40.673678],[-73.965115,40.67368]],"num":"388","stj":true},{"poly":[[-73.965453,40.67375],[-73.965426,40.673822],[-73.965399,40.673816],[-73.965398,40.673821],[-73.965395,40.673829],[-73.965388,40.673847],[-73.965395,40.673849],[-73.965398,40.673849],[-73.965395,40.673856],[-73.965399,40.673857],[-73.965407,40.673859],[-73.965413,40.67386],[-73.965407,40.673876],[-73.965399,40.673899],[-73.965398,40.673902],[-73.965395,40.673909],[-73.965388,40.673927],[-73.965383,40.673942],[-73.965371,40.67394],[-73.965351,40.673935],[-73.965345,40.673934],[-73.96534,40.673933],[-73.965331,40.673931],[-73.965328,40.673931],[-73.96532,40.673929],[-73.965276,40.67392],[-73.965305,40.673838],[-73.96532,40.673842],[-73.965328,40.673843],[-73.965331,40.673834],[-73.96534,40.673836],[-73.965351,40.673806],[-73.96534,40.673804],[-73.965331,40.673802],[-73.96532,40.673799],[-73.965328,40.673777],[-73.965331,40.67377],[-73.96534,40.673743],[-73.965345,40.673728],[-73.965351,40.67373],[-73.965371,40.673733],[-73.965383,40.673703],[-73.965386,40.673695],[-73.965388,40.673696],[-73.965395,40.673697],[-73.965398,40.673698],[-73.965399,40.673698],[-73.965407,40.6737],[-73.965413,40.673702],[-73.965426,40.673704],[-73.965427,40.673705],[-73.965442,40.673707],[-73.965427,40.673745],[-73.965442,40.673748]],"num":"376","stj":true},{"poly":[[-73.965345,40.673728],[-73.965335,40.673758],[-73.965321,40.673796],[-73.96532,40.673799],[-73.965305,40.673797],[-73.965292,40.673794],[-73.965281,40.673823],[-73.965288,40.673825],[-73.965285,40.673834],[-73.965288,40.673835],[-73.965292,40.673836],[-73.965305,40.673838],[-73.965292,40.673875],[-73.965288,40.673887],[-73.965285,40.673895],[-73.965281,40.673906],[-73.965277,40.673917],[-73.965276,40.67392],[-73.965264,40.673918],[-73.965241,40.673913],[-73.965237,40.673912],[-73.965231,40.673911],[-73.965225,40.67391],[-73.965222,40.673909],[-73.96521,40.673907],[-73.965197,40.673904],[-73.965167,40.673897],[-73.965197,40.673815],[-73.96521,40.673818],[-73.965222,40.673821],[-73.965225,40.673809],[-73.965231,40.673811],[-73.965241,40.673783],[-73.965237,40.673783],[-73.965231,40.673782],[-73.965225,40.67378],[-73.965222,40.67378],[-73.96521,40.673777],[-73.965222,40.673745],[-73.965225,40.673737],[-73.965231,40.67372],[-73.965237,40.673705],[-73.965264,40.673711],[-73.965277,40.673672],[-73.965281,40.673673],[-73.965285,40.673674],[-73.965288,40.673675],[-73.965292,40.673676],[-73.965305,40.673678],[-73.96532,40.673681],[-73.965321,40.673682],[-73.965335,40.673684],[-73.965321,40.673723],[-73.965335,40.673726]],"num":"380","stj":true},{"poly":[[-73.964266,40.673477],[-73.964242,40.673542],[-73.964236,40.673556],[-73.964196,40.673547],[-73.964181,40.67356],[-73.964168,40.673595],[-73.964181,40.673598],[-73.964211,40.673604],[-73.964236,40.673609],[-73.964242,40.67361],[-73.964236,40.673625],[-73.964211,40.673696],[-73.964181,40.67369],[-73.964168,40.673688],[-73.964051,40.673664],[-73.964042,40.673662],[-73.964022,40.673658],[-73.96402,40.673657],[-73.964015,40.673656],[-73.964014,40.673656],[-73.963986,40.67365],[-73.963963,40.673646],[-73.963939,40.67364],[-73.963928,40.673638],[-73.963908,40.673633],[-73.963928,40.673577],[-73.963939,40.673546],[-73.963963,40.673551],[-73.963986,40.673556],[-73.964014,40.673562],[-73.964015,40.673562],[-73.96402,40.673563],[-73.964022,40.673563],[-73.964042,40.673567],[-73.964051,40.673539],[-73.964042,40.673537],[-73.964022,40.673533],[-73.964015,40.673531],[-73.964022,40.673512],[-73.96402,40.673512],[-73.964015,40.673511],[-73.964014,40.67351],[-73.96402,40.673493],[-73.964015,40.673492],[-73.964014,40.673492],[-73.963986,40.673486],[-73.963963,40.673481],[-73.963986,40.673418],[-73.964014,40.673424],[-73.964015,40.673425],[-73.96402,40.673426],[-73.964022,40.673426],[-73.964042,40.67343],[-73.964051,40.673432],[-73.964168,40.673456],[-73.964181,40.673459],[-73.964196,40.673462],[-73.964211,40.673466],[-73.964236,40.673471],[-73.964242,40.673472]],"num":"418","stj":true},{"poly":[[-73.96459,40.673544],[-73.964569,40.673606],[-73.964545,40.673602],[-73.964513,40.673595],[-73.964506,40.67361],[-73.964502,40.673609],[-73.964493,40.673632],[-73.964467,40.673627],[-73.964458,40.673655],[-73.964467,40.673657],[-73.964493,40.673663],[-73.964502,40.673665],[-73.964506,40.673665],[-73.964513,40.673667],[-73.964545,40.673673],[-73.964513,40.67376],[-73.964506,40.673759],[-73.964502,40.673758],[-73.964493,40.673756],[-73.964467,40.673751],[-73.964458,40.673749],[-73.964329,40.673722],[-73.964325,40.673721],[-73.964317,40.67372],[-73.964313,40.673719],[-73.964283,40.673713],[-73.964242,40.673704],[-73.964211,40.673696],[-73.964242,40.67361],[-73.964283,40.673619],[-73.964313,40.673625],[-73.964317,40.673625],[-73.964329,40.673592],[-73.964325,40.673576],[-73.964317,40.673575],[-73.964313,40.673574],[-73.964283,40.673567],[-73.964313,40.673486],[-73.964317,40.673487],[-73.964325,40.673489],[-73.964329,40.67349],[-73.964458,40.673516],[-73.964467,40.673518],[-73.964493,40.673524],[-73.964502,40.673526],[-73.964506,40.673527],[-73.964513,40.673528],[-73.964545,40.673535],[-73.964569,40.67354]],"num":"","stj":false},{"poly":[[-73.964239,40.674017],[-73.964212,40.674089],[-73.964184,40.674084],[-73.964181,40.674083],[-73.964173,40.674105],[-73.964184,40.674107],[-73.964181,40.674115],[-73.964173,40.674138],[-73.96413,40.674257],[-73.964075,40.674246],[-73.964067,40.674245],[-73.964061,40.674243],[-73.964049,40.674241],[-73.964039,40.674239],[-73.964031,40.674237],[-73.964002,40.67423],[-73.96399,40.674228],[-73.963974,40.674224],[-73.96399,40.674178],[-73.964002,40.674147],[-73.964039,40.674154],[-73.964049,40.67415],[-73.964061,40.674116],[-73.964067,40.674097],[-73.964075,40.674074],[-73.964067,40.674066],[-73.964061,40.674066],[-73.964049,40.674065],[-73.964039,40.674064],[-73.964031,40.674063],[-73.964039,40.67404],[-73.964049,40.674014],[-73.964061,40.673979],[-73.964067,40.673981],[-73.964075,40.673983],[-73.96413,40.673994],[-73.964173,40.674004],[-73.964181,40.674005],[-73.964184,40.674006],[-73.964212,40.674012]],"num":"415","stj":true},{"poly":[[-73.963967,40.673411],[-73.963928,40.67352],[-73.963909,40.673573],[-73.963928,40.673577],[-73.963909,40.67363],[-73.963908,40.673633],[-73.963905,40.673641],[-73.963834,40.673627],[-73.96378,40.673615],[-73.96376,40.673611],[-73.963735,40.673606],[-73.963732,40.673605],[-73.963735,40.673597],[-73.96376,40.673526],[-73.96378,40.673531],[-73.963834,40.673383],[-73.963905,40.673398],[-73.963908,40.673398],[-73.963909,40.673399],[-73.963928,40.673403]],"num":"440","stj":true},{"poly":[[-73.963813,40.673379],[-73.963786,40.673453],[-73.96376,40.673448],[-73.963739,40.673443],[-73.963735,40.673455],[-73.963731,40.673467],[-73.963717,40.673505],[-73.963731,40.673519],[-73.963739,40.673521],[-73.96376,40.673526],[-73.963739,40.673586],[-73.963735,40.673597],[-73.963731,40.673597],[-73.963717,40.673594],[-73.963658,40.673581],[-73.963646,40.673578],[-73.963634,40.673576],[-73.96363,40.673575],[-73.963618,40.673573],[-73.963611,40.673571],[-73.963507,40.67355],[-73.963488,40.673546],[-73.963468,40.673542],[-73.963465,40.673542],[-73.963446,40.673538],[-73.963386,40.673525],[-73.963446,40.673357],[-73.963465,40.673306],[-73.963468,40.673307],[-73.963488,40.673311],[-73.963507,40.673315],[-73.963611,40.673337],[-73.963618,40.673338],[-73.96363,40.673341],[-73.963634,40.673341],[-73.963658,40.673347],[-73.963717,40.67336],[-73.963731,40.673362],[-73.963735,40.673363],[-73.963739,40.673364],[-73.96376,40.673369],[-73.963786,40.673374]],"num":"446–448","stj":true},{"poly":[[-73.964061,40.673979],[-73.964031,40.674063],[-73.96399,40.674054],[-73.963974,40.67405],[-73.963964,40.674048],[-73.963924,40.674164],[-73.963964,40.674172],[-73.963974,40.674174],[-73.96399,40.674178],[-73.963974,40.674224],[-73.963964,40.674251],[-73.963924,40.674243],[-73.963845,40.674226],[-73.963835,40.674224],[-73.963819,40.674221],[-73.963813,40.67422],[-73.963807,40.674219],[-73.963799,40.674217],[-73.963771,40.674212],[-73.963731,40.674203],[-73.963712,40.6742],[-73.963701,40.674197],[-73.963712,40.67417],[-73.963731,40.674113],[-73.963771,40.674123],[-73.963799,40.674129],[-73.963807,40.67413],[-73.963813,40.674131],[-73.963819,40.674111],[-73.963813,40.67411],[-73.963807,40.674109],[-73.963813,40.674097],[-73.963819,40.674082],[-73.963835,40.674045],[-73.963845,40.674023],[-73.963835,40.674016],[-73.963819,40.674013],[-73.963813,40.674012],[-73.963799,40.67401],[-73.963771,40.674004],[-73.963799,40.673925],[-73.963807,40.673927],[-73.963813,40.673928],[-73.963819,40.67393],[-73.963835,40.673933],[-73.963845,40.673935],[-73.963924,40.673952],[-73.963964,40.67396],[-73.963974,40.673962],[-73.96399,40.673965],[-73.964031,40.673973]],"num":"417","stj":true},{"poly":[[-73.963799,40.673925],[-73.963771,40.674004],[-73.963739,40.673997],[-73.963727,40.674004],[-73.9637,40.674079],[-73.963709,40.674086],[-73.963712,40.674087],[-73.963727,40.67409],[-73.963731,40.674091],[-73.963739,40.674092],[-73.963731,40.674113],[-73.963712,40.67417],[-73.963709,40.67417],[-73.9637,40.674168],[-73.963632,40.674154],[-73.96363,40.674153],[-73.963623,40.674152],[-73.963613,40.67415],[-73.963603,40.674148],[-73.963558,40.674138],[-73.963603,40.674014],[-73.963613,40.673987],[-73.963623,40.673989],[-73.96363,40.673973],[-73.963632,40.673969],[-73.96363,40.673969],[-73.963623,40.673968],[-73.963613,40.673966],[-73.963603,40.673964],[-73.96363,40.673891],[-73.963632,40.673892],[-73.9637,40.673905],[-73.963709,40.673907],[-73.963712,40.673908],[-73.963727,40.673911],[-73.963731,40.673912],[-73.963739,40.673913],[-73.963771,40.67392]],"num":"427","stj":true},{"poly":[[-73.963468,40.673875],[-73.963463,40.673876],[-73.963422,40.673881],[-73.963421,40.673881],[-73.963422,40.673895],[-73.963421,40.673896],[-73.963173,40.673922],[-73.963159,40.673851],[-73.963149,40.673793],[-73.963159,40.673789],[-73.963173,40.673792],[-73.963421,40.673844],[-73.963422,40.673844],[-73.963463,40.673852]],"num":"433","stj":true},{"poly":[[-73.965366,40.674251],[-73.965341,40.674319],[-73.965321,40.674315],[-73.96526,40.674486],[-73.965209,40.674476],[-73.965193,40.674472],[-73.965178,40.674469],[-73.965166,40.674466],[-73.965135,40.67446],[-73.965107,40.674454],[-73.965135,40.674377],[-73.965166,40.674384],[-73.965178,40.674386],[-73.965193,40.674345],[-73.965209,40.6743],[-73.965193,40.674297],[-73.965178,40.674293],[-73.965166,40.67429],[-73.965178,40.674257],[-73.965193,40.674214],[-73.965209,40.674218],[-73.96526,40.674228],[-73.965321,40.674242],[-73.965341,40.674246]],"num":"","stj":false},{"poly":[[-73.965017,40.674178],[-73.964993,40.674246],[-73.964973,40.674242],[-73.964911,40.674413],[-73.964855,40.674402],[-73.964849,40.674401],[-73.96483,40.674397],[-73.964788,40.674388],[-73.96483,40.674268],[-73.964849,40.674215],[-73.96483,40.674211],[-73.964849,40.674159],[-73.964855,40.674144],[-73.964911,40.674156],[-73.964973,40.674168],[-73.964993,40.674173]],"num":"395","stj":true},{"poly":[[-73.965193,40.674214],[-73.965166,40.67429],[-73.965135,40.674285],[-73.965124,40.674282],[-73.965107,40.674331],[-73.965093,40.674369],[-73.965107,40.674372],[-73.965124,40.674375],[-73.965135,40.674377],[-73.965124,40.674406],[-73.965107,40.674454],[-73.965093,40.674452],[-73.964993,40.674432],[-73.964951,40.674423],[-73.964993,40.674307],[-73.965013,40.67425],[-73.964993,40.674246],[-73.965013,40.67419],[-73.965017,40.674178],[-73.965093,40.674194],[-73.965107,40.674197],[-73.965124,40.6742],[-73.965135,40.674203],[-73.965166,40.674209]],"num":"391","stj":true},{"poly":[[-73.964855,40.674144],[-73.96483,40.674211],[-73.964809,40.674207],[-73.964746,40.67438],[-73.964687,40.674368],[-73.964684,40.674367],[-73.964663,40.674363],[-73.964623,40.674353],[-73.964663,40.674242],[-73.964684,40.674181],[-73.964663,40.674177],[-73.964684,40.674118],[-73.964687,40.674109],[-73.964746,40.674122],[-73.964809,40.674135],[-73.96483,40.67414]],"num":"","stj":false},{"poly":[[-73.964687,40.674109],[-73.964663,40.674177],[-73.964657,40.674193],[-73.964624,40.674186],[-73.964592,40.674179],[-73.964564,40.674172],[-73.964534,40.674256],[-73.964522,40.674254],[-73.964518,40.674266],[-73.964534,40.67427],[-73.964564,40.674275],[-73.964624,40.674287],[-73.964592,40.674377],[-73.964564,40.674372],[-73.964534,40.674366],[-73.964518,40.674363],[-73.964456,40.674349],[-73.964448,40.674348],[-73.964425,40.674343],[-73.964423,40.674343],[-73.96442,40.674342],[-73.964408,40.67434],[-73.964381,40.674334],[-73.964379,40.674334],[-73.964342,40.674326],[-73.964321,40.674322],[-73.964313,40.67432],[-73.964321,40.674296],[-73.964342,40.674235],[-73.964379,40.674243],[-73.964381,40.674244],[-73.964408,40.674249],[-73.96442,40.674251],[-73.964425,40.674235],[-73.964423,40.674234],[-73.964425,40.674227],[-73.964448,40.674161],[-73.964452,40.674162],[-73.964456,40.674152],[-73.964452,40.674152],[-73.964448,40.674151],[-73.964425,40.674146],[-73.964423,40.674146],[-73.96442,40.674145],[-73.964408,40.674143],[-73.964381,40.674137],[-73.964379,40.674136],[-73.964381,40.674129],[-73.964408,40.674051],[-73.96442,40.674054],[-73.964423,40.674054],[-73.964425,40.674055],[-73.964448,40.674061],[-73.964452,40.674061],[-73.964456,40.674062],[-73.964518,40.674075],[-73.964522,40.674076],[-73.964534,40.674078],[-73.964564,40.674084],[-73.964592,40.67409],[-73.964624,40.674097],[-73.964657,40.674103],[-73.964663,40.674105]],"num":"403","stj":true},{"poly":[[-73.964408,40.674051],[-73.964381,40.674129],[-73.964352,40.674123],[-73.964338,40.67413],[-73.964311,40.674205],[-73.964317,40.674214],[-73.964321,40.674215],[-73.964338,40.674219],[-73.964342,40.674219],[-73.964348,40.67422],[-73.964342,40.674235],[-73.964338,40.674248],[-73.964321,40.674296],[-73.964317,40.674296],[-73.964311,40.674294],[-73.964242,40.674279],[-73.964239,40.674279],[-73.964234,40.674278],[-73.964222,40.674275],[-73.964212,40.674273],[-73.964168,40.674264],[-73.964212,40.674142],[-73.964222,40.674115],[-73.964234,40.674118],[-73.964239,40.674103],[-73.964242,40.674095],[-73.964239,40.674095],[-73.964234,40.674094],[-73.964222,40.674091],[-73.964212,40.674089],[-73.964222,40.674065],[-73.964234,40.674032],[-73.964239,40.674017],[-73.964242,40.674018],[-73.964311,40.674032],[-73.964317,40.674033],[-73.964321,40.674034],[-73.964338,40.674037],[-73.964342,40.674038],[-73.964348,40.674039],[-73.964352,40.67404],[-73.964381,40.674046]],"num":"411","stj":true}];
+
+/* ---- prefilled field notes from the July 3, 2026 voice memo (editable) ---- */
+const PREFILL_JOURNAL = `FIELD SURVEY — Jul 3, 2026. All 50 beds measured; each tree card has its bed size and notes (tap a tree).
+
+TO-DO LIST from the survey:
+• #7 Pin oak: needs mulch and compost
+• #8 Paperbark maple: has 1 shrub, needs pruning
+• #12 Pin oak: lots of loose Belgian blocks
+• #13 Green ash / #14 Pin oak: Belgian blocks, can leave them
+• #21 / #22 Thornless honeylocusts: loose blocks
+• #25 Goldenrain tree: EMPTY TREE PIT right before it — request a new street tree
+• #30 Green ash: needs block removal
+• #36 Dawn redwood: DEAD — report / request replacement
+• #39 / #40 / #41 Dawn redwoods: dead shrubs to remove
+• #44 Green ash: lots of loose Belgian blocks
+• #49 Green ash: rat hole needs filling
+• No mulch needed: #19 Sawtooth oak (rain garden), #31 (margie ann's garden); rain garden just east of #29`;
+
+/* ---------------- storage ---------------- */
+const STORE_KEY = 'blockTreeNotes-v2';
+let store = {journal:'', trees:{}};
+try{ store = Object.assign(store, JSON.parse(localStorage.getItem(STORE_KEY)||'{}')); }catch(e){}
+/* refresh prefill unless the user has replaced it with their own text */
+if(!store.journal || store.journal.startsWith('TREE BED MEASUREMENTS')) store.journal = PREFILL_JOURNAL;
+/* per-tree notes from the survey spreadsheet (kept unless you edit them) */
+TREES.forEach(t=>{
+  if(!t.note) return;
+  const ex=store.trees[t.id];
+  if(!ex || !ex.notes || ex.notes.startsWith('Voice memo ~')){
+    store.trees[t.id]=Object.assign({nick:'',notes:'',log:[]},ex||{},{notes:t.note});
+  }
+});
+function save(){ localStorage.setItem(STORE_KEY, JSON.stringify(store)); refreshBadges(); renderPrintNotes(); updateStats(); }
+function rec(id){ return store.trees[id] || (store.trees[id]={nick:'',notes:'',log:[]}); }
+function hasData(id){ const r=store.trees[id]; return !!(r && (r.nick||r.notes||(r.log&&r.log.length))); }
+
+/* ---------------- projection (extent covers trees + buildings) ---------------- */
+const lats=TREES.map(t=>t.lat), lons=TREES.map(t=>t.lon);
+BLDGS.forEach(b=>b.poly.forEach(p=>{lons.push(p[0]);lats.push(p[1]);}));
+const minLat=Math.min(...lats), maxLat=Math.max(...lats), minLon=Math.min(...lons), maxLon=Math.max(...lons);
+const mPerLon=111320*Math.cos(40.674*Math.PI/180), mPerLat=110574;
+const spanX=(maxLon-minLon)*mPerLon, spanY=(maxLat-minLat)*mPerLat;
+const W=1100, PAD=58, H=Math.round((W-2*PAD)*spanY/spanX)+2*PAD;
+const X=lon=>PAD+(lon-minLon)/(maxLon-minLon)*(W-2*PAD);
+const Y=lat=>PAD+(maxLat-lat)/(maxLat-minLat)*(H-2*PAD);
+
+/* ---------------- species colors (official NYC Tree Map colors) ---------------- */
+const counts={}, color={};
+TREES.forEach(t=>{ counts[t.sp]=(counts[t.sp]||0)+1; color[t.sp]=t.color||'#9aa0a6'; });
+const speciesSorted=Object.keys(counts).sort((a,b)=>counts[b]-counts[a]);
+let dimmed=new Set();
+
+/* ---------------- map ---------------- */
+const svg=document.getElementById('map');
+svg.setAttribute('viewBox',`0 0 ${W} ${H}`);
+const NS='http://www.w3.org/2000/svg';
+function el(tag,attrs,parent){const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);(parent||svg).appendChild(e);return e;}
+
+el('rect',{x:0,y:0,width:W,height:H,fill:'#fdfbf5',rx:8});
+
+/* streets group first so roads render underneath buildings */
+const gStreets=el('g',{});
+
+/* buildings (from the NYC Parks basemap, house numbers from NYC address points) */
+const gBldg=el('g',{});
+BLDGS.forEach(b=>{
+  const d=b.poly.map((p,i)=>(i?'L':'M')+X(p[0]).toFixed(1)+' '+Y(p[1]).toFixed(1)).join('')+'Z';
+  el('path',{d,fill:'#f0ebdf',stroke:'#ddd4c0','stroke-width':1},gBldg);
+});
+/* labels in a second pass so no building polygon can cover a number */
+BLDGS.forEach(b=>{
+  if(!b.num) return;
+  const cx=b.poly.reduce((s,p)=>s+X(p[0]),0)/b.poly.length;
+  const cy=b.poly.reduce((s,p)=>s+Y(p[1]),0)/b.poly.length;
+  const t=el('text',{x:cx,y:cy+3,'text-anchor':'middle','font-size':b.stj?9:8.5,fill:b.stj?'#a2937a':'#c2b9a4','font-family':'-apple-system,Arial,sans-serif','font-weight':b.stj?600:400},gBldg);
+  t.textContent=b.num;
+});
+
+/* street: fit a line through the trees */
+function fit(pts){
+  const n=pts.length,sx=pts.reduce((s,p)=>s+p[0],0),sy=pts.reduce((s,p)=>s+p[1],0);
+  const sxx=pts.reduce((s,p)=>s+p[0]*p[0],0),sxy=pts.reduce((s,p)=>s+p[0]*p[1],0);
+  const b=(n*sxy-sx*sy)/(n*sxx-sx*sx),a=(sy-b*sx)/n; return {a,b};
+}
+let streetFit;
+(function(){
+  const f=fit(TREES.map(t=>[X(t.lon),Y(t.lat)]));
+  streetFit=f;
+  const x1=Math.min(...TREES.map(t=>X(t.lon)))-34, x2=Math.max(...TREES.map(t=>X(t.lon)))+34;
+  const y1=f.a+f.b*x1, y2=f.a+f.b*x2;
+  el('line',{x1,y1,x2,y2,class:'street','stroke-width':30},gStreets);
+  const ang=Math.atan2(y2-y1,x2-x1)*180/Math.PI, mx=(x1+x2)/2, my=(y1+y2)/2;
+  const label=el('text',{class:'street-label','font-size':13,x:mx,y:my+4.5,'text-anchor':'middle',transform:`rotate(${ang} ${mx} ${my})`},gStreets);
+  label.textContent='ST JOHNS PLACE';
+  /* cross-avenue markers at the two ends of the block */
+  const ysAll=TREES.map(t=>Y(t.lat)), yMid=(Math.min(...ysAll)+Math.max(...ysAll))/2;
+  /* avenues sit just outside the block's buildings, not over them */
+  const bx=BLDGS.flatMap(b=>b.poly.map(p=>X(p[0])));
+  const west=Math.min(x1,...bx)-15, east=Math.max(x2,...bx)+15;
+  [['UNDERHILL AVENUE',west],['WASHINGTON AVENUE',east]].forEach(([nm,x])=>{
+    el('line',{x1:x,y1:PAD-30,x2:x,y2:H-PAD+30,class:'street','stroke-width':24},gStreets);
+    const lbl=el('text',{class:'street-label','font-size':12,x,y:yMid+4,'text-anchor':'middle',transform:`rotate(-90 ${x} ${yMid})`},gStreets);
+    lbl.textContent=nm;
+  });
+})();
+
+/* compass + scale */
+const comp=el('g',{transform:`translate(${W-46},46)`,'font-family':'Arial'},svg);
+el('line',{x1:0,y1:16,x2:0,y2:-14,stroke:'#a89f8c','stroke-width':2},comp);
+el('path',{d:'M0,-22 L6,-8 L-6,-8 Z',fill:'#a89f8c'},comp);
+const nT=el('text',{x:0,y:32,'text-anchor':'middle','font-size':13,fill:'#a89f8c','font-weight':'700'},comp); nT.textContent='N';
+const sc100=100/spanX*(W-2*PAD);
+const sg=el('g',{transform:`translate(${PAD},${H-24})`},svg);
+el('line',{x1:0,y1:0,x2:sc100,y2:0,stroke:'#a89f8c','stroke-width':2.5},sg);
+const sT=el('text',{x:sc100/2,y:-7,'text-anchor':'middle','font-size':11,fill:'#a89f8c','font-family':'Arial'},sg); sT.textContent='100 m';
+
+/* trees */
+const gTrees=el('g',{});
+const tooltip=document.getElementById('tooltip');
+let selectedId=null;
+const nodeById={};
+TREES.forEach(t=>{
+  const x=X(t.lon),y=Y(t.lat);
+  const r=t.dead?5:3.5+Math.sqrt(t.dbh||1)*1.55;
+  const above=y < streetFit.a+streetFit.b*x;   // which side of the street line, geometrically
+  const g=el('g',{class:'tree','data-id':t.id},gTrees);
+  el('circle',{class:'body',cx:x,cy:y,r,fill:t.dead?'#fdfbf5':color[t.sp],stroke:t.dead?'#8a7a68':'rgba(0,0,0,.3)','stroke-width':t.dead?1.6:0.7,'stroke-dasharray':t.dead?'2.5 2':'none'},g);
+  if(t.dead){const xm=el('text',{x,y:y+3.4,'text-anchor':'middle','font-size':9,fill:'#8a7a68'},g);xm.textContent='✕';}
+  const wl=el('text',{class:'walk-label',x,y:above?y-r-4:y+r+11},g); wl.textContent=t.walk;
+  g.addEventListener('click',()=>select(t.id));
+  g.addEventListener('mousemove',ev=>{
+    const rrec=store.trees[t.id];
+    tooltip.style.display='block';
+    tooltip.style.left=(ev.clientX+14)+'px'; tooltip.style.top=(ev.clientY+12)+'px';
+    tooltip.innerHTML=`<b>#${t.walk} ${rrec&&rrec.nick?rrec.nick+' — ':''}${t.sp}</b>${t.dead?' — DEAD':''}<br>${t.addr}<br>${t.meas?'bed '+t.meas+' in · ':''}${t.dbh}″ trunk${t.guard?' · tree guard':''}`;
+  });
+  g.addEventListener('mouseleave',()=>tooltip.style.display='none');
+  nodeById[t.id]={g,x,y,r,t};
+});
+
+function refreshBadges(){
+  for(const id in nodeById){
+    const n=nodeById[id];
+    let dot=n.g.querySelector('.note-dot'), nick=n.g.querySelector('.nick-label');
+    if(hasData(id)){
+      if(!dot) el('circle',{class:'note-dot',cx:n.x+n.r*0.75,cy:n.y-n.r*0.75,r:3.4},n.g);
+      const nickText=(store.trees[id].nick||'').trim();
+      if(nickText){ if(!nick) nick=el('text',{class:'nick-label','font-size':12.5,x:n.x,y:n.y+n.r+13},n.g); nick.textContent=nickText; }
+      else if(nick) nick.remove();
+    }else{ if(dot)dot.remove(); if(nick)nick.remove(); }
+  }
+}
+
+function applyDim(){
+  for(const id in nodeById){
+    const n=nodeById[id];
+    n.g.classList.toggle('dim', dimmed.size>0 && dimmed.has(n.t.sp));
+  }
+}
+
+/* selection ring */
+let ring=null;
+function select(id){
+  selectedId=id;
+  if(ring)ring.remove();
+  const n=nodeById[id];
+  ring=el('circle',{class:'sel-ring',cx:n.x,cy:n.y,r:n.r+5});
+  renderPanel();
+}
+function deselect(){ selectedId=null; if(ring){ring.remove();ring=null;} renderPanel(); }
+
+/* ---------------- legend ---------------- */
+const legend=document.getElementById('legend');
+speciesSorted.forEach(s=>{
+  const item=document.createElement('span'); item.className='item';
+  item.innerHTML=`<span class="swatch" style="background:${color[s]}"></span>${s} <b style="color:#999">${counts[s]}</b>`;
+  item.onclick=()=>{
+    if(dimmed.size && !dimmed.has(s)){ dimmed=new Set(); }
+    else { dimmed=new Set(speciesSorted.filter(x=>x!==s)); }
+    [...legend.children].forEach((c,i)=>c.classList.toggle('dim', dimmed.has(speciesSorted[i])));
+    applyDim();
+  };
+  legend.appendChild(item);
+});
+
+/* ---------------- panel ---------------- */
+const CARE=[['💧','Watered'],['🌱','Mulched'],['🧹','Cleaned tree bed'],['✂️','Pruned suckers'],['📏','Measured bed'],['🐛','Pest or damage']];
+const panel=document.getElementById('panel');
+function esc(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;');}
+function renderPanel(){
+  if(!selectedId){
+    panel.innerHTML=`<h2>Block journal</h2>
+      <p class="hint">Click any tree (numbers follow your survey walk: #1–25 out from 816 Washington Ave, #26–50 back on the other side) to open its card. Every bed measurement and note from your spreadsheet is on the cards.</p>
+      <label>Notes for the whole block</label>
+      <textarea id="journal">${esc(store.journal)}</textarea>`;
+    document.getElementById('journal').addEventListener('input',e=>{store.journal=e.target.value;save();});
+    return;
+  }
+  const t=nodeById[selectedId].t, r=rec(t.id);
+  panel.innerHTML=`
+    <button class="ghost no-print" style="float:right;padding:3px 10px" onclick="deselect()">✕</button>
+    <h2>${t.sp}${t.dead?' <span class="badge b-Dead">dead</span>':''}</h2>
+    <p class="latin">${esc(t.latin)||'&nbsp;'}</p>
+    <div class="meta">
+      <span class="walkno">walk #${t.walk}</span> &nbsp;📍 ${t.addr} · ${t.side==='N'?'north':'south'} side (per your sheet)<br>
+      ${t.meas?`📐 tree bed: <b>${t.meas} in</b><br>`:''}
+      ⌀ ${t.dbh}″ trunk &nbsp;·&nbsp; ${t.guard?'🛡 has tree guard':'no tree guard'}<br>
+      ${t.planted?`🌱 planted ${t.planted}<br>`:''}
+      ${t.insp?`🔍 last NYC Parks checkup: ${t.insp}<br>`:''}
+      <a href="https://tree-map.nycgovparks.org/tree-map/tree/${t.id}" target="_blank" rel="noopener">View on NYC Tree Map ↗</a>
+    </div>
+    <label>Give it a name</label>
+    <input type="text" id="nick" placeholder="e.g. Grandpa Pin Oak" value="${esc(r.nick)}">
+    <label>My notes (bed size, condition…)</label>
+    <textarea id="notes" placeholder="e.g. bed 62 × 108 in, crabgrass, needs compost">${esc(r.notes)}</textarea>
+    <label>Record care / observation</label>
+    <div class="carebtns">${CARE.map(c=>`<button onclick="logCare('${c[0]}','${c[1]}')">${c[0]} ${c[1]}</button>`).join('')}</div>
+    <ul class="log" id="log"></ul>`;
+  document.getElementById('nick').addEventListener('input',e=>{rec(t.id).nick=e.target.value;save();});
+  document.getElementById('notes').addEventListener('input',e=>{rec(t.id).notes=e.target.value;save();});
+  renderLog();
+}
+function renderLog(){
+  const ul=document.getElementById('log'); if(!ul||!selectedId)return;
+  const r=rec(selectedId);
+  ul.innerHTML=r.log.map((e,i)=>`<li><span>${e.emoji} ${esc(e.label)}</span><span style="color:#999">${e.date}</span><button class="del" onclick="delLog(${i})">✕</button></li>`).reverse().join('')
+    || '<li class="hint" style="border:none">No entries yet.</li>';
+}
+function logCare(emoji,label){
+  if(!selectedId)return;
+  rec(selectedId).log.push({emoji,label,date:new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})});
+  save(); renderLog();
+}
+function delLog(i){ rec(selectedId).log.splice(i,1); save(); renderLog(); }
+
+/* ---------------- stats ---------------- */
+function updateStats(){
+  const big=TREES.reduce((a,b)=>b.dbh>a.dbh?b:a);
+  const nDead=TREES.filter(t=>t.dead).length;
+  document.getElementById('statTrees').innerHTML=`🌳 <b>${TREES.length}</b> trees${nDead?` (${nDead} dead)`:''}`;
+  document.getElementById('statSpecies').innerHTML=`🍃 <b>${speciesSorted.length}</b> species`;
+  document.getElementById('statBiggest').innerHTML=`🏆 biggest: <b>${big.sp}</b>, ${big.dbh}″ (#${big.walk})`;
+  const n=Object.keys(store.trees).filter(hasData).length;
+  document.getElementById('statNotes').innerHTML=`✏️ <b>${n}</b> trees annotated`;
+}
+
+/* ---------------- print notes ---------------- */
+function renderPrintNotes(){
+  const div=document.getElementById('printNotes');
+  const annotated=TREES.filter(t=>hasData(t.id));
+  let html='';
+  if(store.journal.trim()) html+=`<h2>Block journal</h2><p style="white-space:pre-wrap">${esc(store.journal)}</p>`;
+  if(annotated.length){
+    html+=`<h2>Field notes — tree by tree</h2>`+annotated.map(t=>{
+      const r=store.trees[t.id];
+      return `<div class="pn-tree">
+        <h3>#${t.walk} ${r.nick?esc(r.nick)+' · ':''}${t.sp} <span style="color:#888;font-weight:400">— ${t.addr}${t.meas?` · bed ${t.meas} in`:''}</span></h3>
+        ${r.notes?`<p style="white-space:pre-wrap">${esc(r.notes)}</p>`:''}
+        ${r.log.length?`<p class="pn-log">${r.log.map(e=>`${e.emoji} ${esc(e.label)} (${e.date})`).join(' · ')}</p>`:''}
+      </div>`;
+    }).join('');
+  }
+  div.innerHTML=html;
+}
+
+/* ---------------- export / import ---------------- */
+function exportNotes(){
+  const blob=new Blob([JSON.stringify({title:document.getElementById('posterTitle').textContent,exported:new Date().toISOString(),...store},null,2)],{type:'application/json'});
+  const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='block-tree-notes.json'; a.click();
+}
+function importNotes(input){
+  const f=input.files[0]; if(!f)return;
+  f.text().then(txt=>{
+    try{
+      const d=JSON.parse(txt);
+      if(d.trees) store.trees=d.trees;
+      if(typeof d.journal==='string') store.journal=d.journal;
+      if(d.title) document.getElementById('posterTitle').textContent=d.title;
+      save(); renderPanel();
+    }catch(e){ alert('Could not read that file.'); }
+  });
+  input.value='';
+}
+
+/* poster title persistence */
+const titleEl=document.getElementById('posterTitle');
+if(localStorage.getItem('blockPosterTitle')) titleEl.textContent=localStorage.getItem('blockPosterTitle');
+titleEl.addEventListener('input',()=>localStorage.setItem('blockPosterTitle',titleEl.textContent));
+
+refreshBadges(); renderPanel(); updateStats(); renderPrintNotes(); save();
+</script>
+</body>
+</html>
