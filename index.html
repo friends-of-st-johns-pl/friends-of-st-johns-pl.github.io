@@ -118,8 +118,6 @@
   <span class="chip" id="statNotes"></span>
   <button onclick="window.print()">🖨 Print poster</button>
   <button class="ghost" onclick="exportNotes()">⬇ Export my notes</button>
-  <button class="ghost" onclick="document.getElementById('importFile').click()">⬆ Import notes</button>
-  <input type="file" id="importFile" accept=".json" style="display:none" onchange="importNotes(this)">
   <a class="donate" href="https://www.gofundme.com/f/help-us-beautify-st-johns-pl-with-new-trees" target="_blank" rel="noopener">🌳 Donate — help plant new trees</a>
   <button onclick="toggleSignup()" id="signupBtn">🗓 Sign up: Tree Care Day, July 11–12</button>
 </div>
@@ -541,20 +539,6 @@ function exportNotes(){
   const blob=new Blob([JSON.stringify({title:document.getElementById('posterTitle').textContent,exported:new Date().toISOString(),...store},null,2)],{type:'application/json'});
   const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='block-tree-notes.json'; a.click();
 }
-function importNotes(input){
-  const f=input.files[0]; if(!f)return;
-  f.text().then(txt=>{
-    try{
-      const d=JSON.parse(txt);
-      if(d.trees) store.trees=d.trees;
-      if(typeof d.journal==='string') store.journal=d.journal;
-      if(d.title) document.getElementById('posterTitle').textContent=d.title;
-      save(); renderPanel();
-    }catch(e){ alert('Could not read that file.'); }
-  });
-  input.value='';
-}
-
 /* tree care day sign-up view */
 function toggleSignup(){
   const v=document.getElementById('signupView');
