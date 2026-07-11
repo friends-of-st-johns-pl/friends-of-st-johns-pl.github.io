@@ -45,6 +45,8 @@
   .panel{flex:0 0 335px;position:sticky;top:14px;background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:18px;font-family:-apple-system,Arial,sans-serif;box-shadow:0 2px 10px rgba(0,0,0,.05)}
   .panel h2{font-family:Georgia,serif;margin:0 0 2px;font-size:24px;font-weight:400}
   .panel .latin{font-style:italic;color:#777;font-size:13px;margin:0 0 10px}
+  .treephoto{display:block;margin:0 0 12px;border-radius:8px;overflow:hidden;border:1px solid var(--line)}
+  .treephoto img{width:100%;height:175px;object-fit:cover;display:block}
   .meta{font-size:13px;color:#555;line-height:1.75;margin-bottom:12px}
   .meta a{color:var(--green-dark)}
   .walkno{display:inline-block;background:var(--ink);color:#fff;border-radius:10px;padding:1px 9px;font-size:11.5px;font-weight:600}
@@ -403,6 +405,7 @@ function renderPanel(){
     <button class="ghost no-print" style="float:right;padding:3px 10px" onclick="deselect()">✕</button>
     <h2>${t.sp}${t.dead?' <span class="badge b-Dead">dead</span>':''}</h2>
     <p class="latin">${esc(t.latin)||'&nbsp;'}</p>
+    <a class="treephoto" href="photos/${t.id}.jpg" target="_blank" rel="noopener"><img src="photos/${t.id}.jpg" alt="Tree bed photo — #${t.walk} ${t.sp}" onerror="this.closest('a').style.display='none'"></a>
     <div class="meta">
       <span class="walkno">#${t.walk}</span> &nbsp;📍 ${t.addr} · ${t.side==='N'?'north':'south'} side<br>
       ${t.meas?`📐 tree bed: <b>${t.meas} in</b><br>`:''}
