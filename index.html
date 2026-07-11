@@ -334,7 +334,7 @@ TREES.forEach(t=>{
     tooltip.innerHTML='<b>Empty tree pit</b><br>Room for a new street tree here — tap to help fund it 🌳';
   });
   g.addEventListener('mouseleave',()=>tooltip.style.display='none');
-  g.addEventListener('click',()=>window.open('https://www.gofundme.com/f/help-us-beautify-st-johns-pl-with-new-trees','_blank','noopener'));
+  g.addEventListener('click',selectPit);
 })();
 
 function refreshBadges(){
@@ -372,6 +372,18 @@ function select(id){
   }
 }
 function deselect(){ selectedId=null; if(ring){ring.remove();ring=null;} renderPanel(); }
+function selectPit(){
+  selectedId=null; if(ring){ring.remove();ring=null;}
+  const p=document.getElementById('panel');
+  p.innerHTML=`
+    <button class="ghost no-print" style="float:right;padding:3px 10px" onclick="deselect()">✕</button>
+    <h2>Empty tree pit</h2>
+    <p class="latin">between #24 and #25, near Underhill Ave</p>
+    <a class="treephoto" href="photos/empty-pit.jpg" target="_blank" rel="noopener"><img src="photos/empty-pit.jpg" alt="The empty tree pit" onerror="this.closest('a').style.display='none'"></a>
+    <div class="meta">A ready-made spot for a new street tree — it just needs a tree. Help us fill it:</div>
+    <a class="donate" href="https://www.gofundme.com/f/help-us-beautify-st-johns-pl-with-new-trees" target="_blank" rel="noopener">🌳 Donate — help plant new trees</a>`;
+  if(window.matchMedia('(max-width:900px)').matches) p.scrollIntoView({behavior:'smooth',block:'start'});
+}
 
 /* ---------------- legend ---------------- */
 const legend=document.getElementById('legend');
