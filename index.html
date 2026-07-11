@@ -80,6 +80,27 @@
   footer{text-align:center;font-family:-apple-system,Arial,sans-serif;font-size:11.5px;color:var(--cream-text);background:var(--green);padding:20px 20px 26px;line-height:1.8;margin-top:12px;-webkit-print-color-adjust:exact;print-color-adjust:exact}
   footer a{color:#EFD27E}
 
+  /* ---------- MOBILE ---------- */
+  .finder{display:none;margin:0 0 10px}
+  .finder label{margin:0 0 4px}
+  .finder select{width:100%;font-size:16px;padding:10px;border:1px solid var(--line);border-radius:8px;background:#fffdf8;font-family:Georgia,serif}
+  .swipe-hint{display:none;text-align:center;font-family:-apple-system,Arial,sans-serif;font-size:11.5px;color:#b0a893;padding:4px 0 0}
+  @media (max-width:900px){
+    .layout{flex-direction:column;padding:0 10px 24px;gap:14px}
+    .panel{position:static;flex:none;width:100%}
+    .mapwrap{overflow-x:auto;padding:10px;-webkit-overflow-scrolling:touch}
+    .mapwrap svg{min-width:880px}
+    .finder{display:block}
+    .swipe-hint{display:block}
+    header img.logo{width:min(280px,82vw)}
+    .subtitle{font-size:14.5px;padding:0 8px}
+    .toolbar{gap:6px;padding:6px 10px 12px}
+    .chip{font-size:12px;padding:5px 11px}
+    .toolbar button,a.donate{font-size:12.5px;padding:8px 13px}
+    .carebtns button{padding:9px 12px;font-size:13px}
+    input[type=text],textarea,.finder select{font-size:16px} /* prevents iOS zoom-on-focus */
+  }
+
   /* ---------- PRINT: poster page + field-notes pages ---------- */
   #printNotes{display:none}
   @media print{
@@ -131,7 +152,12 @@
 
 <div class="layout">
   <div class="mapwrap">
+    <div class="finder no-print">
+      <label for="treeFinder">Find your tree</label>
+      <select id="treeFinder"><option value="">— tap a tree on the map, or pick from this list —</option></select>
+    </div>
     <svg id="map" xmlns="http://www.w3.org/2000/svg"></svg>
+    <div class="swipe-hint no-print">← swipe the map sideways →</div>
     <div class="legend" id="legend"></div>
   </div>
 
@@ -277,6 +303,7 @@ TREES.forEach(t=>{
   const r=t.dead?5:3.5+Math.sqrt(t.dbh||1)*1.55;
   const above=y < streetFit.a+streetFit.b*x;   // which side of the street line, geometrically
   const g=el('g',{class:'tree','data-id':t.id},gTrees);
+  el('circle',{cx:x,cy:y,r:Math.max(r+3,12),fill:'transparent'},g); /* bigger touch target */
   el('circle',{class:'body',cx:x,cy:y,r,fill:t.dead?'#fdfbf5':color[t.sp],stroke:t.dead?'#8a7a68':'rgba(0,0,0,.3)','stroke-width':t.dead?1.6:0.7,'stroke-dasharray':t.dead?'2.5 2':'none'},g);
   if(t.dead){const xm=el('text',{x,y:y+3.4,'text-anchor':'middle','font-size':9,fill:'#8a7a68'},g);xm.textContent='✕';}
   const wl=el('text',{class:'walk-label',x,y:above?y-r-4:y+r+11},g); wl.textContent=t.walk;
@@ -336,6 +363,11 @@ function select(id){
   const n=nodeById[id];
   ring=el('circle',{class:'sel-ring',cx:n.x,cy:n.y,r:n.r+5});
   renderPanel();
+  const finder=document.getElementById('treeFinder');
+  if(finder) finder.value=String(id);
+  if(window.matchMedia('(max-width:900px)').matches){
+    document.getElementById('panel').scrollIntoView({behavior:'smooth',block:'start'});
+  }
 }
 function deselect(){ selectedId=null; if(ring){ring.remove();ring=null;} renderPanel(); }
 
@@ -546,6 +578,18 @@ function toggleSignup(){
 }
 /* deep link: …/#signup opens the form view directly */
 if(location.hash.toLowerCase()==='#signup') toggleSignup();
+
+/* "find your tree" picker (mobile) */
+(function(){
+  const f=document.getElementById('treeFinder');
+  TREES.forEach(t=>{
+    const o=document.createElement('option');
+    o.value=t.id;
+    o.textContent=`#${t.walk} · ${t.sp} — ${t.addr}${t.dead?' (dead)':''}`;
+    f.appendChild(o);
+  });
+  f.addEventListener('change',()=>{ if(f.value) select(Number(f.value)); });
+})();
 
 refreshBadges(); renderPanel(); updateStats(); renderPrintNotes(); save();
 </script>
