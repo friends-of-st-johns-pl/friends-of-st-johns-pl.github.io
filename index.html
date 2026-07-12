@@ -161,7 +161,7 @@
       <label>What are you coming for?</label>
       <div class="evacts">
         <label class="ck"><input type="checkbox" class="evact" value="tree care (9–12)" checked> 🌳 Tree care, 9am–12pm</label>
-        <label class="ck"><input type="checkbox" class="evact" value="fairy houses + dog signs (12pm)"> 🧚 Fairy houses &amp; curb-your-dog signs, 12pm</label>
+        <label class="ck"><input type="checkbox" class="evact" value="sign and fairy house making (12pm)"> 🧚 Sign and fairy house making, 12pm</label>
         <label class="ck"><input type="checkbox" class="evact" value="lunch (12pm)"> 🍕 Backyard lunch, 12pm</label>
       </div>
       <label>How many people are you bringing (including you)?</label>
@@ -612,7 +612,16 @@ function toggleSignup(){
   if(open) v.scrollIntoView({behavior:'smooth',block:'start'});
 }
 /* deep links: …/#signup, #event, or #july18 open the sign-up form directly */
-if(['#signup','#event','#july18'].includes(location.hash.toLowerCase())) toggleSignup();
+function openFromHash(){
+  if(!['#signup','#event','#july18'].includes(location.hash.toLowerCase())) return;
+  const v=document.getElementById('signupView');
+  if(v.style.display!=='block') toggleSignup();
+  v.scrollIntoView({block:'start'});
+  const fl=document.querySelector('img.flyer');
+  if(fl && !fl.complete) fl.addEventListener('load',()=>v.scrollIntoView({block:'start'}),{once:true});
+}
+openFromHash();
+window.addEventListener('hashchange',openFromHash);
 
 /* july 18 event sign-up → Signups tab of the events Google Sheet (email fallback) */
 function submitEvent(){
