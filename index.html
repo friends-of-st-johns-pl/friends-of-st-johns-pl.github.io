@@ -472,7 +472,7 @@ function renderPanel(){
 }
 
 /* ---------------- shared care log (Google Sheet via Apps Script) ---------------- */
-const CARE_API=''; // Apps Script web app URL (/exec) — enables the shared block log
+const CARE_API='https://script.google.com/macros/s/AKfycbzyCyNzZRjpZtfJQukgIJ0jTC7dVN3JN6fubN35Tql6-Y1o9cHymAwgDWpoywAW1FY-9A/exec';
 let CARELOG=[];
 function loadCareLog(){
   if(!CARE_API) return;
