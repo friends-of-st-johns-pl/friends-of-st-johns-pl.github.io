@@ -19,12 +19,14 @@
  */
 
 const SHEET_ID = '1pRPoAeNzxIz72kwsld8zjTGHKZFKVgq4czUoBJ0Sgi8';
+const EVENT_SHEET_ID = '1eIuY-l-IZfyZCnQWvkK20isJqXawGv9cD6HoWcuB1bw';
 const CARE_HEADERS = ['Timestamp', 'Tree ID', 'Walk #', 'Species', 'Address', 'Action', 'By'];
 const ADOPT_HEADERS = ['Timestamp', 'Tree ID', 'Walk #', 'Species', 'Address',
                        'Name', 'Email', 'Phone', 'Initials', 'Approved?'];
+const EVENT_HEADERS = ['Timestamp', 'Event', 'Name', 'Email', 'Phone', 'Activities', 'Party size'];
 
-function tab_(name, headers) {
-  const ss = SpreadsheetApp.openById(SHEET_ID);
+function tab_(name, headers, sheetId) {
+  const ss = SpreadsheetApp.openById(sheetId || SHEET_ID);
   let sh = ss.getSheetByName(name);
   if (!sh) sh = ss.insertSheet(name);
   if (sh.getLastRow() === 0) {
@@ -38,7 +40,12 @@ function tab_(name, headers) {
 function doPost(e) {
   const d = JSON.parse(e.postData.contents);
   const s = function (v, n) { return String(v == null ? '' : v).slice(0, n); };
-  if (d.type === 'adopt') {
+  if (d.type === 'event') {
+    if (!d.name) throw new Error('missing fields');
+    tab_('Signups', EVENT_HEADERS, EVENT_SHEET_ID).appendRow([
+      new Date(), s(d.event, 60), s(d.name, 80), s(d.email, 80), s(d.phone, 40),
+      s(d.activities, 120), s(d.headcount, 10)]);
+  } else if (d.type === 'adopt') {
     if (!d.treeId || !d.name) throw new Error('missing fields');
     tab_('Adoptions', ADOPT_HEADERS).appendRow([
       new Date(), String(d.treeId), d.walk || '', s(d.species, 60), s(d.addr, 80),
