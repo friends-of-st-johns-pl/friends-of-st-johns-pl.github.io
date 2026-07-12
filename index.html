@@ -32,6 +32,14 @@
   a.whatsapp:hover{filter:brightness(1.08)}
   a.newsletter{display:inline-block;background:#fff;color:var(--green-dark);border:1px solid var(--green);border-radius:20px;padding:7px 16px;font-size:13px;text-decoration:none;font-weight:600}
   a.newsletter:hover{filter:brightness(1.05)}
+  .tabs{display:flex;justify-content:center;gap:10px;padding:18px 12px 4px;font-family:-apple-system,Arial,sans-serif}
+  .tabs button{font-size:14.5px;padding:10px 22px;border-radius:24px;border:1.5px solid var(--green);background:#fff;color:var(--green-dark);font-weight:600}
+  .tabs button.active{background:var(--green);color:#fff}
+  body:not(.tab-trees) .layout{display:none}
+  body:not(.tab-trees) #statTrees,body:not(.tab-trees) #printBtn{display:none}
+  body:not(.tab-signup) #signupView{display:none}
+  body:not(.tab-halloween) #halloweenView{display:none}
+  #halloweenView{max-width:820px;margin:0 auto 22px;padding:0 24px}
   #signupView{max-width:820px;margin:0 auto 22px;padding:0 24px}
   .signup-card{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:18px;box-shadow:0 2px 10px rgba(0,0,0,.05);font-family:-apple-system,Arial,sans-serif}
   .signup-card img.flyer{display:block;width:min(340px,100%);margin:0 auto 14px;border-radius:8px;border:1px solid var(--line)}
@@ -120,7 +128,7 @@
     .toolbar,.panel,#tooltip,.no-print{display:none !important}
     header{padding:14px 0 12px}
     header img.logo{width:240px}
-    .layout{display:block;padding:0}
+    .layout{display:block !important;padding:0}
     .mapwrap{border:none;box-shadow:none;padding:0}
     .legend .item.dim{opacity:1}
     #printNotes{display:block;page-break-before:always;font-family:Georgia,serif;padding:0 6mm}
@@ -141,18 +149,22 @@
   <a class="insta" href="https://www.instagram.com/friendsofstjohnspl/" target="_blank" rel="noopener">📷 Follow us — @friendsofstjohnspl</a>
 </header>
 
+<nav class="tabs no-print">
+  <button id="tabBtnSignup" onclick="showTab('signup')">🗓 July 18th Event</button>
+  <button id="tabBtnHalloween" onclick="showTab('halloween')">🎃 Halloween Block Party</button>
+  <button id="tabBtnTrees" onclick="showTab('trees')">🌳 Our 50 Trees</button>
+</nav>
+
 <div class="toolbar no-print">
   <span class="chip" id="statTrees"></span>
-  <button onclick="window.print()">🖨 Print poster</button>
+  <button onclick="window.print()" id="printBtn">🖨 Print poster</button>
   <a class="donate" href="https://www.gofundme.com/f/help-us-beautify-st-johns-pl-with-new-trees" target="_blank" rel="noopener">🌳 Donate — help plant new trees</a>
-  <button onclick="toggleSignup()" id="signupBtn">🗓 Sign up: July 18 — Tree Care + Fairy Houses</button>
   <a class="whatsapp" href="https://chat.whatsapp.com/JGcTF3WzzNi9Gvt5entdJK" target="_blank" rel="noopener">💬 Join the WhatsApp group</a>
   <a class="newsletter" href="https://groups.google.com/g/friendsofstjohnspl" target="_blank" rel="noopener">📬 Get the newsletter</a>
 </div>
 
-<div id="signupView" class="no-print" style="display:none">
+<div id="signupView" class="no-print">
   <div class="signup-card">
-    <button class="ghost" style="float:right;padding:3px 10px" onclick="toggleSignup()">✕ Close</button>
     <h2 style="font-family:Georgia,serif;font-weight:400;margin:0 0 4px">Saturday, July 18th 🧚</h2>
     <p class="hint" style="margin:0 0 10px">9am–12pm final street tree care · 12pm curb-your-dog signs, fairy house making &amp; lunch · on the block</p>
     <img class="flyer" src="event-flyer.png" alt="July 18th event flyer: 9am–12pm final street tree care, 12pm fairy house making, 12pm backyard lunch">
@@ -170,6 +182,25 @@
       <input type="text" id="evCount" inputmode="numeric" placeholder="1" style="max-width:110px">
       <button style="margin-top:12px" onclick="submitEvent()">Sign me up!</button>
       <div id="evMsg"></div>
+    </div>
+  </div>
+</div>
+
+<div id="halloweenView" class="no-print">
+  <div class="signup-card">
+    <h2 style="font-family:Georgia,serif;font-weight:400;margin:0 0 4px">Halloween Block Party 🎃</h2>
+    <p class="hint" style="margin:0 0 10px">Saturday, October 31st on the block — details coming soon. Sign up and we'll keep you posted!</p>
+    <div class="evform">
+      <label>Your name *</label><input type="text" id="hwName" autocomplete="name">
+      <label>Email</label><input type="text" id="hwEmail" autocomplete="email" placeholder="you@example.com">
+      <label>Phone</label><input type="text" id="hwPhone" autocomplete="tel" placeholder="(718) …">
+      <label>How many people are you bringing (including you)?</label>
+      <input type="text" id="hwCount" inputmode="numeric" placeholder="1" style="max-width:110px">
+      <div class="evacts" style="margin-top:12px">
+        <label class="ck"><input type="checkbox" id="hwVol"> 🙋 I can volunteer to help run it!</label>
+      </div>
+      <button style="margin-top:12px" onclick="submitHalloween()">Sign me up!</button>
+      <div id="hwMsg"></div>
     </div>
   </div>
 </div>
@@ -194,7 +225,7 @@
 <footer>
   <b>Friends of St Johns Pl</b> is a neighborhood project caring for the 50 street trees on St Johns Place between Underhill &amp; Washington Avenues in Prospect Heights, Brooklyn.<br>
   Species, trunk sizes, and inspection dates come from the official <a href="https://tree-map.nycgovparks.org/">NYC Tree Map</a> (NYC Parks). Tree-bed measurements and condition notes are from our July 2026 block survey — click any tree to see its card. Marker numbers follow the survey walk: #1–25 from Washington Ave to Underhill Ave, #26–50 back along the other side.<br>
-  Follow the block: <a href="https://www.instagram.com/friendsofstjohnspl/" target="_blank" rel="noopener"><b>📷 @friendsofstjohnspl</b> on Instagram</a>
+  Follow the block: <a href="https://www.instagram.com/friendsofstjohnspl/" target="_blank" rel="noopener"><b>📷 @friendsofstjohnspl</b> on Instagram</a> &nbsp;·&nbsp; Contact us: <a href="mailto:friendsofstjohnspl@gmail.com"><b>friendsofstjohnspl@gmail.com</b></a>
 </footer>
 
 <script>
@@ -596,22 +627,23 @@ function renderPrintNotes(){
   div.innerHTML=html;
 }
 
-/* tree care day sign-up view */
-function toggleSignup(){
-  const v=document.getElementById('signupView');
-  const open=v.style.display==='none';
-  v.style.display=open?'block':'none';
-  if(open) v.scrollIntoView({behavior:'smooth',block:'start'});
+/* ---------------- tabs ---------------- */
+function showTab(name, setHash){
+  ['signup','halloween','trees'].forEach(n=>document.body.classList.toggle('tab-'+n, n===name));
+  document.getElementById('tabBtnSignup').classList.toggle('active', name==='signup');
+  document.getElementById('tabBtnHalloween').classList.toggle('active', name==='halloween');
+  document.getElementById('tabBtnTrees').classList.toggle('active', name==='trees');
+  if(setHash!==false) history.replaceState(null,'','#'+({signup:'july18',halloween:'halloween',trees:'trees'})[name]);
+  window.scrollTo(0,0);
 }
-/* deep links: …/#signup, #event, or #july18 open the sign-up form directly */
+/* deep links: #signup/#event/#july18 → event tab, #halloween → block party, #trees → map */
 function openFromHash(){
-  if(!['#signup','#event','#july18'].includes(location.hash.toLowerCase())) return;
-  const v=document.getElementById('signupView');
-  if(v.style.display!=='block') toggleSignup();
-  v.scrollIntoView({block:'start'});
-  const fl=document.querySelector('img.flyer');
-  if(fl && !fl.complete) fl.addEventListener('load',()=>v.scrollIntoView({block:'start'}),{once:true});
+  const h=location.hash.toLowerCase();
+  if(h==='#halloween') showTab('halloween');
+  else if(h==='#trees') showTab('trees');
+  else if(['#signup','#event','#july18'].includes(h)) showTab('signup');
 }
+showTab('signup', false);   // default: first tab
 openFromHash();
 window.addEventListener('hashchange',openFromHash);
 
@@ -626,7 +658,7 @@ function submitEvent(){
   if(!name){ msg.innerHTML='<span style="color:#c0392b">Please add your name.</span>'; return; }
   if(!email && !phone){ msg.innerHTML='<span style="color:#c0392b">Please add an email or a phone number.</span>'; return; }
   msg.textContent='Sending…';
-  const done=()=>{ document.querySelector('.evform').innerHTML='<b>🧚 You\'re signed up!</b><p class="hint" style="margin:6px 0 0">Thanks '+esc(name)+' — see you Saturday, July 18th. Bring gloves if you have them!</p>'; };
+  const done=()=>{ document.querySelector('#signupView .evform').innerHTML='<b>🧚 You\'re signed up!</b><p class="hint" style="margin:6px 0 0">Thanks '+esc(name)+' — see you Saturday, July 18th. Bring gloves if you have them!</p>'; };
   const viaEmail=()=>fetch('https://formsubmit.co/ajax/'+ADOPT_EMAIL,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},
     body:JSON.stringify({_subject:'July 18 event sign-up: '+name,_template:'table',_captcha:'false',name,email:email||'—',phone:phone||'—',activities:acts,party_size:count})})
     .then(r=>{ if(!r.ok) throw 0; });
@@ -636,6 +668,31 @@ function submitEvent(){
     : viaEmail()
   ).then(done).catch(()=>{
     const mail=`mailto:${ADOPT_EMAIL}?subject=${encodeURIComponent('July 18 event sign-up')}&body=${encodeURIComponent(`Name: ${name}\nEmail: ${email||'—'}\nPhone: ${phone||'—'}\nActivities: ${acts}\nParty size: ${count}`)}`;
+    msg.innerHTML=`Couldn't send automatically — <a href="${mail}">tap here to email us instead</a>.`;
+  });
+}
+
+/* halloween block party sign-up → same Signups tab, tagged with the event name */
+function submitHalloween(){
+  const name=document.getElementById('hwName').value.trim();
+  const email=document.getElementById('hwEmail').value.trim();
+  const phone=document.getElementById('hwPhone').value.trim();
+  const count=document.getElementById('hwCount').value.trim()||'1';
+  const vol=document.getElementById('hwVol').checked?'volunteer: YES 🙋':'volunteer: no';
+  const msg=document.getElementById('hwMsg');
+  if(!name){ msg.innerHTML='<span style="color:#c0392b">Please add your name.</span>'; return; }
+  if(!email && !phone){ msg.innerHTML='<span style="color:#c0392b">Please add an email or a phone number.</span>'; return; }
+  msg.textContent='Sending…';
+  const done=()=>{ document.querySelector('#halloweenView .evform').innerHTML='<b>🎃 You\'re signed up!</b><p class="hint" style="margin:6px 0 0">Thanks '+esc(name)+' — we\'ll be in touch as Halloween plans firm up.</p>'; };
+  const viaEmail=()=>fetch('https://formsubmit.co/ajax/'+ADOPT_EMAIL,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},
+    body:JSON.stringify({_subject:'Halloween Block Party sign-up: '+name,_template:'table',_captcha:'false',name,email:email||'—',phone:phone||'—',volunteer:vol,party_size:count})})
+    .then(r=>{ if(!r.ok) throw 0; });
+  const payload={type:'event',event:'Halloween Block Party 2026',name,email,phone,activities:vol,headcount:count};
+  (CARE_API
+    ? fetch(CARE_API,{method:'POST',body:JSON.stringify(payload)}).then(r=>{ if(!r.ok) throw 0; }).catch(viaEmail)
+    : viaEmail()
+  ).then(done).catch(()=>{
+    const mail=`mailto:${ADOPT_EMAIL}?subject=${encodeURIComponent('Halloween Block Party sign-up')}&body=${encodeURIComponent(`Name: ${name}\nEmail: ${email||'—'}\nPhone: ${phone||'—'}\n${vol}\nParty size: ${count}`)}`;
     msg.innerHTML=`Couldn't send automatically — <a href="${mail}">tap here to email us instead</a>.`;
   });
 }
