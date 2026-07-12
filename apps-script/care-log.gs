@@ -18,8 +18,9 @@
  *  5. Put that URL in CARE_API in index.html.
  */
 
-const SHEET_ID = '1OzP0Z029_jop_GPEi3uxPY_hjqY4kVI9kQkgJd4BLk0';
-const EVENT_SHEET_ID = '1eIuY-l-IZfyZCnQWvkK20isJqXawGv9cD6HoWcuB1bw';
+/* One spreadsheet for everything — tabs: "Care Log", "Adoptions", "Signups" */
+const SHEET_ID = '1eIuY-l-IZfyZCnQWvkK20isJqXawGv9cD6HoWcuB1bw';
+const EVENT_SHEET_ID = SHEET_ID;
 const CARE_HEADERS = ['Timestamp', 'Tree ID', 'Walk #', 'Species', 'Address', 'Action', 'By'];
 const ADOPT_HEADERS = ['Timestamp', 'Tree ID', 'Walk #', 'Species', 'Address',
                        'Name', 'Email', 'Phone', 'Initials', 'Approved?'];
