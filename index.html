@@ -139,11 +139,7 @@
 
 <div class="toolbar no-print">
   <span class="chip" id="statTrees"></span>
-  <span class="chip" id="statSpecies"></span>
-  <span class="chip" id="statBiggest"></span>
-  <span class="chip" id="statNotes"></span>
   <button onclick="window.print()">🖨 Print poster</button>
-  <button class="ghost" onclick="exportNotes()">⬇ Export my notes</button>
   <a class="donate" href="https://www.gofundme.com/f/help-us-beautify-st-johns-pl-with-new-trees" target="_blank" rel="noopener">🌳 Donate — help plant new trees</a>
   <button onclick="toggleSignup()" id="signupBtn">🗓 Sign up: July 18 — Tree Care + Fairy Houses</button>
 </div>
@@ -571,13 +567,8 @@ function delLog(i){ rec(selectedId).log.splice(i,1); save(); renderLog(); }
 
 /* ---------------- stats ---------------- */
 function updateStats(){
-  const big=TREES.reduce((a,b)=>b.dbh>a.dbh?b:a);
   const nDead=TREES.filter(t=>t.dead).length;
   document.getElementById('statTrees').innerHTML=`🌳 <b>${TREES.length}</b> trees${nDead?` (${nDead} dead)`:''}`;
-  document.getElementById('statSpecies').innerHTML=`🍃 <b>${speciesSorted.length}</b> species`;
-  document.getElementById('statBiggest').innerHTML=`🏆 biggest: <b>${big.sp}</b>, ${big.dbh}″ (#${big.walk})`;
-  const n=Object.keys(store.trees).filter(hasData).length;
-  document.getElementById('statNotes').innerHTML=`✏️ <b>${n}</b> trees annotated`;
 }
 
 /* ---------------- print notes ---------------- */
@@ -599,11 +590,6 @@ function renderPrintNotes(){
   div.innerHTML=html;
 }
 
-/* ---------------- export / import ---------------- */
-function exportNotes(){
-  const blob=new Blob([JSON.stringify({title:'Friends of St Johns Pl',exported:new Date().toISOString(),...store},null,2)],{type:'application/json'});
-  const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='block-tree-notes.json'; a.click();
-}
 /* tree care day sign-up view */
 function toggleSignup(){
   const v=document.getElementById('signupView');
