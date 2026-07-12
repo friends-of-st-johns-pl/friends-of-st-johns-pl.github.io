@@ -611,8 +611,8 @@ function toggleSignup(){
   v.style.display=open?'block':'none';
   if(open) v.scrollIntoView({behavior:'smooth',block:'start'});
 }
-/* deep link: …/#signup opens the form view directly */
-if(location.hash.toLowerCase()==='#signup') toggleSignup();
+/* deep links: …/#signup, #event, or #july18 open the sign-up form directly */
+if(['#signup','#event','#july18'].includes(location.hash.toLowerCase())) toggleSignup();
 
 /* july 18 event sign-up → Signups tab of the events Google Sheet (email fallback) */
 function submitEvent(){
