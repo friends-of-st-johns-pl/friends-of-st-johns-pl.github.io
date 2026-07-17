@@ -170,15 +170,15 @@
   <div class="signup-card">
     <h2 style="font-family:Georgia,serif;font-weight:400;margin:0 0 4px">July 18th &amp; 25th 🧚</h2>
     <p style="margin:0 0 6px;font-size:13.5px;color:#c0392b;font-weight:600;font-family:-apple-system,Arial,sans-serif">⚠️ Rescheduled due to the air quality index — outdoor tree care moves to July 25, and the crafts head indoors on the 18th.</p>
-    <p class="hint" style="margin:0 0 10px"><b>Sat July 18:</b> 12pm — curb-your-dog signs &amp; fairy house making — Dark Necessity Coffee, 679 Classon Ave · <b>Sat July 25:</b> 9am–12pm final street tree care, 12pm signs, fairy houses &amp; lunch (suggested donation) — 355 St Johns Pl backyard</p>
-    <img class="flyer" src="event-flyer-two-dates.png" alt="Event flyer: July 18th at Dark Necessity Coffee (679 Classon Ave) — curb-your-dog signs and fairy house making; July 25th at 355 St Johns Pl backyard — 9am–12pm final street tree care, 12pm signs, fairy houses and lunch (suggested donation)">
+    <p class="hint" style="margin:0 0 10px"><b>Sat July 18:</b> 12pm — curb-your-dog signs &amp; fairy house making — Covenhoven, 730 Classon Ave · <b>Sat July 25:</b> 9am–1pm at 355 St Johns Pl backyard — tree care 9am–12pm, then signs, fairy houses &amp; lunch (suggested donation) at 12pm</p>
+    <img class="flyer" src="event-flyer-0718-0725.png" alt="Event flyer: July 18th at Covenhoven (730 Classon Ave), 12pm — curb-your-dog signs and fairy house making; July 25th at 355 St Johns Pl backyard, 9am–1pm — 9am–12pm final street tree care, 12pm signs, fairy houses and lunch (suggested donation)">
     <div class="evform">
       <label>Your name *</label><input type="text" id="evName" autocomplete="name">
       <label>Email</label><input type="text" id="evEmail" autocomplete="email" placeholder="you@example.com">
       <label>Phone</label><input type="text" id="evPhone" autocomplete="tel" placeholder="(718) …">
       <label>What are you coming for?</label>
       <div class="evacts">
-        <label class="ck"><input type="checkbox" class="evact" value="Jul 18: signs + fairy houses @ Dark Necessity"> ☕ July 18 — signs &amp; fairy houses at Dark Necessity Coffee, 12pm</label>
+        <label class="ck"><input type="checkbox" class="evact" value="Jul 18: signs + fairy houses @ Covenhoven"> 🎨 July 18 — signs &amp; fairy houses at Covenhoven, 12pm</label>
         <label class="ck"><input type="checkbox" class="evact" value="Jul 25: tree care (9–12)" checked> 🌳 July 25 — tree care, 9am–12pm</label>
         <label class="ck"><input type="checkbox" class="evact" value="Jul 25: signs + fairy houses (12pm)"> 🧚 July 25 — signs &amp; fairy houses, 12pm</label>
         <label class="ck"><input type="checkbox" class="evact" value="Jul 25: lunch (12pm)"> 🍕 July 25 — lunch (suggested donation), 12pm</label>
@@ -668,7 +668,7 @@ function submitEvent(){
   const actsFinal=noShow?("⚠️ CAN'T COME (original July 18 sign-up)"+(acts?' · '+acts:'')):acts;
   const done=()=>{ document.querySelector('#signupView .evform').innerHTML=noShow
     ?'<b>💚 Thanks for letting us know!</b><p class="hint" style="margin:6px 0 0">Sorry you can\'t make the new date, '+esc(name)+' — we\'ll catch you at the next one.</p>'
-    :'<b>🧚 You\'re signed up!</b><p class="hint" style="margin:6px 0 0">Thanks '+esc(name)+' — July 18 at Dark Necessity Coffee (679 Classon), July 25 at 355 St Johns Pl backyard. See you there!</p>'; };
+    :'<b>🧚 You\'re signed up!</b><p class="hint" style="margin:6px 0 0">Thanks '+esc(name)+' — July 18 at Covenhoven (730 Classon Ave), July 25 at 355 St Johns Pl backyard. See you there!</p>'; };
   const viaEmail=()=>fetch('https://formsubmit.co/ajax/'+ADOPT_EMAIL,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},
     body:JSON.stringify({_subject:'July 18+25 event sign-up: '+name,_template:'table',_captcha:'false',name,email:email||'—',phone:phone||'—',activities:actsFinal,party_size:count})})
     .then(r=>{ if(!r.ok) throw 0; });
