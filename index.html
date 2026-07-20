@@ -156,7 +156,7 @@
 </header>
 
 <nav class="tabs no-print">
-  <button id="tabBtnSignup" onclick="showTab('signup')">🗓 July 18th &amp; 25th Events</button>
+  <button id="tabBtnSignup" onclick="showTab('signup')">🗓 July 25th Event</button>
   <button id="tabBtnHalloween" onclick="showTab('halloween')">🎃 Halloween Block Party</button>
   <button id="tabBtnTrees" onclick="showTab('trees')">🌳 Our 50 Trees</button>
 </nav>
@@ -168,26 +168,22 @@
 
 <div id="signupView" class="no-print">
   <div class="signup-card">
-    <h2 style="font-family:Georgia,serif;font-weight:400;margin:0 0 4px">July 18th &amp; 25th 🧚</h2>
-    <p style="margin:0 0 6px;font-size:13.5px;color:#c0392b;font-weight:600;font-family:-apple-system,Arial,sans-serif">⚠️ Rescheduled due to the air quality index — outdoor tree care moves to July 25, and the crafts head indoors on the 18th.</p>
-    <p class="hint" style="margin:0 0 10px"><b>Sat July 18:</b> 12pm — curb-your-dog signs &amp; fairy house making — Covenhoven, 730 Classon Ave · <b>Sat July 25:</b> 9am–1pm at 355 St Johns Pl backyard — tree care 9am–12pm, then signs, fairy houses &amp; lunch (suggested donation) at 12pm</p>
-    <img class="flyer" src="event-flyer-0718-0725.png?v=2" alt="Event flyer: July 18th at Covenhoven (730 Classon Ave), 12pm — curb-your-dog signs and fairy house making; July 25th at 355 St Johns Pl backyard, 9am–1pm — 9am–12pm final street tree care, 12pm signs, fairy houses and lunch (suggested donation)">
+    <h2 style="font-family:Georgia,serif;font-weight:400;margin:0 0 4px">July 25th 🧚</h2>
+    <p class="hint" style="margin:0 0 10px"><b>Sat July 25:</b> 9am–1pm at 355 St Johns Pl backyard — final street tree care 9am–12pm, then fairy house making, curb-your-dog signs &amp; lunch (suggested donation $5–$30) at 12pm</p>
+    <img class="flyer" src="event-flyer-0725.png?v=1" alt="Event flyer: July 25th 2026 at 355 St Johns Pl backyard, 9am–1pm — 9am–12pm final street tree care, 12pm fairy house making, curb-your-dog signs and lunch (suggested donation $5–$30)">
     <div class="evform">
       <label>Your name *</label><input type="text" id="evName" autocomplete="name">
       <label>Email</label><input type="text" id="evEmail" autocomplete="email" placeholder="you@example.com">
       <label>Phone</label><input type="text" id="evPhone" autocomplete="tel" placeholder="(718) …">
       <label>What are you coming for?</label>
       <div class="evacts">
-        <label class="ck"><input type="checkbox" class="evact" value="Jul 18: signs + fairy houses @ Covenhoven"> 🎨 July 18 — signs &amp; fairy houses at Covenhoven, 12pm</label>
-        <label class="ck"><input type="checkbox" class="evact" value="Jul 25: tree care (9–12)" checked> 🌳 July 25 — tree care, 9am–12pm</label>
-        <label class="ck"><input type="checkbox" class="evact" value="Jul 25: signs + fairy houses (12pm)"> 🧚 July 25 — signs &amp; fairy houses, 12pm</label>
-        <label class="ck"><input type="checkbox" class="evact" value="Jul 25: lunch (12pm)"> 🍕 July 25 — lunch (suggested donation), 12pm</label>
+        <label class="ck"><input type="checkbox" class="evact" value="Jul 25: tree care (9–12)" checked> 🌳 Final street tree care, 9am–12pm</label>
+        <label class="ck"><input type="checkbox" class="evact" value="Jul 25: fairy houses (12pm)"> 🧚 Fairy house making, 12pm</label>
+        <label class="ck"><input type="checkbox" class="evact" value="Jul 25: curb-your-dog signs (12pm)"> 🎨 Curb-your-dog signs, 12pm</label>
+        <label class="ck"><input type="checkbox" class="evact" value="Jul 25: lunch (12pm)"> 🍕 Lunch (suggested donation), 12pm</label>
       </div>
       <label>How many people are you bringing (including you)?</label>
       <input type="text" id="evCount" inputmode="numeric" placeholder="1" style="max-width:110px">
-      <div class="evacts" style="margin-top:12px">
-        <label class="ck" style="border-color:#c0392b"><input type="checkbox" id="evNoShow"> 😢 I signed up for the original July 18th plan and can't make these dates</label>
-      </div>
       <button style="margin-top:12px" onclick="submitEvent()">Sign me up!</button>
       <div id="evMsg"></div>
     </div>
@@ -653,7 +649,7 @@ showTab('signup', false);   // default: first tab
 openFromHash();
 window.addEventListener('hashchange',openFromHash);
 
-/* july 18 event sign-up → Signups tab of the events Google Sheet (email fallback) */
+/* july 25 event sign-up → Signups tab of the events Google Sheet (email fallback) */
 function submitEvent(){
   const name=document.getElementById('evName').value.trim();
   const email=document.getElementById('evEmail').value.trim();
@@ -664,20 +660,18 @@ function submitEvent(){
   if(!name){ msg.innerHTML='<span style="color:#c0392b">Please add your name.</span>'; return; }
   if(!email && !phone){ msg.innerHTML='<span style="color:#c0392b">Please add an email or a phone number.</span>'; return; }
   msg.textContent='Sending…';
-  const noShow=document.getElementById('evNoShow').checked;
-  const actsFinal=noShow?("⚠️ CAN'T COME (original July 18 sign-up)"+(acts?' · '+acts:'')):acts;
-  const done=()=>{ document.querySelector('#signupView .evform').innerHTML=noShow
-    ?'<b>💚 Thanks for letting us know!</b><p class="hint" style="margin:6px 0 0">Sorry you can\'t make the new date, '+esc(name)+' — we\'ll catch you at the next one.</p>'
-    :'<b>🧚 You\'re signed up!</b><p class="hint" style="margin:6px 0 0">Thanks '+esc(name)+' — July 18 at Covenhoven (730 Classon Ave), July 25 at 355 St Johns Pl backyard. See you there!</p>'; };
+  const actsFinal=acts;
+  const done=()=>{ document.querySelector('#signupView .evform').innerHTML=
+    '<b>🧚 You\'re signed up!</b><p class="hint" style="margin:6px 0 0">Thanks '+esc(name)+' — see you July 25 at 355 St Johns Pl backyard, 9am–1pm!</p>'; };
   const viaEmail=()=>fetch('https://formsubmit.co/ajax/'+ADOPT_EMAIL,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},
-    body:JSON.stringify({_subject:'July 18+25 event sign-up: '+name,_template:'table',_captcha:'false',name,email:email||'—',phone:phone||'—',activities:actsFinal,party_size:count})})
+    body:JSON.stringify({_subject:'July 25 event sign-up: '+name,_template:'table',_captcha:'false',name,email:email||'—',phone:phone||'—',activities:actsFinal,party_size:count})})
     .then(r=>{ if(!r.ok) throw 0; });
-  const payload={type:'event',event:'July 18+25, 2026 — Signs, Fairy Houses + Tree Care',name,email,phone,activities:actsFinal,headcount:count};
+  const payload={type:'event',event:'July 25, 2026 — Tree Care, Fairy Houses + Lunch',name,email,phone,activities:actsFinal,headcount:count};
   (CARE_API
     ? fetch(CARE_API,{method:'POST',body:JSON.stringify(payload)}).then(r=>{ if(!r.ok) throw 0; }).catch(viaEmail)
     : viaEmail()
   ).then(done).catch(()=>{
-    const mail=`mailto:${ADOPT_EMAIL}?subject=${encodeURIComponent('July 18+25 event sign-up')}&body=${encodeURIComponent(`Name: ${name}\nEmail: ${email||'—'}\nPhone: ${phone||'—'}\nActivities: ${actsFinal}\nParty size: ${count}`)}`;
+    const mail=`mailto:${ADOPT_EMAIL}?subject=${encodeURIComponent('July 25 event sign-up')}&body=${encodeURIComponent(`Name: ${name}\nEmail: ${email||'—'}\nPhone: ${phone||'—'}\nActivities: ${actsFinal}\nParty size: ${count}`)}`;
     msg.innerHTML=`Couldn't send automatically — <a href="${mail}">tap here to email us instead</a>.`;
   });
 }
