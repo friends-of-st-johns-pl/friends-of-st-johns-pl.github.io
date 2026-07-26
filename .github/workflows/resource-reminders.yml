@@ -1,0 +1,33 @@
+name: Greening resource reminders
+
+# Emails the group a digest of which grants, giveaways, and courses open
+# this month. Data comes from the RESOURCES list in index.html.
+
+on:
+  schedule:
+    # 1st of every month at 13:00 UTC (9am ET in winter, 8am ET in summer)
+    - cron: '0 13 1 * *'
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Print the email instead of sending it'
+        type: boolean
+        default: false
+
+jobs:
+  remind:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Send the monthly digest
+        env:
+          GMAIL_USER: ${{ secrets.GMAIL_USER }}
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+          MAIL_TO: friendsofstjohnspl@gmail.com
+          DRY_RUN: ${{ inputs.dry_run && '1' || '' }}
+        run: python scripts/resource_reminders.py
