@@ -9,6 +9,7 @@ Env:
   GMAIL_USER          sending Gmail address
   GMAIL_APP_PASSWORD  16-char app password (not the account password)
   MAIL_TO             recipient (default friendsofstjohnspl@gmail.com)
+  MAIL_CC             comma-separated cc list (default rabia1082@gmail.com)
   DRY_RUN             set to 1 to print the email instead of sending
 """
 
@@ -50,20 +51,28 @@ def in_window(month, start, end):
     return month >= start or month <= end
 
 
+def windows(r):
+    """A resource carries either one window [a, b] or a list of them."""
+    win = r.get("open")
+    if not win:
+        return []
+    return win if isinstance(win[0], list) else [win]
+
+
 def classify(resources, month):
     """Bucket resources by what the group should act on this month."""
     opening, closing, open_now, next_month = [], [], [], []
     nxt = month % 12 + 1
     for r in resources:
-        win = r.get("open")
-        if not win:
+        wins = windows(r)
+        if not wins:
             continue                      # rolling: nothing time-sensitive
-        start, end = win
-        if start == month:
+        if any(s == month for s, _ in wins):
             opening.append(r)
-        elif in_window(month, start, end):
-            (closing if end == month else open_now).append(r)
-        elif start == nxt:
+        elif any(in_window(month, s, e) for s, e in wins):
+            live = [(s, e) for s, e in wins if in_window(month, s, e)]
+            (closing if any(e == month for _, e in live) else open_now).append(r)
+        elif any(s == nxt for s, _ in wins):
             next_month.append(r)
     return opening, closing, open_now, next_month
 
@@ -146,17 +155,22 @@ def main():
     if not user or not password:
         sys.exit("GMAIL_USER and GMAIL_APP_PASSWORD must be set")
 
+    to = os.environ.get("MAIL_TO", "friendsofstjohnspl@gmail.com")
+    cc = os.environ.get("MAIL_CC", "rabia1082@gmail.com")
+
     msg = EmailMessage()
     msg["Subject"] = subject
     msg["From"] = user
-    msg["To"] = os.environ.get("MAIL_TO", "friendsofstjohnspl@gmail.com")
+    msg["To"] = to
+    if cc:
+        msg["Cc"] = cc
     msg.set_content(text_body)
     msg.add_alternative(html_body, subtype="html")
 
     with smtplib.SMTP_SSL("smtp.gmail.com", 465) as s:
         s.login(user, password)
         s.send_message(msg)
-    print("Sent:", subject)
+    print("Sent '{}' to {}{}".format(subject, to, " (cc " + cc + ")" if cc else ""))
 
 
 if __name__ == "__main__":

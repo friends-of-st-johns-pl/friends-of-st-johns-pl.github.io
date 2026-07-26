@@ -29,5 +29,6 @@ jobs:
           GMAIL_USER: ${{ secrets.GMAIL_USER }}
           GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
           MAIL_TO: friendsofstjohnspl@gmail.com
+          MAIL_CC: rabia1082@gmail.com
           DRY_RUN: ${{ inputs.dry_run && '1' || '' }}
         run: python scripts/resource_reminders.py

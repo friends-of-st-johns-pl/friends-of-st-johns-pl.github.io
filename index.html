@@ -649,7 +649,7 @@ window.addEventListener('hashchange',openFromHash);
    'rolling' = accepted year round. Windows are typical, not guaranteed — always confirm. */
 const RESOURCES = [
   /* --- Grants & funding --- */
-  {g:"Grants & funding", n:"Citizens Committee for NYC — Community Leaders Grant", u:"https://citizensnyc.org/clg", d:"Up to $5,000 for volunteer-led neighborhood projects. No 501(c)(3) or fiscal sponsor needed, two or more people can apply.", open:[2,7], w:"Two cycles a year, roughly Feb-Apr and May-Jul"},
+    {g:"Grants & funding", n:"Citizens Committee for NYC — Community Leaders Grant", u:"https://citizensnyc.org/clg", d:"Up to $5,000 for volunteer-led neighborhood projects. No 501(c)(3) or fiscal sponsor needed, two or more people can apply.", open:[[1,3],[5,7]], w:"Two cycles a year. The second usually opens in May and closes late July"},
   {g:"Grants & funding", n:"Love Your Block — NYC Service", u:"https://www.nycservice.org/love_your_block", d:"Mini-grants up to $3,000 plus hands-on city support. Group must be entirely volunteer-led and able to mobilize 20+ neighbors.", rolling:true, w:"Rolling, reviewed as they come in — apply early"},
   {g:"Grants & funding", n:"Awesome Foundation Microgrant", u:"https://www.awesomefoundation.org/", d:"Up to $1,000, no strings. Best for one concentrated, eye-catching project rather than ongoing work.", rolling:true, w:"Rolling, monthly review"},
   {g:"Grants & funding", n:"National Wildlife Federation grants", u:"https://www.nwf.org/", d:"Up to $1,000 for habitat and native planting projects.", rolling:true, w:"Check current programs"},
@@ -658,7 +658,7 @@ const RESOURCES = [
   /* --- Training & certification --- */
   {g:"Training & certification", n:"NYC Parks Super Steward — Care Captain track", u:"https://www.nycgovparks.org/reg/advanced-stewardship", d:"The big one. Free training, a toolkit, and city permission to run your own street tree events. Unlocks TreeLC, which brings a truck of mulch plus gloves, tools, and trained staff to your block. Commitment is 12 hours a year, logged on the Street Tree Map.", rolling:true, w:"Volunteer once, take the workshop, get certified"},
   {g:"Training & certification", n:"Citizen Pruner Course — Trees New York", u:"https://treesny.org/citizen-pruners-stewardship/citizen-pruner-course/", d:"$100. Eight hours of class plus four in the field. Certifies you to legally prune NYC street trees. Prune in winter; summer is the fallback.", rolling:true, w:"Several cohorts a year — ask about sliding scale"},
-  {g:"Training & certification", n:"Brooklyn Urban Gardener (BUG) Certificate — BBG", u:"https://www.bbg.org/community/bug", d:"Free ten-week urban gardening and community greening course. Classes mid-Sept through Nov, plus 30 hours of community service.", open:[6,8], w:"Apply mid-year for the fall cohort"},
+  {g:"Training & certification", n:"Brooklyn Urban Gardener (BUG) Certificate — BBG", u:"https://www.bbg.org/community/bug", d:"Free ten-week urban gardening and community greening course. Applications close June 1 for the fall cohort. Classes run mid-Sept through Nov, plus 30 hours of community service.", open:[3,5], w:"Apply in spring — deadline June 1"},
   {g:"Training & certification", n:"Trees Count — NYC tree census", u:"https://www.nycgovparks.org/reg/trees-count", d:"Volunteer to survey trees with a mobile app. Training provided, no experience needed, and it counts toward the Super Steward 12 hours.", rolling:true, w:"Ongoing survey events"},
   {g:"Training & certification", n:"GreenThumb workshops & GrowTogether", u:"https://greenthumb.nycgovparks.org/events.html", d:"Free workshops on soil, pruning, composting and design, plus the annual GrowTogether conference.", rolling:true, w:"Year round"},
   /* --- Free compost & mulch --- */
@@ -671,7 +671,7 @@ const RESOURCES = [
   {g:"Free compost & mulch", n:"GreenThumb bulk materials", u:"https://greenthumb.nycgovparks.org/", d:"Registered groups can request free bulk soil, compost, mulch, plants and tools.", rolling:true, w:"Register once, then request"},
   {g:"Free compost & mulch", n:"BK Rot", u:"https://www.bkrot.org/", d:"Not free but very affordable, and it is bike-powered local compost.", rolling:true, w:"Year round"},
   /* --- Free & low-cost plants --- */
-  {g:"Free & low-cost plants", n:"PECAN — NYC Parks Plant Ecology Center & Nursery", u:"https://www.nycgovparks.org/", d:"Donates up to $800 worth of native plants to community greening projects. Fill out the order intake form. We are already on the waitlist.", rolling:true, w:"Order intake form, plan ahead"},
+    {g:"Free & low-cost plants", n:"PECAN — NYC Parks Plant Ecology Center & Nursery", u:"https://www.nycgovparks.org/pecan/program-areas", d:"Grows 175+ native species and supplies community pollinator gardens and street tree beds. Distributes in two windows a year, spring and fall. Email PECAN@parks.nyc.gov to ask about inventory and get on the list — plan well ahead of each window.", open:[[2,4],[8,10]], w:"Two distributions a year: ask in late winter for spring, late summer for fall"},
   {g:"Free & low-cost plants", n:"The Daffodil Project — New Yorkers for Parks", u:"https://www.ny4p.org/the-daffodil-project", d:"Free bulk daffodil bulbs for anyone planting in public space. Fills up fast.", open:[8,10], w:"Sign up in August, pick up in September"},
   {g:"Free & low-cost plants", n:"Park Avenue Tulip Giveaway", u:"https://www.fundforparkavenue.org/", d:"Bring a shovel and dig your own tulip bulbs from the Park Avenue malls. Note: rats eat tulips, so manage expectations.", open:[5,5], w:"Mid-May, one day only"},
   {g:"Free & low-cost plants", n:"New York Restoration Project tree giveaways", u:"https://www.nyrp.org/en/get-involved/tree-giveaways/", d:"Free trees for NYC residents each spring. Worth asking about discounted plants outside the formal giveaway too.", open:[3,6], w:"Spring events"},
@@ -689,6 +689,7 @@ const RESOURCES = [
   /* --- Contests & recognition --- */
   {g:"Contests & recognition", n:"Greenest Block in Brooklyn — BBG", u:"https://www.bbg.org/community/greenestblock", d:"Free borough-wide contest open to residential blocks. Categories include Best Street Tree Beds. Winners announced in August.", open:[3,5], w:"Register March through May"},
   /* --- Getting help & reporting --- */
+  {g:"Getting help & reporting", n:"NYC DOT — Temporary Holiday Lighting registration", u:"https://nycdotsurveys.info/survey/temp-holiday-lighting", d:"Block associations can register to hang holiday and festoon lighting on street light poles for 60 days. Free to register, but you must file before installing, meet the NYC Electrical Code, and get separate NYC Parks approval if any street trees or tree pits are involved.", open:[9,11], w:"Register in the fall, before you install"},
   {g:"Getting help & reporting", n:"Big Reuse — tree care day request", u:"https://www.bigreuse.org/", d:"Fill out their form and they will bring expert staff, tools, compost and mulch to run a street tree care day with you. Built for new groups.", rolling:true, w:"Request anytime"},
   {g:"Getting help & reporting", n:"NYC Parks stewardship request", u:"https://www.nycgovparks.org/reg/stewardship", d:"Ask Parks to support a stewardship project, including street tree care on your block.", rolling:true, w:"Rolling"},
   {g:"Getting help & reporting", n:"311 — tree service & rat mitigation", u:"https://portal.311.nyc.gov/", d:"Report damaged branches, dead trees, and rat burrows. Parks usually sends an expert within a few weeks. Rat mitigation is a separate request from mulching.", rolling:true, w:"Anytime"},
@@ -701,14 +702,14 @@ function renderResources(){
   const m=new Date().getMonth()+1;
   const MON=['','January','February','March','April','May','June','July','August','September','October','November','December'];
   const inWin=(a,b)=> a<=b ? (m>=a&&m<=b) : (m>=a||m<=b);   // handles Dec–Jan wrap
+  const wins=r=> !r.open ? [] : (Array.isArray(r.open[0]) ? r.open : [r.open]);
   const badge=r=>{
-    if(r.rolling) return '<span class="badge rolling">Rolling</span>';
-    if(!r.open) return '';
-    const [a,b]=r.open;
-    if(inWin(a,b)) return '<span class="badge open">Likely open now</span>';
-    let d=(a-m+12)%12;
-    return d<=2 ? '<span class="badge soon">Opens ~'+MON[a]+'</span>'
-                : '<span class="badge closed">Next ~'+MON[a]+'</span>';
+    const W=wins(r);
+    if(!W.length) return r.rolling ? '<span class="badge rolling">Rolling</span>' : '';
+    if(W.some(([a,b])=>inWin(a,b))) return '<span class="badge open">Likely open now</span>';
+    const next=W.map(([a])=>[(a-m+12)%12,a]).sort((x,y)=>x[0]-y[0])[0];
+    return next[0]<=2 ? '<span class="badge soon">Opens ~'+MON[next[1]]+'</span>'
+                      : '<span class="badge closed">Next ~'+MON[next[1]]+'</span>';
   };
   const groups=[...new Set(RESOURCES.map(r=>r.g))];
   el.innerHTML=groups.map(g=>
