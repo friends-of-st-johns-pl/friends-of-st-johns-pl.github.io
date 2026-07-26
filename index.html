@@ -201,7 +201,7 @@
   <h2 style="font-family:Georgia,serif;font-weight:400;margin:0 0 6px">Free Stuff &amp; Deadlines 🌱</h2>
   <p class="res-intro">Grants, free compost and mulch, free trees and bulbs, and gardening courses open to Brooklyn block associations. Badges update automatically based on each program's usual season — always click through and confirm the current year's dates.</p>
   <div id="resList"></div>
-  <p class="res-intro" style="margin-top:18px;border-top:1px solid var(--line);padding-top:12px">Know of a resource we're missing? Email <a href="mailto:friendsofstjohnspl@gmail.com">friendsofstjohnspl@gmail.com</a>.</p>
+  <p class="res-intro" style="margin-top:18px;border-top:1px solid var(--line);padding-top:12px">Much of this list comes from <b>“Getting Started with Street Gardening”</b>, a guide written by the <b>BJH Garden Club</b> in Crown Heights. Thank you, neighbors. Know of something we're missing? Email <a href="mailto:friendsofstjohnspl@gmail.com">friendsofstjohnspl@gmail.com</a>.</p>
 </div>
 
 <div class="layout">
@@ -648,40 +648,52 @@ window.addEventListener('hashchange',openFromHash);
    open: [startMonth, endMonth] 1-12 when APPLICATIONS/SIGN-UPS are usually open.
    'rolling' = accepted year round. Windows are typical, not guaranteed — always confirm. */
 const RESOURCES = [
-  {g:'Money for the block', n:'Citizens Committee for NYC — Community Leaders Grant', u:'https://citizensnyc.org/grants/',
-   d:'Up to $5,000 for volunteer-led neighborhood projects. No 501(c)(3) needed, two or more people can apply.', open:[2,7], w:'Two cycles a year, roughly Feb–Apr and May–Jul'},
-  {g:'Money for the block', n:'Love Your Block — NYC Service', u:'https://www.nycservice.org/love_your_block',
-   d:'Mini-grants up to $3,000 plus hands-on city support for volunteer-led block revitalization.', rolling:true, w:'Rolling — apply early'},
-  {g:'Money for the block', n:'Partnerships for Parks — Capacity Fund Grants', u:'https://cityparksfoundation.org/partnerships-for-parks/grants/',
-   d:'Small grants for volunteer groups caring for parks and green space, plus free trainings.', open:[1,4], w:'Usually opens in winter'},
-
-  {g:'Free compost, mulch & soil', n:'DSNY Free Compost Giveback', u:'https://www.nyc.gov/getcompost',
-   d:'Free 40 lb bag of compost per household. Pre-register online — registration opens about two weeks before each event.', rolling:true, w:'Sites and pop-ups run most of the year'},
-  {g:'Free compost, mulch & soil', n:'NYC Parks Mulchfest', u:'https://www.nycgovparks.org/programs/rangers/mulchfest',
-   d:'Bring a Christmas tree, take free mulch. Chipping sites all over Brooklyn, or grab mulch without bringing a tree.', open:[12,1], w:'Late December into January'},
-  {g:'Free compost, mulch & soil', n:'GreenThumb (NYC Parks)', u:'https://greenthumb.nycgovparks.org/',
-   d:'Registered groups can request free bulk soil, compost, mulch, plants, and tools, plus free workshops.', rolling:true, w:'Register once, then request materials year round'},
-  {g:'Free compost, mulch & soil', n:'Big Reuse', u:'https://www.bigreuse.org/',
-   d:'Brooklyn compost giveaways and the $375 tree guard kits, including free rental of the full install toolkit.', rolling:true, w:'Check site for giveaway dates'},
-
-  {g:'Free trees, plants & bulbs', n:'The Daffodil Project — New Yorkers for Parks', u:'https://www.ny4p.org/the-daffodil-project',
-   d:'Free daffodil bulbs (and often native seeds) for anyone planting in a public space. Request form opens each fall.', open:[8,10], w:'Request in Aug–Sep, pick up in Oct'},
-  {g:'Free trees, plants & bulbs', n:'NYRP Tree Giveaways', u:'https://www.nyrp.org/en/get-involved/tree-giveaways/',
-   d:'Free trees for NYC residents at spring giveaway events across the city.', open:[3,6], w:'Spring events, watch for the schedule'},
-  {g:'Free trees, plants & bulbs', n:'NYS DEC Saratoga Tree Nursery — Spring Seedling Sale', u:'https://dec.ny.gov/nature/forests-trees/saratoga-tree-nursery/spring-seedling-sale',
-   d:'Very cheap native tree and shrub seedlings sold in bundles. Great for filling in beds and gardens.', open:[1,4], w:'Orders usually open in January while supplies last'},
-  {g:'Free trees, plants & bulbs', n:'NYC Parks — Request a Street Tree', u:'https://www.nycgovparks.org/trees/street-tree-planting/request',
-   d:'Ask the city to plant a street tree in an empty pit. Free, but the waitlist can be long.', rolling:true, w:'Rolling request form'},
-
-  {g:'Courses & training', n:'Brooklyn Urban Gardener (BUG) Certificate — BBG', u:'https://www.bbg.org/community/bug',
-   d:'Free ten-week urban gardening and community greening course. Classes run mid-Sept through Nov; includes 30 hours of community service.', open:[6,8], w:'Apply mid-year for the fall cohort'},
-  {g:'Courses & training', n:'Citizen Pruner Course — Trees New York', u:'https://treesny.org/citizen-pruners-stewardship/citizen-pruner-course/',
-   d:'$100. Eight hours of class plus four hours in the field. Certifies you to legally prune NYC street trees.', rolling:true, w:'Several cohorts a year — ask about sliding scale'},
-  {g:'Courses & training', n:'GreenThumb Workshops & GrowTogether', u:'https://greenthumb.nycgovparks.org/events.html',
-   d:'Free workshops on soil, pruning, composting, and garden design, plus the annual GrowTogether conference.', rolling:true, w:'Year round'},
-
-  {g:'Contests & recognition', n:'Greenest Block in Brooklyn — BBG', u:'https://www.bbg.org/community/greenestblock',
-   d:'Free borough-wide contest for residential blocks. Categories include Best Street Tree Beds. Winners announced in August.', open:[3,5], w:'Register Mar–May, judging in summer'},
+  /* --- Grants & funding --- */
+  {g:"Grants & funding", n:"Citizens Committee for NYC — Community Leaders Grant", u:"https://citizensnyc.org/clg", d:"Up to $5,000 for volunteer-led neighborhood projects. No 501(c)(3) or fiscal sponsor needed, two or more people can apply.", open:[2,7], w:"Two cycles a year, roughly Feb-Apr and May-Jul"},
+  {g:"Grants & funding", n:"Love Your Block — NYC Service", u:"https://www.nycservice.org/love_your_block", d:"Mini-grants up to $3,000 plus hands-on city support. Group must be entirely volunteer-led and able to mobilize 20+ neighbors.", rolling:true, w:"Rolling, reviewed as they come in — apply early"},
+  {g:"Grants & funding", n:"Awesome Foundation Microgrant", u:"https://www.awesomefoundation.org/", d:"Up to $1,000, no strings. Best for one concentrated, eye-catching project rather than ongoing work.", rolling:true, w:"Rolling, monthly review"},
+  {g:"Grants & funding", n:"National Wildlife Federation grants", u:"https://www.nwf.org/", d:"Up to $1,000 for habitat and native planting projects.", rolling:true, w:"Check current programs"},
+  {g:"Grants & funding", n:"The Pollination Project", u:"https://thepollinationproject.org/", d:"Up to $500 seed grants for grassroots community projects.", rolling:true, w:"Rolling, daily grants"},
+  {g:"Grants & funding", n:"Partnerships for Parks — Capacity Fund", u:"https://cityparksfoundation.org/partnerships-for-parks/", d:"Small grants for volunteer groups caring for green space, plus free trainings and a local Outreach Coordinator who can connect you to more funding.", open:[1,4], w:"Usually opens in winter"},
+  /* --- Training & certification --- */
+  {g:"Training & certification", n:"NYC Parks Super Steward — Care Captain track", u:"https://www.nycgovparks.org/reg/advanced-stewardship", d:"The big one. Free training, a toolkit, and city permission to run your own street tree events. Unlocks TreeLC, which brings a truck of mulch plus gloves, tools, and trained staff to your block. Commitment is 12 hours a year, logged on the Street Tree Map.", rolling:true, w:"Volunteer once, take the workshop, get certified"},
+  {g:"Training & certification", n:"Citizen Pruner Course — Trees New York", u:"https://treesny.org/citizen-pruners-stewardship/citizen-pruner-course/", d:"$100. Eight hours of class plus four in the field. Certifies you to legally prune NYC street trees. Prune in winter; summer is the fallback.", rolling:true, w:"Several cohorts a year — ask about sliding scale"},
+  {g:"Training & certification", n:"Brooklyn Urban Gardener (BUG) Certificate — BBG", u:"https://www.bbg.org/community/bug", d:"Free ten-week urban gardening and community greening course. Classes mid-Sept through Nov, plus 30 hours of community service.", open:[6,8], w:"Apply mid-year for the fall cohort"},
+  {g:"Training & certification", n:"Trees Count — NYC tree census", u:"https://www.nycgovparks.org/reg/trees-count", d:"Volunteer to survey trees with a mobile app. Training provided, no experience needed, and it counts toward the Super Steward 12 hours.", rolling:true, w:"Ongoing survey events"},
+  {g:"Training & certification", n:"GreenThumb workshops & GrowTogether", u:"https://greenthumb.nycgovparks.org/events.html", d:"Free workshops on soil, pruning, composting and design, plus the annual GrowTogether conference.", rolling:true, w:"Year round"},
+  /* --- Free compost & mulch --- */
+  {g:"Free compost & mulch", n:"Lower East Side Ecology Center — free compost delivery", u:"https://www.lesecologycenter.org/", d:"Will deliver bagged compost free for community and street gardening (not private use). One of the easiest wins on this page.", rolling:true, w:"Request form, year round"},
+  {g:"Free compost & mulch", n:"DSNY Compost Giveback", u:"https://www.nyc.gov/getcompost", d:"Free 40 lb bag per household at giveback sites and pop-ups. Community organizations can request up to two pallets — order in the fall before snow season.", rolling:true, w:"Register about two weeks before each event"},
+  {g:"Free compost & mulch", n:"Gowanus Canal Conservancy — Lowlands Nursery", u:"https://www.gowanuscanalconservancy.org/", d:"Free sifted compost at 25 9th St, first come first served, one bag per household during nursery hours.", rolling:true, w:"Nursery open hours"},
+  {g:"Free compost & mulch", n:"Big Reuse — Salt Lot", u:"https://www.bigreuse.org/", d:"Free mulch for pickup, compost giveaways, and staff who will come run a tree care day with you.", rolling:true, w:"Check site for dates"},
+  {g:"Free compost & mulch", n:"Green-Wood Cemetery mulch giveaways", u:"https://www.green-wood.com/", d:"Free mulch giveaways throughout the year, close by in Brooklyn.", rolling:true, w:"Several times a year"},
+  {g:"Free compost & mulch", n:"NYC Mulchfest", u:"https://www.nycgovparks.org/programs/rangers/mulchfest", d:"Christmas trees chipped into free mulch. Bring a tree or just take mulch. Sites all over Brooklyn.", open:[12,1], w:"Late December into mid-January"},
+  {g:"Free compost & mulch", n:"GreenThumb bulk materials", u:"https://greenthumb.nycgovparks.org/", d:"Registered groups can request free bulk soil, compost, mulch, plants and tools.", rolling:true, w:"Register once, then request"},
+  {g:"Free compost & mulch", n:"BK Rot", u:"https://www.bkrot.org/", d:"Not free but very affordable, and it is bike-powered local compost.", rolling:true, w:"Year round"},
+  /* --- Free & low-cost plants --- */
+  {g:"Free & low-cost plants", n:"PECAN — NYC Parks Plant Ecology Center & Nursery", u:"https://www.nycgovparks.org/", d:"Donates up to $800 worth of native plants to community greening projects. Fill out the order intake form. We are already on the waitlist.", rolling:true, w:"Order intake form, plan ahead"},
+  {g:"Free & low-cost plants", n:"The Daffodil Project — New Yorkers for Parks", u:"https://www.ny4p.org/the-daffodil-project", d:"Free bulk daffodil bulbs for anyone planting in public space. Fills up fast.", open:[8,10], w:"Sign up in August, pick up in September"},
+  {g:"Free & low-cost plants", n:"Park Avenue Tulip Giveaway", u:"https://www.fundforparkavenue.org/", d:"Bring a shovel and dig your own tulip bulbs from the Park Avenue malls. Note: rats eat tulips, so manage expectations.", open:[5,5], w:"Mid-May, one day only"},
+  {g:"Free & low-cost plants", n:"New York Restoration Project tree giveaways", u:"https://www.nyrp.org/en/get-involved/tree-giveaways/", d:"Free trees for NYC residents each spring. Worth asking about discounted plants outside the formal giveaway too.", open:[3,6], w:"Spring events"},
+  {g:"Free & low-cost plants", n:"North Brooklyn Park Alliance seedlings", u:"https://nbkparks.org/", d:"Annual native seedling giveaways.", open:[4,6], w:"Spring"},
+  {g:"Free & low-cost plants", n:"NYS DEC Saratoga Tree Nursery — Spring Seedling Sale", u:"https://dec.ny.gov/nature/forests-trees/saratoga-tree-nursery/spring-seedling-sale", d:"Very cheap native tree and shrub seedlings in bundles. Great for filling beds and gardens.", open:[1,5], w:"Typically January through May while supplies last"},
+  {g:"Free & low-cost plants", n:"Lowlands Nursery — community group discount", u:"https://www.gowanuscanalconservancy.org/", d:"Native and urban-adapted plants with a 25% discount for community groups. Apply for the discount first.", rolling:true, w:"Year round, apply for discount"},
+  {g:"Free & low-cost plants", n:"GrowNYC Annual Plant Sale", u:"https://www.grownyc.org/", d:"Low-cost plants and seedlings.", open:[4,5], w:"Spring"},
+  {g:"Free & low-cost plants", n:"NYC Parks — Request a street tree", u:"https://www.nycgovparks.org/trees/street-tree-planting/request", d:"Ask the city to plant a tree in an empty pit. Free, but the waitlist can run long.", rolling:true, w:"Rolling"},
+  /* --- Tree guards & beds --- */
+  {g:"Tree guards & beds", n:"NYC Parks Tree Time program", u:"https://www.nycgovparks.org/", d:"Beautiful metal guards, around $1,000 depending on design. The city installs them, so you do not have to pull any permits. Best option for longevity and looks if you have the funding.", rolling:true, w:"Apply anytime — city handles install"},
+  {g:"Tree guards & beds", n:"Big Reuse tree guard program", u:"https://www.bigreuse.org/pages/street-tree-guards", d:"$375 per guard: pre-cut lumber, seven steel posts, hardware, and free rental of the full install toolkit. You pull the Parks permit and build it yourself.", rolling:true, w:"Order year round, install before the ground freezes"},
+  {g:"Tree guards & beds", n:"DIY guard — South Midwood Pollinators guide", u:"https://southmidwoodpollinators.org/", d:"Build a sturdy wooden guard for about $75. Free step-by-step plans.", rolling:true, w:"Anytime"},
+  {g:"Tree guards & beds", n:"DIY guard — steel posts and rope", u:"https://www.nycgovparks.org/", d:"About $30 a bed. Four or five steel fence posts around the perimeter with two rows of rope. Keep posts 18 inches off the curb so car doors can open.", rolling:true, w:"Anytime"},
+  {g:"Tree guards & beds", n:"NYC Clean Soil Bank — Forbell Street Stockpile", u:"https://www.nyc.gov/site/oer/index.page", d:"Free clean soil with a DEC Beneficial Use Determination, suitable for street beds. You arrange pickup or delivery.", rolling:true, w:"Year round"},
+  /* --- Contests & recognition --- */
+  {g:"Contests & recognition", n:"Greenest Block in Brooklyn — BBG", u:"https://www.bbg.org/community/greenestblock", d:"Free borough-wide contest open to residential blocks. Categories include Best Street Tree Beds. Winners announced in August.", open:[3,5], w:"Register March through May"},
+  /* --- Getting help & reporting --- */
+  {g:"Getting help & reporting", n:"Big Reuse — tree care day request", u:"https://www.bigreuse.org/", d:"Fill out their form and they will bring expert staff, tools, compost and mulch to run a street tree care day with you. Built for new groups.", rolling:true, w:"Request anytime"},
+  {g:"Getting help & reporting", n:"NYC Parks stewardship request", u:"https://www.nycgovparks.org/reg/stewardship", d:"Ask Parks to support a stewardship project, including street tree care on your block.", rolling:true, w:"Rolling"},
+  {g:"Getting help & reporting", n:"311 — tree service & rat mitigation", u:"https://portal.311.nyc.gov/", d:"Report damaged branches, dead trees, and rat burrows. Parks usually sends an expert within a few weeks. Rat mitigation is a separate request from mulching.", rolling:true, w:"Anytime"},
+  {g:"Getting help & reporting", n:"NYC Parks Tree Work Hub", u:"https://www.nycgovparks.org/services/forestry/tree-work", d:"Check the status of tree planting and 311 requests on our block before planning an event.", rolling:true, w:"Anytime"},
+  {g:"Getting help & reporting", n:"NYC Street Tree Map", u:"https://tree-map.nycgovparks.org/", d:"Log the care we do, favorite our trees, and look up any tree on the block.", rolling:true, w:"Anytime"},
 ];
 
 function renderResources(){
