@@ -9,6 +9,7 @@ Env:
   GMAIL_USER          sending Gmail address
   GMAIL_APP_PASSWORD  16-char app password (not the account password)
   MAIL_TO             recipient (default friendsofstjohnspl@gmail.com)
+  MAIL_CC             comma-separated cc list (default rabia1082@gmail.com)
   DRY_RUN             set to 1 to print the email instead of sending
 """
 
@@ -146,17 +147,22 @@ def main():
     if not user or not password:
         sys.exit("GMAIL_USER and GMAIL_APP_PASSWORD must be set")
 
+    to = os.environ.get("MAIL_TO", "friendsofstjohnspl@gmail.com")
+    cc = os.environ.get("MAIL_CC", "rabia1082@gmail.com")
+
     msg = EmailMessage()
     msg["Subject"] = subject
     msg["From"] = user
-    msg["To"] = os.environ.get("MAIL_TO", "friendsofstjohnspl@gmail.com")
+    msg["To"] = to
+    if cc:
+        msg["Cc"] = cc
     msg.set_content(text_body)
     msg.add_alternative(html_body, subtype="html")
 
     with smtplib.SMTP_SSL("smtp.gmail.com", 465) as s:
         s.login(user, password)
         s.send_message(msg)
-    print("Sent:", subject)
+    print("Sent '{}' to {}{}".format(subject, to, " (cc " + cc + ")" if cc else ""))
 
 
 if __name__ == "__main__":
