@@ -649,7 +649,7 @@ window.addEventListener('hashchange',openFromHash);
    'rolling' = accepted year round. Windows are typical, not guaranteed — always confirm. */
 const RESOURCES = [
   /* --- Grants & funding --- */
-  {g:"Grants & funding", n:"Citizens Committee for NYC — Community Leaders Grant", u:"https://citizensnyc.org/clg", d:"Up to $5,000 for volunteer-led neighborhood projects. No 501(c)(3) or fiscal sponsor needed, two or more people can apply.", open:[2,7], w:"Two cycles a year, roughly Feb-Apr and May-Jul"},
+    {g:"Grants & funding", n:"Citizens Committee for NYC — Community Leaders Grant", u:"https://citizensnyc.org/clg", d:"Up to $5,000 for volunteer-led neighborhood projects. No 501(c)(3) or fiscal sponsor needed, two or more people can apply.", open:[[1,3],[5,7]], w:"Two cycles a year. The second usually opens in May and closes late July"},
   {g:"Grants & funding", n:"Love Your Block — NYC Service", u:"https://www.nycservice.org/love_your_block", d:"Mini-grants up to $3,000 plus hands-on city support. Group must be entirely volunteer-led and able to mobilize 20+ neighbors.", rolling:true, w:"Rolling, reviewed as they come in — apply early"},
   {g:"Grants & funding", n:"Awesome Foundation Microgrant", u:"https://www.awesomefoundation.org/", d:"Up to $1,000, no strings. Best for one concentrated, eye-catching project rather than ongoing work.", rolling:true, w:"Rolling, monthly review"},
   {g:"Grants & funding", n:"National Wildlife Federation grants", u:"https://www.nwf.org/", d:"Up to $1,000 for habitat and native planting projects.", rolling:true, w:"Check current programs"},
@@ -671,7 +671,7 @@ const RESOURCES = [
   {g:"Free compost & mulch", n:"GreenThumb bulk materials", u:"https://greenthumb.nycgovparks.org/", d:"Registered groups can request free bulk soil, compost, mulch, plants and tools.", rolling:true, w:"Register once, then request"},
   {g:"Free compost & mulch", n:"BK Rot", u:"https://www.bkrot.org/", d:"Not free but very affordable, and it is bike-powered local compost.", rolling:true, w:"Year round"},
   /* --- Free & low-cost plants --- */
-  {g:"Free & low-cost plants", n:"PECAN — NYC Parks Plant Ecology Center & Nursery", u:"https://www.nycgovparks.org/", d:"Donates up to $800 worth of native plants to community greening projects. Fill out the order intake form. We are already on the waitlist.", rolling:true, w:"Order intake form, plan ahead"},
+    {g:"Free & low-cost plants", n:"PECAN — NYC Parks Plant Ecology Center & Nursery", u:"https://www.nycgovparks.org/pecan/program-areas", d:"Grows 175+ native species and supplies community pollinator gardens and street tree beds. Distributes in two windows a year, spring and fall. Email PECAN@parks.nyc.gov to ask about inventory and get on the list — plan well ahead of each window.", open:[[2,4],[8,10]], w:"Two distributions a year: ask in late winter for spring, late summer for fall"},
   {g:"Free & low-cost plants", n:"The Daffodil Project — New Yorkers for Parks", u:"https://www.ny4p.org/the-daffodil-project", d:"Free bulk daffodil bulbs for anyone planting in public space. Fills up fast.", open:[8,10], w:"Sign up in August, pick up in September"},
   {g:"Free & low-cost plants", n:"Park Avenue Tulip Giveaway", u:"https://www.fundforparkavenue.org/", d:"Bring a shovel and dig your own tulip bulbs from the Park Avenue malls. Note: rats eat tulips, so manage expectations.", open:[5,5], w:"Mid-May, one day only"},
   {g:"Free & low-cost plants", n:"New York Restoration Project tree giveaways", u:"https://www.nyrp.org/en/get-involved/tree-giveaways/", d:"Free trees for NYC residents each spring. Worth asking about discounted plants outside the formal giveaway too.", open:[3,6], w:"Spring events"},
@@ -701,14 +701,14 @@ function renderResources(){
   const m=new Date().getMonth()+1;
   const MON=['','January','February','March','April','May','June','July','August','September','October','November','December'];
   const inWin=(a,b)=> a<=b ? (m>=a&&m<=b) : (m>=a||m<=b);   // handles Dec–Jan wrap
+  const wins=r=> !r.open ? [] : (Array.isArray(r.open[0]) ? r.open : [r.open]);
   const badge=r=>{
-    if(r.rolling) return '<span class="badge rolling">Rolling</span>';
-    if(!r.open) return '';
-    const [a,b]=r.open;
-    if(inWin(a,b)) return '<span class="badge open">Likely open now</span>';
-    let d=(a-m+12)%12;
-    return d<=2 ? '<span class="badge soon">Opens ~'+MON[a]+'</span>'
-                : '<span class="badge closed">Next ~'+MON[a]+'</span>';
+    const W=wins(r);
+    if(!W.length) return r.rolling ? '<span class="badge rolling">Rolling</span>' : '';
+    if(W.some(([a,b])=>inWin(a,b))) return '<span class="badge open">Likely open now</span>';
+    const next=W.map(([a])=>[(a-m+12)%12,a]).sort((x,y)=>x[0]-y[0])[0];
+    return next[0]<=2 ? '<span class="badge soon">Opens ~'+MON[next[1]]+'</span>'
+                      : '<span class="badge closed">Next ~'+MON[next[1]]+'</span>';
   };
   const groups=[...new Set(RESOURCES.map(r=>r.g))];
   el.innerHTML=groups.map(g=>

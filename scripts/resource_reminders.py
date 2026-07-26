@@ -51,20 +51,28 @@ def in_window(month, start, end):
     return month >= start or month <= end
 
 
+def windows(r):
+    """A resource carries either one window [a, b] or a list of them."""
+    win = r.get("open")
+    if not win:
+        return []
+    return win if isinstance(win[0], list) else [win]
+
+
 def classify(resources, month):
     """Bucket resources by what the group should act on this month."""
     opening, closing, open_now, next_month = [], [], [], []
     nxt = month % 12 + 1
     for r in resources:
-        win = r.get("open")
-        if not win:
+        wins = windows(r)
+        if not wins:
             continue                      # rolling: nothing time-sensitive
-        start, end = win
-        if start == month:
+        if any(s == month for s, _ in wins):
             opening.append(r)
-        elif in_window(month, start, end):
-            (closing if end == month else open_now).append(r)
-        elif start == nxt:
+        elif any(in_window(month, s, e) for s, e in wins):
+            live = [(s, e) for s, e in wins if in_window(month, s, e)]
+            (closing if any(e == month for _, e in live) else open_now).append(r)
+        elif any(s == nxt for s, _ in wins):
             next_month.append(r)
     return opening, closing, open_now, next_month
 
