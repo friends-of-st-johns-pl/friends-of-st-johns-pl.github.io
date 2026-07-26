@@ -40,6 +40,21 @@
   .header-links{display:flex;flex-wrap:wrap;gap:9px;justify-content:center;margin-top:14px;font-family:-apple-system,Arial,sans-serif}
   body:not(.tab-halloween) #halloweenView{display:none}
   #halloweenView{max-width:820px;margin:0 auto 22px;padding:0 24px}
+  body:not(.tab-resources) #resourcesView{display:none}
+  #resourcesView{max-width:900px;margin:0 auto 22px;padding:0 24px;font-family:-apple-system,Arial,sans-serif}
+  .res-intro{font-size:14px;color:#6b6455;margin:0 0 16px;line-height:1.5}
+  .res-group{margin:0 0 8px;font-family:Georgia,serif;font-size:17px;color:var(--green-dark);border-bottom:1px solid var(--line);padding-bottom:5px}
+  .res{background:var(--paper);border:1px solid var(--line);border-radius:9px;padding:13px 15px;margin:0 0 10px;box-shadow:0 1px 5px rgba(0,0,0,.04)}
+  .res h4{margin:0 0 4px;font-size:15px;font-family:Georgia,serif;font-weight:600}
+  .res h4 a{color:var(--green-dark);text-decoration:none;border-bottom:1px solid rgba(56,103,3,.3)}
+  .res h4 a:hover{border-bottom-color:var(--green-dark)}
+  .res p{margin:0 0 6px;font-size:13.5px;color:#5c5648;line-height:1.45}
+  .res .meta{font-size:12px;color:#8a8272}
+  .badge{display:inline-block;font-size:11px;font-weight:700;padding:2px 9px;border-radius:11px;margin-left:7px;vertical-align:middle;letter-spacing:.02em}
+  .badge.open{background:#dff0d0;color:#2f5c07}
+  .badge.soon{background:#fdf0d5;color:#8a5b00}
+  .badge.closed{background:#eee9df;color:#847c6c}
+  .badge.rolling{background:#dce8f5;color:#245179}
   .signup-card{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:18px;box-shadow:0 2px 10px rgba(0,0,0,.05);font-family:-apple-system,Arial,sans-serif}
   .signup-card img.flyer{display:block;width:min(340px,100%);margin:0 auto 14px;border-radius:8px;border:1px solid var(--line)}
   .evform label{margin-top:10px}
@@ -154,6 +169,7 @@
 
 <nav class="tabs no-print">
   <button id="tabBtnHalloween" onclick="showTab('halloween')">🎃 Halloween Block Party</button>
+  <button id="tabBtnResources" onclick="showTab('resources')">🌱 Free Stuff &amp; Deadlines</button>
   <button id="tabBtnTrees" onclick="showTab('trees')">🌳 Our 50 Trees</button>
 </nav>
 
@@ -179,6 +195,13 @@
       <div id="hwMsg"></div>
     </div>
   </div>
+</div>
+
+<div id="resourcesView" class="no-print">
+  <h2 style="font-family:Georgia,serif;font-weight:400;margin:0 0 6px">Free Stuff &amp; Deadlines 🌱</h2>
+  <p class="res-intro">Grants, free compost and mulch, free trees and bulbs, and gardening courses open to Brooklyn block associations. Badges update automatically based on each program's usual season — always click through and confirm the current year's dates.</p>
+  <div id="resList"></div>
+  <p class="res-intro" style="margin-top:18px;border-top:1px solid var(--line);padding-top:12px">Know of a resource we're missing? Email <a href="mailto:friendsofstjohnspl@gmail.com">friendsofstjohnspl@gmail.com</a>.</p>
 </div>
 
 <div class="layout">
@@ -603,21 +626,87 @@ function renderPrintNotes(){
 
 /* ---------------- tabs ---------------- */
 function showTab(name, setHash){
-  ['halloween','trees'].forEach(n=>document.body.classList.toggle('tab-'+n, n===name));
+  ['halloween','resources','trees'].forEach(n=>document.body.classList.toggle('tab-'+n, n===name));
   document.getElementById('tabBtnHalloween').classList.toggle('active', name==='halloween');
+  document.getElementById('tabBtnResources').classList.toggle('active', name==='resources');
   document.getElementById('tabBtnTrees').classList.toggle('active', name==='trees');
-  if(setHash!==false) history.replaceState(null,'','#'+({halloween:'halloween',trees:'trees'})[name]);
+  if(setHash!==false) history.replaceState(null,'','#'+({halloween:'halloween',resources:'resources',trees:'trees'})[name]);
   window.scrollTo(0,0);
 }
-/* deep links: #halloween → block party, #trees → map; old event links → block party */
+/* deep links: #halloween → block party, #resources → free stuff, #trees → map */
 function openFromHash(){
   const h=location.hash.toLowerCase();
   if(h==='#trees') showTab('trees');
+  else if(h==='#resources'||h==='#freestuff') showTab('resources');
   else showTab('halloween');
 }
 showTab('halloween', false);   // default: first tab
 openFromHash();
 window.addEventListener('hashchange',openFromHash);
+
+/* ---------- free stuff & deadlines ----------
+   open: [startMonth, endMonth] 1-12 when APPLICATIONS/SIGN-UPS are usually open.
+   'rolling' = accepted year round. Windows are typical, not guaranteed — always confirm. */
+const RESOURCES = [
+  {g:'Money for the block', n:'Citizens Committee for NYC — Community Leaders Grant', u:'https://citizensnyc.org/grants/',
+   d:'Up to $5,000 for volunteer-led neighborhood projects. No 501(c)(3) needed, two or more people can apply.', open:[2,7], w:'Two cycles a year, roughly Feb–Apr and May–Jul'},
+  {g:'Money for the block', n:'Love Your Block — NYC Service', u:'https://www.nycservice.org/love_your_block',
+   d:'Mini-grants up to $3,000 plus hands-on city support for volunteer-led block revitalization.', rolling:true, w:'Rolling — apply early'},
+  {g:'Money for the block', n:'Partnerships for Parks — Capacity Fund Grants', u:'https://cityparksfoundation.org/partnerships-for-parks/grants/',
+   d:'Small grants for volunteer groups caring for parks and green space, plus free trainings.', open:[1,4], w:'Usually opens in winter'},
+
+  {g:'Free compost, mulch & soil', n:'DSNY Free Compost Giveback', u:'https://www.nyc.gov/getcompost',
+   d:'Free 40 lb bag of compost per household. Pre-register online — registration opens about two weeks before each event.', rolling:true, w:'Sites and pop-ups run most of the year'},
+  {g:'Free compost, mulch & soil', n:'NYC Parks Mulchfest', u:'https://www.nycgovparks.org/programs/rangers/mulchfest',
+   d:'Bring a Christmas tree, take free mulch. Chipping sites all over Brooklyn, or grab mulch without bringing a tree.', open:[12,1], w:'Late December into January'},
+  {g:'Free compost, mulch & soil', n:'GreenThumb (NYC Parks)', u:'https://greenthumb.nycgovparks.org/',
+   d:'Registered groups can request free bulk soil, compost, mulch, plants, and tools, plus free workshops.', rolling:true, w:'Register once, then request materials year round'},
+  {g:'Free compost, mulch & soil', n:'Big Reuse', u:'https://www.bigreuse.org/',
+   d:'Brooklyn compost giveaways and the $375 tree guard kits, including free rental of the full install toolkit.', rolling:true, w:'Check site for giveaway dates'},
+
+  {g:'Free trees, plants & bulbs', n:'The Daffodil Project — New Yorkers for Parks', u:'https://www.ny4p.org/the-daffodil-project',
+   d:'Free daffodil bulbs (and often native seeds) for anyone planting in a public space. Request form opens each fall.', open:[8,10], w:'Request in Aug–Sep, pick up in Oct'},
+  {g:'Free trees, plants & bulbs', n:'NYRP Tree Giveaways', u:'https://www.nyrp.org/en/get-involved/tree-giveaways/',
+   d:'Free trees for NYC residents at spring giveaway events across the city.', open:[3,6], w:'Spring events, watch for the schedule'},
+  {g:'Free trees, plants & bulbs', n:'NYS DEC Saratoga Tree Nursery — Spring Seedling Sale', u:'https://dec.ny.gov/nature/forests-trees/saratoga-tree-nursery/spring-seedling-sale',
+   d:'Very cheap native tree and shrub seedlings sold in bundles. Great for filling in beds and gardens.', open:[1,4], w:'Orders usually open in January while supplies last'},
+  {g:'Free trees, plants & bulbs', n:'NYC Parks — Request a Street Tree', u:'https://www.nycgovparks.org/trees/street-tree-planting/request',
+   d:'Ask the city to plant a street tree in an empty pit. Free, but the waitlist can be long.', rolling:true, w:'Rolling request form'},
+
+  {g:'Courses & training', n:'Brooklyn Urban Gardener (BUG) Certificate — BBG', u:'https://www.bbg.org/community/bug',
+   d:'Free ten-week urban gardening and community greening course. Classes run mid-Sept through Nov; includes 30 hours of community service.', open:[6,8], w:'Apply mid-year for the fall cohort'},
+  {g:'Courses & training', n:'Citizen Pruner Course — Trees New York', u:'https://treesny.org/citizen-pruners-stewardship/citizen-pruner-course/',
+   d:'$100. Eight hours of class plus four hours in the field. Certifies you to legally prune NYC street trees.', rolling:true, w:'Several cohorts a year — ask about sliding scale'},
+  {g:'Courses & training', n:'GreenThumb Workshops & GrowTogether', u:'https://greenthumb.nycgovparks.org/events.html',
+   d:'Free workshops on soil, pruning, composting, and garden design, plus the annual GrowTogether conference.', rolling:true, w:'Year round'},
+
+  {g:'Contests & recognition', n:'Greenest Block in Brooklyn — BBG', u:'https://www.bbg.org/community/greenestblock',
+   d:'Free borough-wide contest for residential blocks. Categories include Best Street Tree Beds. Winners announced in August.', open:[3,5], w:'Register Mar–May, judging in summer'},
+];
+
+function renderResources(){
+  const el=document.getElementById('resList'); if(!el) return;
+  const m=new Date().getMonth()+1;
+  const MON=['','January','February','March','April','May','June','July','August','September','October','November','December'];
+  const inWin=(a,b)=> a<=b ? (m>=a&&m<=b) : (m>=a||m<=b);   // handles Dec–Jan wrap
+  const badge=r=>{
+    if(r.rolling) return '<span class="badge rolling">Rolling</span>';
+    if(!r.open) return '';
+    const [a,b]=r.open;
+    if(inWin(a,b)) return '<span class="badge open">Likely open now</span>';
+    let d=(a-m+12)%12;
+    return d<=2 ? '<span class="badge soon">Opens ~'+MON[a]+'</span>'
+                : '<span class="badge closed">Next ~'+MON[a]+'</span>';
+  };
+  const groups=[...new Set(RESOURCES.map(r=>r.g))];
+  el.innerHTML=groups.map(g=>
+    '<h3 class="res-group">'+esc(g)+'</h3>'+
+    RESOURCES.filter(r=>r.g===g).map(r=>
+      '<div class="res"><h4><a href="'+r.u+'" target="_blank" rel="noopener">'+esc(r.n)+'</a>'+badge(r)+'</h4>'+
+      '<p>'+esc(r.d)+'</p><div class="meta">🗓 '+esc(r.w)+'</div></div>').join('')
+  ).join('');
+}
+renderResources();
 
 /* halloween block party sign-up → same Signups tab, tagged with the event name */
 function submitHalloween(){
