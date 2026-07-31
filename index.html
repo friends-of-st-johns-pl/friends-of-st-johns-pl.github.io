@@ -855,7 +855,7 @@ function submitHalloween(){
   const viaEmail=()=>fetch('https://formsubmit.co/ajax/'+ADOPT_EMAIL,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},
     body:JSON.stringify({_subject:'Halloween interest: '+name,_template:'table',_captcha:'false',name,email:email||'—',phone:phone||'—',address:addr||'—',coming:going,up_for:help,note:note||'—',household_size:count})})
     .then(r=>{ if(!r.ok) throw 0; });
-  const payload={type:'event',event:'Halloween Block Party 2026 — interest',name,email,phone,address:addr,activities:interest,headcount:count};
+  const payload={type:'event',event:'Halloween Block Party 2026 — interest',name,email,phone,address:addr,activities:interest,headcount:count,note:note};
   (CARE_API
     ? fetch(CARE_API,{method:'POST',body:JSON.stringify(payload)}).then(r=>{ if(!r.ok) throw 0; }).catch(viaEmail)
     : viaEmail()
