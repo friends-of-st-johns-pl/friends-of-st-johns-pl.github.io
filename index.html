@@ -194,15 +194,14 @@
     <h2 style="font-family:Georgia,serif;font-weight:400;margin:0 0 4px">Trash Cleanup Days 🧹</h2>
     <p class="hint" style="margin:0 0 10px">Two chances to pitch in this week. Come to one or both, stay as long as you like. Bags and grabbers provided, just bring gloves if you have them.</p>
     <p class="hint" style="margin:0 0 10px"><b>Wednesday, July 29 at 1:30pm</b> · <b>Saturday, August 1 at 9am</b><br>Meet at <b>Shirley Court</b>, between Underhill Ave and Washington Ave. Led by members Lydia and Carol.</p>
-    <img class="flyer" src="cleanup-flyer.png" alt="Trash cleanup day flyer" onerror="this.style.display='none'">
     <div class="evform">
       <label>Your name *</label><input type="text" id="clName" autocomplete="name">
       <label>Email</label><input type="text" id="clEmail" autocomplete="email" placeholder="you@example.com">
       <label>Phone</label><input type="text" id="clPhone" autocomplete="tel" placeholder="(718) …">
       <label>Which day can you make?</label>
       <div class="evacts">
-        <label class="ck"><input type="checkbox" class="clday" value="Wed Jul 29, 1:30pm" checked> 🧹 Wednesday, July 29 at 1:30pm</label>
-        <label class="ck"><input type="checkbox" class="clday" value="Sat Aug 1, 9am"> 🧹 Saturday, August 1 at 9am</label>
+        <label class="ck"><input type="checkbox" class="clday" value="Wed Aug 5, 1:30pm" checked> 🧹 Wednesday, August 5 at 1:30pm</label>
+        <label class="ck"><input type="checkbox" class="clday" value="Sat Aug 8, 9am"> 🧹 Saturday, August 8 at 9am</label>
       </div>
       <label>How many people are you bringing (including you)?</label>
       <input type="text" id="clCount" inputmode="numeric" placeholder="1" style="max-width:110px">
@@ -826,7 +825,7 @@ function submitCleanup(){
   const viaEmail=()=>fetch('https://formsubmit.co/ajax/'+ADOPT_EMAIL,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},
     body:JSON.stringify({_subject:'Trash cleanup sign-up: '+name,_template:'table',_captcha:'false',name,email:email||'(not provided)',phone:phone||'(not provided)',days:attending,party_size:count})})
     .then(r=>{ if(!r.ok) throw 0; });
-  const payload={type:'event',event:'Trash Cleanup Days (Jul 29 & Aug 1, 2026)',name,email,phone,activities:attending,headcount:count};
+  const payload={type:'event',event:'Trash Cleanup Days (Aug 5 & 8, 2026)',name,email,phone,activities:attending,headcount:count};
   (CARE_API
     ? fetch(CARE_API,{method:'POST',body:JSON.stringify(payload)}).then(r=>{ if(!r.ok) throw 0; }).catch(viaEmail)
     : viaEmail()
