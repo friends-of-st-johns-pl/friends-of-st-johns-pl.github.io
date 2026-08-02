@@ -178,7 +178,7 @@
 
 <nav class="tabs no-print">
   <button id="tabBtnCleanup" onclick="showTab('cleanup')">🧹 Trash Cleanup Days</button>
-  <button id="tabBtnHalloween" onclick="showTab('halloween')">🎃 Halloween Block Party</button>
+  <button id="tabBtnHalloween" onclick="showTab('halloween')">🎃 Halloween Trick-o-streets</button>
   <button id="tabBtnResources" onclick="showTab('resources')">🌱 Free Stuff &amp; Deadlines</button>
   <button id="tabBtnTrees" onclick="showTab('trees')">🌳 Our 50 Trees</button>
   <button id="tabBtnPast" onclick="showTab('past')">📖 Past Events</button>
@@ -216,7 +216,7 @@
 
 <div id="halloweenView" class="no-print">
   <div class="signup-card">
-    <h2 style="font-family:Georgia,serif;font-weight:400;margin:0 0 4px">Halloween Block Party Interest Form 🎃</h2>
+    <h2 style="font-family:Georgia,serif;font-weight:400;margin:0 0 4px">Halloween Trick-o-streets Interest Form 🎃</h2>
     <p class="hint" style="margin:0 0 8px">The city is closing streets in Prospect Heights for trick-or-treating this Halloween. We want to make St Johns Place a destination with trick-o-treating, candy, costumes, and neighbors. Please sign up to show your interest.</p>
     <div class="evform">
       <label>Your name *</label><input type="text" id="hwName" autocomplete="name">
@@ -835,7 +835,7 @@ function submitCleanup(){
   });
 }
 
-/* halloween block party sign-up → same Signups tab, tagged with the event name */
+/* halloween trick-o-streets sign-up → same Signups tab, tagged with the event name */
 function submitHalloween(){
   const name=document.getElementById('hwName').value.trim();
   const email=document.getElementById('hwEmail').value.trim();
@@ -854,12 +854,12 @@ function submitHalloween(){
   const viaEmail=()=>fetch('https://formsubmit.co/ajax/'+ADOPT_EMAIL,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},
     body:JSON.stringify({_subject:'Halloween interest: '+name,_template:'table',_captcha:'false',name,email:email||'(not provided)',phone:phone||'(not provided)',address:addr||'(not provided)',coming:going,up_for:help,note:note||'(not provided)',household_size:count})})
     .then(r=>{ if(!r.ok) throw 0; });
-  const payload={type:'event',event:'Halloween Block Party 2026 (interest)',name,email,phone,address:addr,activities:interest,headcount:count,note:note};
+  const payload={type:'event',event:'Halloween Trick-o-streets 2026 (interest)',name,email,phone,address:addr,activities:interest,headcount:count,note:note};
   (CARE_API
     ? fetch(CARE_API,{method:'POST',body:JSON.stringify(payload)}).then(r=>{ if(!r.ok) throw 0; }).catch(viaEmail)
     : viaEmail()
   ).then(done).catch(()=>{
-    const mail=`mailto:${ADOPT_EMAIL}?subject=${encodeURIComponent('Halloween block party interest')}&body=${encodeURIComponent(`Name: ${name}\nEmail: ${email||'(not provided)'}\nPhone: ${phone||'(not provided)'}\nAddress: ${addr||'(not provided)'}\nComing: ${going}\nUp for: ${help}\nHousehold: ${count}\nNote: ${note||'(not provided)'}`)}`;
+    const mail=`mailto:${ADOPT_EMAIL}?subject=${encodeURIComponent('Halloween trick-o-streets interest')}&body=${encodeURIComponent(`Name: ${name}\nEmail: ${email||'(not provided)'}\nPhone: ${phone||'(not provided)'}\nAddress: ${addr||'(not provided)'}\nComing: ${going}\nUp for: ${help}\nHousehold: ${count}\nNote: ${note||'(not provided)'}`)}`;
     msg.innerHTML=`Couldn't send automatically.<a href="${mail}">Tap here to email us instead</a>.`;
   });
 }
