@@ -325,19 +325,21 @@
           <label><input type="radio" name="qSaw" value="cond"> Garbage or conditions that are drawing rats</label>
         </div>
         <div class="q"><b>2. Where exactly?</b>
-          <label><input type="radio" name="qWhere" value="sidewalk" checked> On the sidewalk out front</label>
-          <label><input type="radio" name="qWhere" value="front"> Front yard or garden</label>
+          <label><input type="radio" name="qWhere" value="front" checked> Front yard or garden</label>
           <label><input type="radio" name="qWhere" value="back"> Back yard</label>
-          <label><input type="radio" name="qWhere" value="trash"> Where the garbage is kept</label>
-          <label><input type="radio" name="qWhere" value="lot"> An empty lot</label>
+          <label><input type="radio" name="qWhere" value="outtrash"> Outdoor garbage area</label>
+          <label><input type="radio" name="qWhere" value="intrash"> Garbage area inside the building</label>
+          <label><input type="radio" name="qWhere" value="basement"> Basement</label>
+          <label><input type="radio" name="qWhere" value="alley"> Alley</label>
+          <label><input type="radio" name="qWhere" value="sidewalk"> On the sidewalk, not tied to one building</label>
           <label><input type="radio" name="qWhere" value="street"> In the street or by the curb</label>
         </div>
         <div class="q"><b>3. What kind of place is it?</b>
           <label><input type="radio" name="qBldg" value="apt" checked> Apartment building, 3 or more units</label>
           <label><input type="radio" name="qBldg" value="house"> House, 1 or 2 families</label>
           <label><input type="radio" name="qBldg" value="store"> Store or business</label>
+          <label><input type="radio" name="qBldg" value="vacantbld"> Vacant building</label>
           <label><input type="radio" name="qBldg" value="lot"> Empty lot</label>
-          <label><input type="radio" name="qBldg" value="street"> Not a building, just the street</label>
         </div>
         <div class="q"><b>4. Has it been happening a while?</b>
           <label><input type="radio" name="qRec" value="yes" checked> Yes, it keeps happening</label>
@@ -354,7 +356,7 @@
       <div class="cf">
         <div class="fname">Problem Detail</div>
         <div class="cfrow"><div class="val" id="cf1">Rat Sighting</div><button class="copy" onclick="copyCheat('cf1',this)">Copy</button></div>
-        <p class="why">Pick this from the dropdown. Choose Signs of Rodents instead if you saw burrows or droppings but no rat.</p>
+        <p class="why">The full list is Condition Attracting Rodents, Mouse Sighting, Rat Sighting, Signs of Rodents.</p>
       </div>
       <div class="cf">
         <div class="fname">Description</div>
@@ -376,12 +378,12 @@
       <div class="cf">
         <div class="fname">Location Type</div>
         <div class="cfrow"><div class="val" id="cf5">3+ Family Apt. Building</div><button class="copy" onclick="copyCheat('cf5',this)">Copy</button></div>
-        <p class="why">Most buildings on St Johns Place. Use Street Area if it is not tied to a building.</p>
+        <p class="why">Most buildings on St Johns Place. The list also has Street and Sidewalk as their own types, for anything not tied to a building.</p>
       </div>
       <div class="cf">
         <div class="fname">Location Detail</div>
         <div class="cfrow"><div class="val" id="cf6">Yard</div><button class="copy" onclick="copyCheat('cf6',this)">Copy</button></div>
-        <p class="why">Use Yard for a front or back yard. Other choices include Sidewalk and Garbage Storage Area.</p>
+        <p class="why">The options change depending on the Location Type above. For an apartment building they are Alley, Inside Apartment, Inside Building Basement, Garbage Area, Hallway, Laundry, Lobby, Stairway, Outdoor Garbage Area, and Yard.</p>
       </div>
       <div class="cf">
         <div class="fname">Address</div>
@@ -391,6 +393,7 @@
       <div class="cf">
         <div class="fname">Position</div>
         <div class="cfrow"><div class="val" id="cf8">In Front Of</div><button class="copy" onclick="copyCheat('cf8',this)">Copy</button></div>
+        <p class="why">In Front Of covers most reports. Use In Back Of for a back yard, or On The Side Of for an alley.</p>
       </div>
 
       <p class="stepname">Screen 3 · Who</p>
@@ -1075,17 +1078,22 @@ const CHEAT_SAW={
   live:{detail:'Rat Sighting', saw:'live rats'},
   dead:{detail:'Rat Sighting', saw:'a dead rat'},
   signs:{detail:'Signs of Rodents', saw:'open burrow holes in the dirt and droppings, though I did not see a rat at the time'},
-  cond:{detail:'Conditions Attracting Rodents', saw:'garbage left out on the ground instead of in sealed bins, which is drawing rats'}
+  cond:{detail:'Condition Attracting Rodents', saw:'garbage left out on the ground instead of in sealed bins, which is drawing rats'}
 };
+/* Location Detail options differ per Location Type, so resolve them together.
+   Lists confirmed against the live NYC311 form. */
 const CHEAT_WHERE={
-  sidewalk:{where:'on the sidewalk directly in front of this building', loc:'Sidewalk', pos:'In Front Of'},
-  front:{where:'in the front yard of this building', loc:'Yard', pos:'In Front Of'},
-  back:{where:'in the back yard behind this building', loc:'Yard', pos:'Rear Of'},
-  trash:{where:'where the garbage is kept at this building', loc:'Garbage Storage Area', pos:'In Front Of'},
-  lot:{where:'on the empty lot at this address', loc:'Vacant Lot', pos:'In Front Of'},
-  street:{where:'in the street and along the curb at this address', loc:'Street Area', pos:'In Front Of'}
+  front:{text:'in the front yard of this building', pos:'In Front Of', detail:{any:'Yard'}},
+  back:{text:'in the back yard behind this building', pos:'In Back Of', detail:{any:'Yard'}},
+  outtrash:{text:'in the outdoor garbage area of this building', pos:'In Front Of', detail:{any:'Outdoor Garbage Area'}},
+  intrash:{text:'in the garbage area inside this building', pos:'In Front Of', detail:{any:'Inside Building - Garbage Area', 'Commercial Building':'Indoor Garbage Area'}},
+  basement:{text:'in the basement of this building', pos:'In Front Of', detail:{any:'Inside Building - Basement', 'Commercial Building':'Basement'}},
+  alley:{text:'in the alley beside this building', pos:'On The Side Of', detail:{any:'Alley'}},
+  sidewalk:{text:'on the sidewalk at this address', pos:'In Front Of', forceType:'Sidewalk', detail:{any:''}},
+  street:{text:'in the street and along the curb at this address', pos:'In Front Of', forceType:'Street', detail:{any:''}}
 };
-const CHEAT_BLDG={apt:'3+ Family Apt. Building', house:'1-2 Family Dwelling', store:'Commercial Building', lot:'Vacant Lot', street:'Street Area'};
+const CHEAT_BLDG={apt:'3+ Family Apt. Building', house:'1-2 Family Dwelling', store:'Commercial Building',
+                  vacantbld:'Vacant Building', lot:'Vacant Lot'};
 
 function buildCheat(){
   const pick=n=>(document.querySelector('input[name="'+n+'"]:checked')||{}).value;
@@ -1093,15 +1101,20 @@ function buildCheat(){
   const recurring=pick('qRec')==='yes';
   const num=document.getElementById('qNum').value.trim();
 
+  const type=w.forceType||CHEAT_BLDG[pick('qBldg')];
+  let detail=w.detail[type]||w.detail.any;
+  if(type==='Vacant Lot') detail=(detail==='Alley')?'Alley':'N/A';
+  if(!detail) detail='(this Location Type has no detail list, pick whatever 311 offers)';
+
   document.getElementById('cf1').textContent=a.detail;
   document.getElementById('cf4').textContent=recurring?'Yes':'No/Unknown';
-  document.getElementById('cf5').textContent=CHEAT_BLDG[pick('qBldg')];
-  document.getElementById('cf6').textContent=w.loc;
+  document.getElementById('cf5').textContent=type;
+  document.getElementById('cf6').textContent=detail;
   document.getElementById('cf8').textContent=w.pos;
   if(num) document.getElementById('cf7').value=num.toUpperCase().replace(/\s*ST.*$/i,'')+' ST JOHNS PLACE, BROOKLYN';
 
-  let d='Rats are active '+w.where+'. I have seen '+a.saw+'.';
-  if(pick('qWhere')==='trash' && pick('qSaw')!=='cond') d+=' Garbage bags are regularly left out instead of in sealed bins, which is feeding them.';
+  let d='Rats are active '+w.text+'. I have seen '+a.saw+'.';
+  if(pick('qWhere').indexOf('trash')>-1 && pick('qSaw')!=='cond') d+=' Garbage bags are regularly left out instead of in sealed bins, which is feeding them.';
   d+=recurring
     ? ' This has been going on for months and is getting worse.'
     : ' This is the first time I have reported it, but the conditions look established.';
