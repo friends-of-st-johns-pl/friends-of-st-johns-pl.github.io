@@ -328,7 +328,6 @@
           <label><input type="radio" name="qWhere" value="sidewalk" checked> On the sidewalk out front</label>
           <label><input type="radio" name="qWhere" value="front"> Front yard or garden</label>
           <label><input type="radio" name="qWhere" value="back"> Back yard</label>
-          <label><input type="radio" name="qWhere" value="tree"> In a street tree bed</label>
           <label><input type="radio" name="qWhere" value="trash"> Where the garbage is kept</label>
           <label><input type="radio" name="qWhere" value="lot"> An empty lot</label>
           <label><input type="radio" name="qWhere" value="street"> In the street or by the curb</label>
@@ -382,7 +381,7 @@
       <div class="cf">
         <div class="fname">Location Detail</div>
         <div class="cfrow"><div class="val" id="cf6">Yard</div><button class="copy" onclick="copyCheat('cf6',this)">Copy</button></div>
-        <p class="why">Use Yard for the tree bed or front area. Other choices include Sidewalk and Garbage Storage Area.</p>
+        <p class="why">Use Yard for a front or back yard. Other choices include Sidewalk and Garbage Storage Area.</p>
       </div>
       <div class="cf">
         <div class="fname">Address</div>
@@ -1082,7 +1081,6 @@ const CHEAT_WHERE={
   sidewalk:{where:'on the sidewalk directly in front of this building', loc:'Sidewalk', pos:'In Front Of'},
   front:{where:'in the front yard of this building', loc:'Yard', pos:'In Front Of'},
   back:{where:'in the back yard behind this building', loc:'Yard', pos:'Rear Of'},
-  tree:{where:'in the street tree bed in front of this building', loc:'Yard', pos:'In Front Of'},
   trash:{where:'where the garbage is kept at this building', loc:'Garbage Storage Area', pos:'In Front Of'},
   lot:{where:'on the empty lot at this address', loc:'Vacant Lot', pos:'In Front Of'},
   street:{where:'in the street and along the curb at this address', loc:'Street Area', pos:'In Front Of'}
