@@ -40,6 +40,17 @@
   .header-links{display:flex;flex-wrap:wrap;gap:9px;justify-content:center;margin-top:14px;font-family:-apple-system,Arial,sans-serif}
   body:not(.tab-halloween) #halloweenView{display:none}
   #halloweenView{max-width:820px;margin:0 auto 22px;padding:0 24px}
+  body:not(.tab-rats) #ratsView{display:none}
+  #ratsView{max-width:820px;margin:0 auto 22px;padding:0 24px}
+  .step{display:flex;gap:11px;align-items:flex-start;margin:0 0 14px}
+  .step .num{flex:none;width:25px;height:25px;border-radius:50%;background:var(--green);color:#fff;font-family:-apple-system,Arial,sans-serif;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:1px}
+  .step .body{flex:1}
+  .step .body b{display:block;font-size:15px;color:var(--green-dark);margin:0 0 3px}
+  .step .body p{margin:0;font-size:13.5px;color:#5c5648;line-height:1.5}
+  a.filebtn{display:inline-block;background:#b3541e;color:#fff;border-radius:8px;padding:10px 18px;font-size:14.5px;text-decoration:none;font-weight:600;font-family:-apple-system,Arial,sans-serif;margin-top:8px}
+  a.filebtn:hover{filter:brightness(1.08)}
+  .hotspots{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+  .hotspots span{background:#f6ece4;border:1px solid #e4d3c4;color:#8a4b1d;border-radius:12px;padding:3px 10px;font-size:12.5px;font-family:-apple-system,Arial,sans-serif}
   body:not(.tab-cleanup) #cleanupView{display:none}
   #cleanupView{max-width:820px;margin:0 auto 22px;padding:0 24px}
   body:not(.tab-past) #pastView{display:none}
@@ -181,6 +192,7 @@
   <button id="tabBtnCleanup" onclick="showTab('cleanup')">🧹 Trash Cleanup Days</button>
   -->
   <button id="tabBtnHalloween" onclick="showTab('halloween')">🎃 Halloween Trick-o-streets</button>
+  <button id="tabBtnRats" onclick="showTab('rats')">🐀 Report Rats</button>
   <button id="tabBtnResources" onclick="showTab('resources')">🌱 Free Stuff &amp; Deadlines</button>
   <button id="tabBtnTrees" onclick="showTab('trees')">🌳 Our 50 Trees</button>
   <button id="tabBtnPast" onclick="showTab('past')">📖 Past Events</button>
@@ -253,6 +265,61 @@
       <div id="hwMsg"></div>
     </div>
     <img src="halloweeninsta.png" alt="Halloween Block Party" style="max-width:100%;height:auto;margin:20px 0 0;border-radius:4px;display:block">
+  </div>
+</div>
+
+<div id="ratsView" class="no-print">
+  <div class="signup-card">
+    <h2 style="font-family:Georgia,serif;font-weight:400;margin:0 0 4px">Report Rodent Activity 🐀</h2>
+    <p class="hint" style="margin:0 0 12px">Council Member Crystal Hudson's office is pushing the Department of Health to act on our block. They told us plainly what moves the needle: <b>volume of 311 complaints</b>. Every complaint you file gets a number, and we forward those numbers to the district office so they can escalate. One report is a data point. Fifty is a case.</p>
+
+    <div class="step"><div class="num">1</div><div class="body">
+      <b>File the complaint with 311</b>
+      <p>This opens the official NYC311 rat complaint form in a new tab. Pick the exact building address where you saw activity, not just the block. Complaints tied to a specific property are the ones the Health Department acts on.</p>
+      <a class="filebtn" href="https://on.nyc.gov/RatComplaint" target="_blank" rel="noopener">🐀 File a 311 rat complaint</a>
+    </div></div>
+
+    <div class="step"><div class="num">2</div><div class="body">
+      <b>Copy your complaint number</b>
+      <p>At the end, 311 shows a service request number. Copy it before you close the tab. If you already filed one recently, look it up at <a href="https://portal.311.nyc.gov/check-status/" target="_blank" rel="noopener">311 Look Up Service Requests</a>.</p>
+    </div></div>
+
+    <div class="step"><div class="num">3</div><div class="body">
+      <b>Log it with us below</b>
+      <p>We keep a running list and send it to Maddie Morehead at Council Member Hudson's office, who passes it to the Health Department. You only have to do this once per complaint.</p>
+    </div></div>
+
+    <p class="hint" style="margin:14px 0 4px"><b>Buildings neighbors have flagged so far:</b></p>
+    <div class="hotspots">
+      <span>340</span><span>356</span><span>358</span><span>372</span><span>392</span>
+      <span>394</span><span>396</span><span>398</span><span>400</span><span>402</span>
+      <span>404</span><span>406</span><span>403</span><span>417</span><span>446</span><span>448</span>
+    </div>
+    <p class="hint" style="margin:6px 0 0;font-size:12.5px">All St Johns Place. Reported in the neighbor WhatsApp group by Amy and Mike. Not a complete list, report anything you see.</p>
+
+    <div class="evform" style="margin-top:18px;border-top:1px solid var(--line);padding-top:14px">
+      <label>Building address where you saw activity *</label>
+      <input type="text" id="rtAddr" placeholder="e.g. 403 St Johns Pl">
+      <label>Your 311 complaint number</label>
+      <input type="text" id="rtSR" placeholder="e.g. 311-12345678">
+      <p class="hint" style="margin:4px 0 0;font-size:12.5px">Leave blank if you have not filed yet. Come back and log it once you have the number, that is the part the council office needs.</p>
+      <label>What did you see?</label>
+      <div class="evacts">
+        <label class="ck"><input type="checkbox" class="rtsaw" value="live rats"> 🐀 Live rats</label>
+        <label class="ck"><input type="checkbox" class="rtsaw" value="burrows or holes"> 🕳 Burrows or holes in the dirt</label>
+        <label class="ck"><input type="checkbox" class="rtsaw" value="droppings"> ⚫ Droppings</label>
+        <label class="ck"><input type="checkbox" class="rtsaw" value="uncontained garbage"> 🗑 Garbage bags left out, not in bins</label>
+        <label class="ck"><input type="checkbox" class="rtsaw" value="damaged tree bed"> 🌳 Damage to a tree bed</label>
+      </div>
+      <label>When?</label>
+      <input type="text" id="rtWhen" placeholder="e.g. this morning, or Aug 4">
+      <label>Anything else</label>
+      <input type="text" id="rtNote" placeholder="optional">
+      <label>Your name *</label><input type="text" id="rtName" autocomplete="name">
+      <label>Email</label><input type="text" id="rtEmail" autocomplete="email" placeholder="you@example.com">
+      <button style="margin-top:12px" onclick="submitRodent()">Log this report</button>
+      <div id="rtMsg"></div>
+    </div>
   </div>
 </div>
 
@@ -692,18 +759,20 @@ function renderPrintNotes(){
 
 /* ---------------- tabs ---------------- */
 function showTab(name, setHash){
-  ['cleanup','halloween','resources','trees','past'].forEach(n=>document.body.classList.toggle('tab-'+n, n===name));
+  ['cleanup','halloween','rats','resources','trees','past'].forEach(n=>document.body.classList.toggle('tab-'+n, n===name));
   document.getElementById('tabBtnHalloween').classList.toggle('active', name==='halloween');
+  document.getElementById('tabBtnRats').classList.toggle('active', name==='rats');
   document.getElementById('tabBtnResources').classList.toggle('active', name==='resources');
   document.getElementById('tabBtnTrees').classList.toggle('active', name==='trees');
   document.getElementById('tabBtnPast').classList.toggle('active', name==='past');
-  if(setHash!==false) history.replaceState(null,'','#'+({cleanup:'cleanup',halloween:'halloween',resources:'resources',trees:'trees',past:'past'})[name]);
+  if(setHash!==false) history.replaceState(null,'','#'+({cleanup:'cleanup',halloween:'halloween',rats:'rats',resources:'resources',trees:'trees',past:'past'})[name]);
   window.scrollTo(0,0);
 }
-/* deep links: #cleanup, #halloween, #resources, #trees, #past */
+/* deep links: #halloween, #rats, #resources, #trees, #past */
 function openFromHash(){
   const h=location.hash.toLowerCase();
   if(h==='#trees') showTab('trees');
+  else if(h==='#rats'||h==='#rodents') showTab('rats');
   else if(h==='#resources'||h==='#freestuff') showTab('resources');
   else if(h==='#halloween') showTab('halloween');
   else if(h==='#past'||h==='#archive') showTab('past');
@@ -872,6 +941,39 @@ function submitHalloween(){
   ).then(done).catch(()=>{
     const mail=`mailto:${ADOPT_EMAIL}?subject=${encodeURIComponent('Halloween trick-o-streets interest')}&body=${encodeURIComponent(`Name: ${name}\nEmail: ${email||'(not provided)'}\nPhone: ${phone||'(not provided)'}\nAddress: ${addr||'(not provided)'}\nComing: ${going}\nUp for: ${help}\nHousehold: ${count}\nMailing list + WhatsApp: ${wantsList?'yes':'no'}\nNote: ${note||'(not provided)'}`)}`;
     msg.innerHTML=`Couldn't send automatically.<a href="${mail}">Tap here to email us instead</a>.`;
+  });
+}
+
+/* rodent report → "Rodent Reports" tab of the Google Sheet (email fallback) */
+function submitRodent(){
+  const addr=document.getElementById('rtAddr').value.trim();
+  const sr=document.getElementById('rtSR').value.trim();
+  const saw=[...document.querySelectorAll('.rtsaw:checked')].map(c=>c.value).join(', ')||'(not specified)';
+  const when=document.getElementById('rtWhen').value.trim();
+  const note=document.getElementById('rtNote').value.trim();
+  const name=document.getElementById('rtName').value.trim();
+  const email=document.getElementById('rtEmail').value.trim();
+  const msg=document.getElementById('rtMsg');
+  if(!addr){ msg.innerHTML='<span style="color:#c0392b">Please add the building address.</span>'; return; }
+  if(!name){ msg.innerHTML='<span style="color:#c0392b">Please add your name.</span>'; return; }
+  msg.textContent='Sending…';
+  const done=()=>{
+    const extra=sr
+      ? 'We have logged complaint '+esc(sr)+' for '+esc(addr)+'. It goes to the council office with the next batch.'
+      : 'Logged for '+esc(addr)+'. When you have your 311 complaint number, come back and log it. The number is what the council office can actually escalate.';
+    document.querySelector('#ratsView .evform').innerHTML='<b>🐀 Got it, thank you.</b><p class="hint" style="margin:6px 0 0">Thanks '+esc(name)+'. '+extra+'</p>';
+  };
+  const viaEmail=()=>fetch('https://formsubmit.co/ajax/'+ADOPT_EMAIL,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},
+    body:JSON.stringify({_subject:'Rodent report: '+addr+(sr?' ('+sr+')':' (no 311 number yet)'),_template:'table',_captcha:'false',
+      address:addr,complaint_number:sr||'(not filed yet)',observed:saw,when:when||'(not provided)',note:note||'(not provided)',name,email:email||'(not provided)'})})
+    .then(r=>{ if(!r.ok) throw 0; });
+  const payload={type:'rodent',address:addr,sr:sr,observed:saw,when:when,note:note,name:name,email:email};
+  (CARE_API
+    ? fetch(CARE_API,{method:'POST',body:JSON.stringify(payload)}).then(r=>{ if(!r.ok) throw 0; }).catch(viaEmail)
+    : viaEmail()
+  ).then(done).catch(()=>{
+    const mail=`mailto:${ADOPT_EMAIL}?subject=${encodeURIComponent('Rodent report: '+addr)}&body=${encodeURIComponent(`Address: ${addr}\n311 complaint number: ${sr||'(not filed yet)'}\nObserved: ${saw}\nWhen: ${when||'(not provided)'}\nNote: ${note||'(not provided)'}\nName: ${name}\nEmail: ${email||'(not provided)'}`)}`;
+    msg.innerHTML=`Couldn't send automatically. <a href="${mail}">Tap here to email us instead</a>.`;
   });
 }
 
