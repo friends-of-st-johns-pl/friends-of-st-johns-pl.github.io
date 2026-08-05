@@ -51,15 +51,20 @@
   a.filebtn:hover{filter:brightness(1.08)}
   .hotspots{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
   .hotspots span{background:#f6ece4;border:1px solid #e4d3c4;color:#8a4b1d;border-radius:12px;padding:3px 10px;font-size:12.5px;font-family:-apple-system,Arial,sans-serif}
-  .cheat{background:#fbf7ee;border:1px solid var(--line);border-radius:9px;padding:14px 15px;margin:16px 0 0}
-  .cheat h4{margin:0 0 2px;font-family:Georgia,serif;font-size:16px;font-weight:600;color:var(--green-dark)}
+  .cheat{background:#fbf7ee;border:1px solid var(--line);border-radius:9px;padding:12px 15px;margin:16px 0 0}
+  .cheat summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:2px 0}
+  .cheat summary::-webkit-details-marker{display:none}
+  .cheat summary .ct{font-family:Georgia,serif;font-size:16px;font-weight:600;color:var(--green-dark)}
+  .cheat summary .cx{flex:none;font-family:-apple-system,Arial,sans-serif;font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--green-dark);border:1px solid var(--green);border-radius:12px;padding:3px 11px;background:#fff}
+  .cheat[open] summary{margin-bottom:4px}
+  .cheat[open] summary .cx::after{content:''}
   .cheat .stepname{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:#a29a88;font-weight:700;font-family:-apple-system,Arial,sans-serif;margin:14px 0 2px}
   .cheat .stepname:first-of-type{margin-top:10px}
   .cf{margin:0 0 9px}
   .cf .fname{font-size:13px;font-weight:600;color:var(--ink);font-family:-apple-system,Arial,sans-serif;margin:0 0 3px}
   .cfrow{display:flex;gap:6px;align-items:stretch}
   .cfrow .val{flex:1;background:#fff;border:1px solid var(--line);border-radius:6px;padding:7px 9px;font-family:Georgia,serif;font-size:13.5px;color:var(--ink)}
-  .cfrow textarea.val{min-height:96px;resize:vertical;line-height:1.45}
+  .cfrow textarea.val{min-height:150px;resize:vertical;line-height:1.45}
   button.copy{flex:none;background:#fff;color:var(--green-dark);border:1px solid var(--green);border-radius:6px;padding:0 12px;font-size:12.5px;font-weight:600;cursor:pointer}
   button.copy.done{background:var(--green);color:#fff}
   .cfrow textarea.val + button.copy{align-self:flex-start;padding:8px 12px}
@@ -288,7 +293,7 @@
 
     <div class="step"><div class="num">1</div><div class="body">
       <b>File the complaint with 311</b>
-      <p>This opens the NYC311 form for rats outside a property, on the sidewalk or street. Use the exact building address where you saw activity, not just the block. Complaints tied to a specific property are the ones the Health Department acts on.</p>
+      <p>This opens the NYC311 form for rats outside a property, on the sidewalk or street. Use the exact building address where you saw activity, not just the block. Complaints tied to a specific property are the ones the Health Department acts on. Not sure what to type? Open the box below, it has a suggested answer for every field with a copy button.</p>
       <a class="filebtn" href="https://portal.311.nyc.gov/sr-step/?id=043bfa5a-eb90-f111-9b47-6045bdb35676&amp;stepid=4a51f5a5-b04c-e811-a835-000d3a33b1e4" target="_blank" rel="noopener">🐀 File a 311 rat complaint</a>
       <p class="hint" style="margin:8px 0 0;font-size:12.5px">If that link stops working, start from <a href="https://on.nyc.gov/RatComplaint" target="_blank" rel="noopener">on.nyc.gov/RatComplaint</a>.</p>
     </div></div>
@@ -303,8 +308,8 @@
       <p>We keep the running list and send it to Council Member Hudson's office, who passes it to the Health Department. Once per complaint is all it takes.</p>
     </div></div>
 
-    <div class="cheat">
-      <h4>What to put in each 311 field</h4>
+    <details class="cheat">
+      <summary><span class="ct">What to put in each 311 field</span><span class="cx">show</span></summary>
       <p class="hint" style="margin:0 0 2px;font-size:13px">The 311 form has four screens. Here is what to pick and what to paste, in order. Edit anything before you copy it.</p>
 
       <p class="stepname">Screen 1 · What</p>
@@ -355,7 +360,7 @@
 
       <p class="stepname">Screen 4 · Review</p>
       <p class="hint" style="margin:0;font-size:13px">Submit, then copy the complaint number it gives you and paste it into our form below.</p>
-    </div>
+    </details>
 
     <p class="hint" style="margin:14px 0 4px"><b>Buildings flagged so far on St Johns Place:</b></p>
     <div class="hotspots">
@@ -377,7 +382,7 @@
       <label>Want to hear how this goes?</label>
       <div class="evacts">
         <label class="ck"><input type="checkbox" id="rtNews"> 📬 Send me the newsletter</label>
-        <label class="ck"><input type="checkbox" id="rtWa"> 💬 Add me to the neighbor WhatsApp group</label>
+        <label class="ck"><input type="checkbox" id="rtWa"> 💬 Add me to the WhatsApp group</label>
       </div>
       <button style="margin-top:12px" onclick="submitRodent()">Add my complaint number</button>
       <div id="rtMsg"></div>
@@ -1027,6 +1032,13 @@ function legacyCopy(text, after){
   try{ document.execCommand('copy'); after(); }catch(e){}
   document.body.removeChild(ta);
 }
+/* summary badge reads "show" when closed, "hide" when open */
+(function(){
+  const d=document.querySelector('details.cheat'); if(!d) return;
+  const x=d.querySelector('summary .cx');
+  const sync=()=>{ x.textContent=d.open?'hide':'show'; };
+  d.addEventListener('toggle',sync); sync();
+})();
 (function(){
   const el=document.getElementById('cf3'); if(!el) return;
   const d=new Date(); let h=d.getHours(); const ap=h>=12?'PM':'AM'; h=h%12||12;
