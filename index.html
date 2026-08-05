@@ -177,7 +177,9 @@
 </header>
 
 <nav class="tabs no-print">
+  <!-- CLEANUP TAB HIDDEN, no cleanup day scheduled. Restore this button and the two showTab defaults in the script below to bring it back.
   <button id="tabBtnCleanup" onclick="showTab('cleanup')">🧹 Trash Cleanup Days</button>
+  -->
   <button id="tabBtnHalloween" onclick="showTab('halloween')">🎃 Halloween Trick-o-streets</button>
   <button id="tabBtnResources" onclick="showTab('resources')">🌱 Free Stuff &amp; Deadlines</button>
   <button id="tabBtnTrees" onclick="showTab('trees')">🌳 Our 50 Trees</button>
@@ -687,7 +689,6 @@ function renderPrintNotes(){
 /* ---------------- tabs ---------------- */
 function showTab(name, setHash){
   ['cleanup','halloween','resources','trees','past'].forEach(n=>document.body.classList.toggle('tab-'+n, n===name));
-  document.getElementById('tabBtnCleanup').classList.toggle('active', name==='cleanup');
   document.getElementById('tabBtnHalloween').classList.toggle('active', name==='halloween');
   document.getElementById('tabBtnResources').classList.toggle('active', name==='resources');
   document.getElementById('tabBtnTrees').classList.toggle('active', name==='trees');
@@ -702,9 +703,9 @@ function openFromHash(){
   else if(h==='#resources'||h==='#freestuff') showTab('resources');
   else if(h==='#halloween') showTab('halloween');
   else if(h==='#past'||h==='#archive') showTab('past');
-  else showTab('cleanup');
+  else showTab('halloween');   // #cleanup lands here too, that tab is hidden
 }
-showTab('cleanup', false);   // default: first tab
+showTab('halloween', false);   // default: first visible tab
 openFromHash();
 window.addEventListener('hashchange',openFromHash);
 
