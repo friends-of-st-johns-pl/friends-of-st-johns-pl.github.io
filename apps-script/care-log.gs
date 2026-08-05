@@ -7,10 +7,11 @@
  *  - POST {type:'rodent', ...} → appends a row to the "Rodent Reports" tab
  *  - GET → JSON {care:[...], adopted:{treeId: initials}}
  *
- * RODENT REPORTS: neighbors file their own 311 complaint on the NYC311 site,
- * then log the complaint number through the website form. Run
- * draftRodentDigest() to draft an email of the new numbers to the Council
- * Member's office. See the notes above that function.
+ * RODENT REPORTS: neighbors report through the website form and give
+ * permission for us to file the 311 complaint in their name. Rows with an
+ * empty "311 Complaint #" still need filing; paste the number in once you
+ * have it. Run draftRodentDigest() to draft an email of the new numbers to
+ * the Council Member's office. See the notes above that function.
  *
  * APPROVING AN ADOPTION: open the "Adoptions" tab and type  yes  in the
  * "Approved?" column of the request's row (edit the Initials cell if you
@@ -24,15 +25,17 @@
  *  5. Put that URL in CARE_API in index.html.
  */
 
-/* One spreadsheet for everything — tabs: "Care Log", "Adoptions", "Signups" */
+/* One spreadsheet for everything — tabs: "Care Log", "Adoptions", "Signups",
+   "Rodent Reports" */
 const SHEET_ID = '1eIuY-l-IZfyZCnQWvkK20isJqXawGv9cD6HoWcuB1bw';
 const EVENT_SHEET_ID = SHEET_ID;
 const CARE_HEADERS = ['Timestamp', 'Tree ID', 'Walk #', 'Species', 'Address', 'Action', 'By'];
 const ADOPT_HEADERS = ['Timestamp', 'Tree ID', 'Walk #', 'Species', 'Address',
                        'Name', 'Email', 'Phone', 'Initials', 'Approved?'];
 const EVENT_HEADERS = ['Timestamp', 'Event', 'Name', 'Email', 'Phone', 'Activities', 'Party size'];
-const RODENT_HEADERS = ['Timestamp', 'Address', '311 Complaint #', 'Observed', 'When seen',
-                        'Note', 'Reported by', 'Email', 'Sent to council?'];
+const RODENT_HEADERS = ['Timestamp', '311 Complaint #', 'Address', 'Location type', 'Where exactly',
+                        'Observed', 'When seen', 'Details', 'Name', 'Phone', 'Email',
+                        'Permission to file', 'Sent to council?'];
 
 function tab_(name, headers, sheetId) {
   const ss = SpreadsheetApp.openById(sheetId || SHEET_ID);
@@ -57,8 +60,9 @@ function doPost(e) {
   } else if (d.type === 'rodent') {
     if (!d.address || !d.name) throw new Error('missing fields');
     tab_('Rodent Reports', RODENT_HEADERS).appendRow([
-      new Date(), s(d.address, 120), s(d.sr, 40), s(d.observed, 200), s(d.when, 60),
-      s(d.note, 300), s(d.name, 80), s(d.email, 80), '']);
+      new Date(), s(d.sr, 40), s(d.address, 120), s(d.place, 60), s(d.spot, 60),
+      s(d.observed, 200), s(d.when, 60), s(d.note, 400), s(d.name, 80), s(d.phone, 40),
+      s(d.email, 80), s(d.ok, 5), '']);
   } else if (d.type === 'adopt') {
     if (!d.treeId || !d.name) throw new Error('missing fields');
     tab_('Adoptions', ADOPT_HEADERS).appendRow([
@@ -97,9 +101,9 @@ function draftRodentDigest() {
   const rows = sh.getDataRange().getValues();
   const pending = [];
   for (let i = 1; i < rows.length; i++) {
-    const sr = String(rows[i][2]).trim();
-    const sent = String(rows[i][8]).trim();
-    if (sr && !sent) pending.push({ row: i + 1, date: rows[i][0], addr: rows[i][1], sr: sr, saw: rows[i][3], when: rows[i][4] });
+    const sr = String(rows[i][1]).trim();
+    const sent = String(rows[i][12]).trim();
+    if (sr && !sent) pending.push({ row: i + 1, date: rows[i][0], sr: sr, addr: rows[i][2], saw: rows[i][5], when: rows[i][6] });
   }
   if (!pending.length) {
     SpreadsheetApp.getUi().alert('Nothing new to send. Every complaint number has already gone to the council office.');
@@ -128,7 +132,7 @@ function draftRodentDigest() {
   GmailApp.createDraft(COUNCIL_EMAIL, subject, body);
 
   const stamp = Utilities.formatDate(new Date(), tz, 'yyyy-MM-dd');
-  pending.forEach(function (p) { sh.getRange(p.row, 9).setValue('drafted ' + stamp); });
+  pending.forEach(function (p) { sh.getRange(p.row, 13).setValue('drafted ' + stamp); });
   SpreadsheetApp.getUi().alert('Draft created in Gmail with ' + pending.length
     + ' complaint number' + (pending.length === 1 ? '' : 's') + '. Open Gmail to review and send.');
 }
