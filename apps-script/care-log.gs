@@ -7,11 +7,11 @@
  *  - POST {type:'rodent', ...} → appends a row to the "Rodent Reports" tab
  *  - GET → JSON {care:[...], adopted:{treeId: initials}}
  *
- * RODENT REPORTS: neighbors report through the website form and give
- * permission for us to file the 311 complaint in their name. Rows with an
- * empty "311 Complaint #" still need filing; paste the number in once you
- * have it. Run draftRodentDigest() to draft an email of the new numbers to
- * the Council Member's office. See the notes above that function.
+ * RODENT REPORTS: neighbors file their own 311 complaint on the NYC311 site,
+ * then paste the complaint number into the form on our website. Run
+ * draftRodentDigest() to draft an email of the new numbers to the Council
+ * Member's office. See the notes above that function. Contact details stay
+ * in the sheet and are never included in that email.
  *
  * APPROVING AN ADOPTION: open the "Adoptions" tab and type  yes  in the
  * "Approved?" column of the request's row (edit the Initials cell if you
@@ -33,9 +33,8 @@ const CARE_HEADERS = ['Timestamp', 'Tree ID', 'Walk #', 'Species', 'Address', 'A
 const ADOPT_HEADERS = ['Timestamp', 'Tree ID', 'Walk #', 'Species', 'Address',
                        'Name', 'Email', 'Phone', 'Initials', 'Approved?'];
 const EVENT_HEADERS = ['Timestamp', 'Event', 'Name', 'Email', 'Phone', 'Activities', 'Party size'];
-const RODENT_HEADERS = ['Timestamp', '311 Complaint #', 'Address', 'Location type', 'Where exactly',
-                        'Observed', 'When seen', 'Details', 'Name', 'Phone', 'Email',
-                        'Permission to file', 'Sent to council?'];
+const RODENT_HEADERS = ['Timestamp', '311 Complaint #', 'Name', 'Email', 'Phone',
+                        'Newsletter?', 'WhatsApp?', 'Sent to council?'];
 
 function tab_(name, headers, sheetId) {
   const ss = SpreadsheetApp.openById(sheetId || SHEET_ID);
@@ -58,11 +57,10 @@ function doPost(e) {
       new Date(), s(d.event, 60), s(d.name, 80), s(d.email, 80), s(d.phone, 40),
       s(d.activities, 120), s(d.headcount, 10)]);
   } else if (d.type === 'rodent') {
-    if (!d.address || !d.name) throw new Error('missing fields');
+    if (!d.sr) throw new Error('missing fields');
     tab_('Rodent Reports', RODENT_HEADERS).appendRow([
-      new Date(), s(d.sr, 40), s(d.address, 120), s(d.place, 60), s(d.spot, 60),
-      s(d.observed, 200), s(d.when, 60), s(d.note, 400), s(d.name, 80), s(d.phone, 40),
-      s(d.email, 80), s(d.ok, 5), '']);
+      new Date(), s(d.sr, 40), s(d.name, 80), s(d.email, 80), s(d.phone, 40),
+      s(d.newsletter, 5), s(d.whatsapp, 5), '']);
   } else if (d.type === 'adopt') {
     if (!d.treeId || !d.name) throw new Error('missing fields');
     tab_('Adoptions', ADOPT_HEADERS).appendRow([
@@ -102,8 +100,8 @@ function draftRodentDigest() {
   const pending = [];
   for (let i = 1; i < rows.length; i++) {
     const sr = String(rows[i][1]).trim();
-    const sent = String(rows[i][12]).trim();
-    if (sr && !sent) pending.push({ row: i + 1, date: rows[i][0], sr: sr, addr: rows[i][2], saw: rows[i][5], when: rows[i][6] });
+    const sent = String(rows[i][7]).trim();
+    if (sr && !sent) pending.push({ row: i + 1, date: rows[i][0], sr: sr });
   }
   if (!pending.length) {
     SpreadsheetApp.getUi().alert('Nothing new to send. Every complaint number has already gone to the council office.');
@@ -117,12 +115,9 @@ function draftRodentDigest() {
     + (pending.length === 1 ? '' : 's') + ' from neighbors on St Johns Place between Underhill '
     + 'and Washington Avenues. Please pass these along to the Department of Health.\n\n';
   pending.forEach(function (p) {
-    body += '311 complaint ' + p.sr + '\n'
-      + '  Address: ' + p.addr + '\n'
-      + '  Observed: ' + p.saw + '\n'
-      + '  Seen: ' + (p.when || 'not specified') + '\n'
-      + '  Logged: ' + fmt(p.date) + '\n\n';
+    body += '  ' + p.sr + '   (reported to us ' + fmt(p.date) + ')\n';
   });
+  body += '\n';
   body += 'We are collecting these through a form on our website so neighbors have one place to '
     + 'report and we can keep the numbers organized for your office. Happy to change the format '
     + 'if something else is easier for you.\n\nThank you,\n' + GROUP_NAME + '\n';
@@ -132,7 +127,7 @@ function draftRodentDigest() {
   GmailApp.createDraft(COUNCIL_EMAIL, subject, body);
 
   const stamp = Utilities.formatDate(new Date(), tz, 'yyyy-MM-dd');
-  pending.forEach(function (p) { sh.getRange(p.row, 13).setValue('drafted ' + stamp); });
+  pending.forEach(function (p) { sh.getRange(p.row, 8).setValue('drafted ' + stamp); });
   SpreadsheetApp.getUi().alert('Draft created in Gmail with ' + pending.length
     + ' complaint number' + (pending.length === 1 ? '' : 's') + '. Open Gmail to review and send.');
 }

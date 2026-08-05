@@ -271,21 +271,23 @@
 <div id="ratsView" class="no-print">
   <div class="signup-card">
     <h2 style="font-family:Georgia,serif;font-weight:400;margin:0 0 4px">Report Rodent Activity 🐀</h2>
-    <p class="hint" style="margin:0 0 12px">Council Member Crystal Hudson's office is pushing the Department of Health to act on our block. They told us plainly what moves the needle: <b>volume of 311 complaints</b>. Every complaint you file gets a number, and we forward those numbers to the district office so they can escalate. One report is a data point. Fifty is a case.</p>
+    <p class="hint" style="margin:0 0 12px">Council Member Crystal Hudson's office is pushing the Department of Health to act on our block. They told us plainly what moves the needle: <b>volume of 311 complaints</b>. Every complaint gets a number, and we forward those numbers to the district office so they can escalate. One report is a data point. Fifty is a case.</p>
 
     <div class="step"><div class="num">1</div><div class="body">
-      <b>Tell us what you saw, below</b>
-      <p>Fill in the form. It asks for the same things NYC311 asks for, so nothing gets lost.</p>
+      <b>File the complaint with 311</b>
+      <p>This opens the NYC311 form for rats outside a property, on the sidewalk or street. Use the exact building address where you saw activity, not just the block. Complaints tied to a specific property are the ones the Health Department acts on.</p>
+      <a class="filebtn" href="https://portal.311.nyc.gov/sr-step/?id=043bfa5a-eb90-f111-9b47-6045bdb35676&amp;stepid=4a51f5a5-b04c-e811-a835-000d3a33b1e4" target="_blank" rel="noopener">🐀 File a 311 rat complaint</a>
+      <p class="hint" style="margin:8px 0 0;font-size:12.5px">If that link stops working, start from <a href="https://on.nyc.gov/RatComplaint" target="_blank" rel="noopener">on.nyc.gov/RatComplaint</a>.</p>
     </div></div>
 
     <div class="step"><div class="num">2</div><div class="body">
-      <b>We file the 311 complaint in your name</b>
-      <p>You give permission at the bottom of the form and we do the typing. The complaint is recorded as yours, which matters, because the Health Department counts how many separate people are reporting. Prefer to do it yourself? <a href="https://portal.311.nyc.gov/sr-step/?id=043bfa5a-eb90-f111-9b47-6045bdb35676&amp;stepid=4a51f5a5-b04c-e811-a835-000d3a33b1e4" target="_blank" rel="noopener">Go straight to the NYC311 rat complaint form</a> and paste your complaint number into ours. If that link stops working, start from <a href="https://on.nyc.gov/RatComplaint" target="_blank" rel="noopener">on.nyc.gov/RatComplaint</a>.</p>
+      <b>Copy your complaint number</b>
+      <p>At the end, 311 shows a service request number. Copy it before you close the tab. Filed one already? Look it up at <a href="https://portal.311.nyc.gov/check-status/" target="_blank" rel="noopener">311 Look Up Service Requests</a>.</p>
     </div></div>
 
     <div class="step"><div class="num">3</div><div class="body">
-      <b>The numbers go to the council office</b>
-      <p>We keep a running list of complaint numbers and send it to Council Member Hudson's office, who passes it to the Health Department. Already filed something before? Look up the number at <a href="https://portal.311.nyc.gov/check-status/" target="_blank" rel="noopener">311 Look Up Service Requests</a> and add it below.</p>
+      <b>Add the number below</b>
+      <p>We keep the running list and send it to Council Member Hudson's office, who passes it to the Health Department. Once per complaint is all it takes.</p>
     </div></div>
 
     <p class="hint" style="margin:14px 0 4px"><b>Buildings flagged so far on St Johns Place:</b></p>
@@ -296,63 +298,21 @@
     </div>
 
     <div class="evform" style="margin-top:18px;border-top:1px solid var(--line);padding-top:14px">
-      <label>Address where you saw it *</label>
-      <input type="text" id="rtAddr" placeholder="e.g. 403 St Johns Pl">
-
-      <label>What kind of place is it?</label>
-      <select id="rtPlace">
-        <option>Residential building</option>
-        <option>Commercial building</option>
-        <option>Sidewalk or street</option>
-        <option>Vacant lot</option>
-        <option>Construction site</option>
-        <option>Catch basin or sewer</option>
-        <option>Other</option>
-      </select>
-
-      <label>Where exactly?</label>
-      <select id="rtSpot">
-        <option>Front of the building</option>
-        <option>Garbage storage area</option>
-        <option>Sidewalk</option>
-        <option>Tree bed</option>
-        <option>Back yard</option>
-        <option>Side alley</option>
-        <option>Basement or cellar</option>
-        <option>Other</option>
-      </select>
-
-      <label>What did you see? *</label>
+      <label>Your 311 complaint number *</label>
+      <input type="text" id="rtSR" placeholder="paste it here">
+      <label>Your name</label>
+      <input type="text" id="rtName" autocomplete="name" placeholder="optional">
+      <label>Email</label>
+      <input type="text" id="rtEmail" autocomplete="email" placeholder="optional">
+      <label>Phone</label>
+      <input type="text" id="rtPhone" autocomplete="tel" placeholder="optional">
+      <p class="hint" style="margin:6px 0 0;font-size:12.5px">Leave all three blank to report anonymously. We only pass complaint numbers to the council office, never your contact details.</p>
+      <label>Want to hear how this goes?</label>
       <div class="evacts">
-        <label class="ck"><input type="checkbox" class="rtsaw" value="live rats"> 🐀 Live rats</label>
-        <label class="ck"><input type="checkbox" class="rtsaw" value="dead rats"> ☠️ Dead rats</label>
-        <label class="ck"><input type="checkbox" class="rtsaw" value="burrows or holes"> 🕳 Burrows or holes in the dirt</label>
-        <label class="ck"><input type="checkbox" class="rtsaw" value="droppings"> ⚫ Droppings</label>
-        <label class="ck"><input type="checkbox" class="rtsaw" value="gnaw marks or damage"> 🦷 Gnaw marks or damage</label>
-        <label class="ck"><input type="checkbox" class="rtsaw" value="garbage bags left out, not in bins"> 🗑 Garbage bags left out, not in bins</label>
+        <label class="ck"><input type="checkbox" id="rtNews"> 📬 Send me the newsletter</label>
+        <label class="ck"><input type="checkbox" id="rtWa"> 💬 Add me to the neighbor WhatsApp group</label>
       </div>
-
-      <label>When did you see it?</label>
-      <input type="text" id="rtWhen" placeholder="e.g. this morning, or Aug 4">
-
-      <label>Anything else 311 should know?</label>
-      <textarea id="rtNote" placeholder="How many, time of day, how long it has been going on, anything you have already tried" style="min-height:70px"></textarea>
-
-      <label>Your name *</label>
-      <input type="text" id="rtName" autocomplete="name" placeholder="first and last">
-      <label>Your phone *</label>
-      <input type="text" id="rtPhone" autocomplete="tel" placeholder="(718) …">
-      <label>Your email</label>
-      <input type="text" id="rtEmail" autocomplete="email" placeholder="you@example.com">
-      <div class="evacts" style="margin-top:10px">
-        <label class="ck"><input type="checkbox" id="rtOk"> ✅ Yes, file the 311 complaint in my name using these details</label>
-      </div>
-      <p class="hint" style="margin:6px 0 0;font-size:12.5px">We file it as you, not as us, because the Health Department weighs how many separate people are reporting. 311 records you as the complainant, so any updates or follow up questions go to you directly. We only use your details for this complaint.</p>
-
-      <label>Already filed it yourself? Paste the 311 number</label>
-      <input type="text" id="rtSR" placeholder="then you can skip the box above">
-
-      <button style="margin-top:12px" onclick="submitRodent()">Send this report</button>
+      <button style="margin-top:12px" onclick="submitRodent()">Add my complaint number</button>
       <div id="rtMsg"></div>
     </div>
   </div>
@@ -689,6 +649,9 @@ setInterval(loadCareLog, 5*60*1000);
 
 /* ---------------- adopt a tree ---------------- */
 const ADOPT_EMAIL='friendsofstjohnspl@gmail.com';
+/* keep these in step with the two links in the page header */
+const NEWSLETTER_URL='https://groups.google.com/g/friendsofstjohnspl';
+const WHATSAPP_URL='https://chat.whatsapp.com/KCA3CQHuaLtBGasIB9OqvF';
 /* approved adoptions come from the group's Google Sheet ("Adoptions" tab,
    Approved? = yes) merged over adoptions.json (manual override in the repo) */
 let ADOPTED={}, ADOPTED_JSON={}, SHEET_ADOPTED={};
@@ -981,43 +944,33 @@ function submitHalloween(){
 
 /* rodent report → "Rodent Reports" tab of the Google Sheet (email fallback) */
 function submitRodent(){
-  const addr=document.getElementById('rtAddr').value.trim();
-  const place=document.getElementById('rtPlace').value;
-  const spot=document.getElementById('rtSpot').value;
-  const saw=[...document.querySelectorAll('.rtsaw:checked')].map(c=>c.value).join(', ');
-  const when=document.getElementById('rtWhen').value.trim();
-  const note=document.getElementById('rtNote').value.trim();
-  const name=document.getElementById('rtName').value.trim();
-  const phone=document.getElementById('rtPhone').value.trim();
-  const email=document.getElementById('rtEmail').value.trim();
-  const ok=document.getElementById('rtOk').checked;
   const sr=document.getElementById('rtSR').value.trim();
-  const contact=[phone,email].filter(Boolean).join(' · ');
+  const name=document.getElementById('rtName').value.trim();
+  const email=document.getElementById('rtEmail').value.trim();
+  const phone=document.getElementById('rtPhone').value.trim();
+  const news=document.getElementById('rtNews').checked;
+  const wa=document.getElementById('rtWa').checked;
   const msg=document.getElementById('rtMsg');
-  if(!addr){ msg.innerHTML='<span style="color:#c0392b">Please add the address where you saw it.</span>'; return; }
-  if(!saw){ msg.innerHTML='<span style="color:#c0392b">Please tick at least one thing you saw.</span>'; return; }
-  if(!name){ msg.innerHTML='<span style="color:#c0392b">Please add your name.</span>'; return; }
-  if(!phone){ msg.innerHTML='<span style="color:#c0392b">Please add a phone number. 311 asks for one on every complaint.</span>'; return; }
-  if(!sr && !ok){ msg.innerHTML='<span style="color:#c0392b">Please tick the box giving us permission to file in your name, or paste a 311 number if you already filed it yourself.</span>'; return; }
+  if(!sr){ msg.innerHTML='<span style="color:#c0392b">Please paste your 311 complaint number.</span>'; return; }
+  if(news && !email){ msg.innerHTML='<span style="color:#c0392b">Please add an email so we can send you the newsletter.</span>'; return; }
   msg.textContent='Sending…';
   const done=()=>{
-    const extra=sr
-      ? 'Complaint '+esc(sr)+' is logged for '+esc(addr)+'. It goes to the council office with the next batch.'
-      : 'We will file this with 311 for '+esc(addr)+' and add the complaint number to the list we send the council office. Nothing else you need to do.';
-    document.querySelector('#ratsView .evform').innerHTML='<b>🐀 Got it, thank you.</b><p class="hint" style="margin:6px 0 0">'+extra+' Report again any time you see activity, every complaint counts.</p>';
+    let extra='';
+    if(news) extra+='<p class="hint" style="margin:8px 0 0">📬 Newsletter: join at <a href="'+NEWSLETTER_URL+'" target="_blank" rel="noopener">our Google Group</a>.</p>';
+    if(wa) extra+='<p class="hint" style="margin:8px 0 0">💬 WhatsApp: <a href="'+WHATSAPP_URL+'" target="_blank" rel="noopener">tap here to join the neighbor group</a>.</p>';
+    document.querySelector('#ratsView .evform').innerHTML='<b>🐀 Got it, thank you.</b><p class="hint" style="margin:6px 0 0">Complaint '+esc(sr)+' is logged. It goes to the council office with the next batch. Add another any time you file one, every number counts.</p>'+extra;
   };
   const viaEmail=()=>fetch('https://formsubmit.co/ajax/'+ADOPT_EMAIL,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},
-    body:JSON.stringify({_subject:(sr?'311 complaint '+sr+': ':'NEEDS FILING: ')+addr,_template:'table',_captcha:'false',
-      address:addr,location_type:place,where_exactly:spot,observed:saw,when_seen:when||'(not provided)',
-      details:note||'(not provided)',complaint_number:sr||'NOT FILED YET, we file this one',
-      reported_by:name,phone:phone,email:email||'(not provided)',permission_to_file:ok?'yes':'no'})})
+    body:JSON.stringify({_subject:'311 rodent complaint: '+sr,_template:'table',_captcha:'false',
+      complaint_number:sr,name:name||'(anonymous)',email:email||'(not provided)',phone:phone||'(not provided)',
+      newsletter:news?'yes':'no',whatsapp:wa?'yes':'no'})})
     .then(r=>{ if(!r.ok) throw 0; });
-  const payload={type:'rodent',address:addr,place:place,spot:spot,observed:saw,when:when,note:note,name:name,phone:phone,email:email,ok:ok?'yes':'no',sr:sr};
+  const payload={type:'rodent',sr:sr,name:name,email:email,phone:phone,newsletter:news?'yes':'no',whatsapp:wa?'yes':'no'};
   (CARE_API
     ? fetch(CARE_API,{method:'POST',body:JSON.stringify(payload)}).then(r=>{ if(!r.ok) throw 0; }).catch(viaEmail)
     : viaEmail()
   ).then(done).catch(()=>{
-    const mail=`mailto:${ADOPT_EMAIL}?subject=${encodeURIComponent('Rodent report: '+addr)}&body=${encodeURIComponent(`Address: ${addr}\nPlace: ${place}\nWhere exactly: ${spot}\nSaw: ${saw}\nWhen: ${when||'(not provided)'}\nDetails: ${note||'(not provided)'}\n311 complaint number: ${sr||'(not filed yet)'}\nName: ${name}\nContact: ${contact}\nPermission to file: ${ok?'yes':'no'}`)}`;
+    const mail=`mailto:${ADOPT_EMAIL}?subject=${encodeURIComponent('311 rodent complaint: '+sr)}&body=${encodeURIComponent(`311 complaint number: ${sr}\nName: ${name||'(anonymous)'}\nEmail: ${email||'(not provided)'}\nPhone: ${phone||'(not provided)'}\nNewsletter: ${news?'yes':'no'}\nWhatsApp: ${wa?'yes':'no'}`)}`;
     msg.innerHTML=`Couldn't send automatically. <a href="${mail}">Tap here to email us instead</a>.`;
   });
 }
