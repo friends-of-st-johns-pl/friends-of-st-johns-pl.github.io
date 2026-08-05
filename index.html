@@ -32,7 +32,7 @@
   a.whatsapp:hover{filter:brightness(1.08)}
   a.newsletter{display:inline-block;background:#fff;color:var(--green-dark);border:1px solid var(--green);border-radius:20px;padding:7px 16px;font-size:13px;text-decoration:none;font-weight:600}
   a.newsletter:hover{filter:brightness(1.05)}
-  .tabs{display:flex;justify-content:center;gap:10px;padding:18px 12px 4px;font-family:-apple-system,Arial,sans-serif}
+  .tabs{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;padding:18px 12px 4px;font-family:-apple-system,Arial,sans-serif}
   .tabs button{font-size:14.5px;padding:10px 22px;border-radius:24px;border:1.5px solid var(--green);background:#fff;color:var(--green-dark);font-weight:600}
   .tabs button.active{background:var(--green);color:#fff}
   body:not(.tab-trees) .layout{display:none}
@@ -51,6 +51,19 @@
   a.filebtn:hover{filter:brightness(1.08)}
   .hotspots{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
   .hotspots span{background:#f6ece4;border:1px solid #e4d3c4;color:#8a4b1d;border-radius:12px;padding:3px 10px;font-size:12.5px;font-family:-apple-system,Arial,sans-serif}
+  .cheat{background:#fbf7ee;border:1px solid var(--line);border-radius:9px;padding:14px 15px;margin:16px 0 0}
+  .cheat h4{margin:0 0 2px;font-family:Georgia,serif;font-size:16px;font-weight:600;color:var(--green-dark)}
+  .cheat .stepname{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:#a29a88;font-weight:700;font-family:-apple-system,Arial,sans-serif;margin:14px 0 2px}
+  .cheat .stepname:first-of-type{margin-top:10px}
+  .cf{margin:0 0 9px}
+  .cf .fname{font-size:13px;font-weight:600;color:var(--ink);font-family:-apple-system,Arial,sans-serif;margin:0 0 3px}
+  .cfrow{display:flex;gap:6px;align-items:stretch}
+  .cfrow .val{flex:1;background:#fff;border:1px solid var(--line);border-radius:6px;padding:7px 9px;font-family:Georgia,serif;font-size:13.5px;color:var(--ink)}
+  .cfrow textarea.val{min-height:96px;resize:vertical;line-height:1.45}
+  button.copy{flex:none;background:#fff;color:var(--green-dark);border:1px solid var(--green);border-radius:6px;padding:0 12px;font-size:12.5px;font-weight:600;cursor:pointer}
+  button.copy.done{background:var(--green);color:#fff}
+  .cfrow textarea.val + button.copy{align-self:flex-start;padding:8px 12px}
+  .cf .why{font-size:12px;color:#8a8272;margin:3px 0 0;font-family:-apple-system,Arial,sans-serif}
   body:not(.tab-cleanup) #cleanupView{display:none}
   #cleanupView{max-width:820px;margin:0 auto 22px;padding:0 24px}
   body:not(.tab-past) #pastView{display:none}
@@ -289,6 +302,60 @@
       <b>Add the number below</b>
       <p>We keep the running list and send it to Council Member Hudson's office, who passes it to the Health Department. Once per complaint is all it takes.</p>
     </div></div>
+
+    <div class="cheat">
+      <h4>What to put in each 311 field</h4>
+      <p class="hint" style="margin:0 0 2px;font-size:13px">The 311 form has four screens. Here is what to pick and what to paste, in order. Edit anything before you copy it.</p>
+
+      <p class="stepname">Screen 1 · What</p>
+      <div class="cf">
+        <div class="fname">Problem Detail</div>
+        <div class="cfrow"><div class="val" id="cf1">Rat Sighting</div><button class="copy" onclick="copyCheat('cf1',this)">Copy</button></div>
+        <p class="why">Pick this from the dropdown. Choose Signs of Rodents instead if you saw burrows or droppings but no rat.</p>
+      </div>
+      <div class="cf">
+        <div class="fname">Description</div>
+        <div class="cfrow"><textarea class="val" id="cf2">Rats are active on the sidewalk and in the tree beds directly in front of this building. I have seen live rats and open burrow holes in the dirt of the tree bed. Garbage bags are regularly left out on the sidewalk instead of in sealed bins, which is feeding them. This has been going on for months and is getting worse. Multiple neighbors on this block have filed complaints about the same conditions. Please send an inspector and issue violations if warranted.</textarea><button class="copy" onclick="copyCheat('cf2',this)">Copy</button></div>
+        <p class="why">Change anything that does not match what you saw. Specific and factual works better than angry.</p>
+      </div>
+      <div class="cf">
+        <div class="fname">Date/Time Observed</div>
+        <div class="cfrow"><div class="val" id="cf3">…</div><button class="copy" onclick="copyCheat('cf3',this)">Copy</button></div>
+        <p class="why">Filled in with right now, in the format 311 expects. Change it if you saw them earlier.</p>
+      </div>
+      <div class="cf">
+        <div class="fname">Is this a recurring problem?</div>
+        <div class="cfrow"><div class="val" id="cf4">Yes</div><button class="copy" onclick="copyCheat('cf4',this)">Copy</button></div>
+        <p class="why">On our block this is almost always yes, and it tells the inspector this is not a one off.</p>
+      </div>
+
+      <p class="stepname">Screen 2 · Where</p>
+      <div class="cf">
+        <div class="fname">Location Type</div>
+        <div class="cfrow"><div class="val" id="cf5">3+ Family Apt. Building</div><button class="copy" onclick="copyCheat('cf5',this)">Copy</button></div>
+        <p class="why">Most buildings on St Johns Place. Use 1-2 Family Dwelling for a small house, or Street Area if it is not tied to a building.</p>
+      </div>
+      <div class="cf">
+        <div class="fname">Location Detail</div>
+        <div class="cfrow"><div class="val" id="cf6">Yard</div><button class="copy" onclick="copyCheat('cf6',this)">Copy</button></div>
+        <p class="why">Use Yard for the tree bed or front area. Other choices include Sidewalk and Garbage Storage Area.</p>
+      </div>
+      <div class="cf">
+        <div class="fname">Address</div>
+        <div class="cfrow"><input class="val" id="cf7" value="403 ST JOHNS PLACE, BROOKLYN"><button class="copy" onclick="copyCheat('cf7',this)">Copy</button></div>
+        <p class="why">Change the house number to the building you are reporting, then pick the match 311 offers.</p>
+      </div>
+      <div class="cf">
+        <div class="fname">Position</div>
+        <div class="cfrow"><div class="val" id="cf8">In Front Of</div><button class="copy" onclick="copyCheat('cf8',this)">Copy</button></div>
+      </div>
+
+      <p class="stepname">Screen 3 · Who</p>
+      <p class="hint" style="margin:0;font-size:13px">Your own name and contact details. 311 uses them to send you the status. You can file anonymously, but a named complaint carries more weight and you will not get updates without one.</p>
+
+      <p class="stepname">Screen 4 · Review</p>
+      <p class="hint" style="margin:0;font-size:13px">Submit, then copy the complaint number it gives you and paste it into our form below.</p>
+    </div>
 
     <p class="hint" style="margin:14px 0 4px"><b>Buildings flagged so far on St Johns Place:</b></p>
     <div class="hotspots">
@@ -941,6 +1008,30 @@ function submitHalloween(){
     msg.innerHTML=`Couldn't send automatically.<a href="${mail}">Tap here to email us instead</a>.`;
   });
 }
+
+/* 311 cheat sheet: copy buttons + a Date/Time Observed set to now */
+function copyCheat(id, btn){
+  const el=document.getElementById(id);
+  const text=('value' in el ? el.value : el.textContent).trim();
+  const flash=()=>{ const old=btn.textContent; btn.textContent='Copied'; btn.classList.add('done');
+    setTimeout(()=>{ btn.textContent=old; btn.classList.remove('done'); },1400); };
+  if(navigator.clipboard && window.isSecureContext){
+    navigator.clipboard.writeText(text).then(flash).catch(()=>legacyCopy(text,flash));
+  } else legacyCopy(text,flash);
+}
+function legacyCopy(text, after){
+  const ta=document.createElement('textarea');
+  ta.value=text; ta.setAttribute('readonly','');
+  ta.style.cssText='position:absolute;left:-9999px';
+  document.body.appendChild(ta); ta.select();
+  try{ document.execCommand('copy'); after(); }catch(e){}
+  document.body.removeChild(ta);
+}
+(function(){
+  const el=document.getElementById('cf3'); if(!el) return;
+  const d=new Date(); let h=d.getHours(); const ap=h>=12?'PM':'AM'; h=h%12||12;
+  el.textContent=`${d.getMonth()+1}/${d.getDate()}/${d.getFullYear()} ${h}:${String(d.getMinutes()).padStart(2,'0')} ${ap}`;
+})();
 
 /* rodent report → "Rodent Reports" tab of the Google Sheet (email fallback) */
 function submitRodent(){

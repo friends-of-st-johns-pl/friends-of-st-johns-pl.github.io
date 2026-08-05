@@ -84,9 +84,13 @@ function doPost(e) {
  *
  * It gathers every row in "Rodent Reports" that has a 311 complaint number and
  * an empty "Sent to council?" cell, then creates a GMAIL DRAFT addressed to the
- * council office. It does NOT send. Open Gmail, read it, and hit send yourself.
- * Rows are only marked as sent after the draft is created, so nothing is
- * reported twice.
+ * council office. It does NOT send, and it does NOT touch the sheet.
+ *
+ * The "Sent to council?" column is yours to fill in by hand, only after you have
+ * actually sent the mail. That is deliberate. If the script marked rows itself,
+ * a draft you never sent would retire those complaint numbers forever and they
+ * would never reach the council office. Running this twice before you mark the
+ * rows just produces a second draft with the same numbers, which is harmless.
  *
  * To send automatically instead, swap GmailApp.createDraft for GmailApp.sendEmail
  * below. Only do that if you are comfortable with mail leaving without review.
@@ -126,10 +130,12 @@ function draftRodentDigest() {
     + (pending.length === 1 ? '' : 's');
   GmailApp.createDraft(COUNCIL_EMAIL, subject, body);
 
-  const stamp = Utilities.formatDate(new Date(), tz, 'yyyy-MM-dd');
-  pending.forEach(function (p) { sh.getRange(p.row, 8).setValue('drafted ' + stamp); });
   SpreadsheetApp.getUi().alert('Draft created in Gmail with ' + pending.length
-    + ' complaint number' + (pending.length === 1 ? '' : 's') + '. Open Gmail to review and send.');
+    + ' complaint number' + (pending.length === 1 ? '' : 's') + '.\n\n'
+    + '1. Open Gmail, read it, and send it.\n'
+    + '2. Then type "sent" and the date in the "Sent to council?" column for those rows.\n\n'
+    + 'This script never fills that column in for you. Until a row is marked, it stays in the '
+    + 'queue and will appear in the next draft, so nothing is lost if you decide not to send.');
 }
 
 function doGet() {
