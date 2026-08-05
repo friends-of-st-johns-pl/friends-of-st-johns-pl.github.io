@@ -338,7 +338,6 @@
           <label><input type="radio" name="qBldg" value="apt" checked> Apartment building, 3 or more units</label>
           <label><input type="radio" name="qBldg" value="house"> House, 1 or 2 families</label>
           <label><input type="radio" name="qBldg" value="store"> Store or business</label>
-          <label><input type="radio" name="qBldg" value="vacantbld"> Vacant building</label>
           <label><input type="radio" name="qBldg" value="lot"> Empty lot</label>
         </div>
         <div class="q"><b>4. Has it been happening a while?</b>
@@ -383,7 +382,7 @@
       <div class="cf">
         <div class="fname">Location Detail</div>
         <div class="cfrow"><div class="val" id="cf6">Yard</div><button class="copy" onclick="copyCheat('cf6',this)">Copy</button></div>
-        <p class="why">The options change depending on the Location Type above. For an apartment building they are Alley, Inside Apartment, Inside Building Basement, Garbage Area, Hallway, Laundry, Lobby, Stairway, Outdoor Garbage Area, and Yard.</p>
+        <p class="why">The options change depending on the Location Type above. For an apartment building they are Alley, Inside Apartment, Inside Building Basement, Garbage Area, Hallway, Laundry, Lobby, Stairway, Outdoor Garbage Area, and Yard. Street and Sidewalk only offer N/A.</p>
       </div>
       <div class="cf">
         <div class="fname">Address</div>
@@ -1089,11 +1088,10 @@ const CHEAT_WHERE={
   intrash:{text:'in the garbage area inside this building', pos:'In Front Of', detail:{any:'Inside Building - Garbage Area', 'Commercial Building':'Indoor Garbage Area'}},
   basement:{text:'in the basement of this building', pos:'In Front Of', detail:{any:'Inside Building - Basement', 'Commercial Building':'Basement'}},
   alley:{text:'in the alley beside this building', pos:'On The Side Of', detail:{any:'Alley'}},
-  sidewalk:{text:'on the sidewalk at this address', pos:'In Front Of', forceType:'Sidewalk', detail:{any:''}},
-  street:{text:'in the street and along the curb at this address', pos:'In Front Of', forceType:'Street', detail:{any:''}}
+  sidewalk:{text:'on the sidewalk at this address', pos:'In Front Of', forceType:'Sidewalk', detail:{any:'N/A'}},
+  street:{text:'in the street and along the curb at this address', pos:'In Front Of', forceType:'Street', detail:{any:'N/A'}}
 };
-const CHEAT_BLDG={apt:'3+ Family Apt. Building', house:'1-2 Family Dwelling', store:'Commercial Building',
-                  vacantbld:'Vacant Building', lot:'Vacant Lot'};
+const CHEAT_BLDG={apt:'3+ Family Apt. Building', house:'1-2 Family Dwelling', store:'Commercial Building', lot:'Vacant Lot'};
 
 function buildCheat(){
   const pick=n=>(document.querySelector('input[name="'+n+'"]:checked')||{}).value;
@@ -1104,7 +1102,6 @@ function buildCheat(){
   const type=w.forceType||CHEAT_BLDG[pick('qBldg')];
   let detail=w.detail[type]||w.detail.any;
   if(type==='Vacant Lot') detail=(detail==='Alley')?'Alley':'N/A';
-  if(!detail) detail='(this Location Type has no detail list, pick whatever 311 offers)';
 
   document.getElementById('cf1').textContent=a.detail;
   document.getElementById('cf4').textContent=recurring?'Yes':'No/Unknown';
