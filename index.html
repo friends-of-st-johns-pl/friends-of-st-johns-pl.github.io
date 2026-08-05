@@ -245,6 +245,10 @@
       </div>
       <label>Anything else? Ideas welcome</label>
       <input type="text" id="hwNote" placeholder="optional">
+      <label>Stay in touch</label>
+      <div class="evacts">
+        <label class="ck"><input type="checkbox" id="hwList"> ✉️ Add me to the Friends of St Johns Place mailing list and neighbor listserv</label>
+      </div>
       <button style="margin-top:12px" onclick="submitHalloween()">I'm interested</button>
       <div id="hwMsg"></div>
     </div>
@@ -849,21 +853,23 @@ function submitHalloween(){
   const going=(document.querySelector('.hwgo:checked')||{}).value||'(not selected)';
   const help=[...document.querySelectorAll('.hwhelp:checked')].map(c=>c.value).join(', ')||'none';
   const note=document.getElementById('hwNote').value.trim();
+  const wantsList=document.getElementById('hwList').checked;
   const msg=document.getElementById('hwMsg');
   if(!name){ msg.innerHTML='<span style="color:#c0392b">Please add your name.</span>'; return; }
   if(!email && !phone){ msg.innerHTML='<span style="color:#c0392b">Please add an email or a phone number.</span>'; return; }
+  if(wantsList && !email){ msg.innerHTML='<span style="color:#c0392b">Please add an email so we can add you to the mailing list.</span>'; return; }
   msg.textContent='Sending…';
-  const interest=going+(help!=='none'?' · up for: '+help:'')+(note?' · note: '+note:'');
+  const interest=going+(help!=='none'?' · up for: '+help:'')+(wantsList?' · WANTS MAILING LIST':'')+(note?' · note: '+note:'');
   const done=()=>{ document.querySelector('#halloweenView .evform').innerHTML='<b>🎃 Thank you!</b><p class="hint" style="margin:6px 0 0">Thanks '+esc(name)+'. You are on the list. We are using these responses to apply for the street closure permit, and we will email everyone once we hear back.</p>'; };
   const viaEmail=()=>fetch('https://formsubmit.co/ajax/'+ADOPT_EMAIL,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},
-    body:JSON.stringify({_subject:'Halloween interest: '+name,_template:'table',_captcha:'false',name,email:email||'(not provided)',phone:phone||'(not provided)',address:addr||'(not provided)',coming:going,up_for:help,note:note||'(not provided)',household_size:count})})
+    body:JSON.stringify({_subject:'Halloween interest: '+name,_template:'table',_captcha:'false',name,email:email||'(not provided)',phone:phone||'(not provided)',address:addr||'(not provided)',coming:going,up_for:help,mailing_list:wantsList?'YES, add to mailing list and listserv':'no',note:note||'(not provided)',household_size:count})})
     .then(r=>{ if(!r.ok) throw 0; });
-  const payload={type:'event',event:'Halloween Trick-o-streets 2026 (interest)',name,email,phone,address:addr,activities:interest,headcount:count,note:note};
+  const payload={type:'event',event:'Halloween Trick-o-streets 2026 (interest)',name,email,phone,address:addr,activities:interest,headcount:count,note:note,mailinglist:wantsList?'yes':'no'};
   (CARE_API
     ? fetch(CARE_API,{method:'POST',body:JSON.stringify(payload)}).then(r=>{ if(!r.ok) throw 0; }).catch(viaEmail)
     : viaEmail()
   ).then(done).catch(()=>{
-    const mail=`mailto:${ADOPT_EMAIL}?subject=${encodeURIComponent('Halloween trick-o-streets interest')}&body=${encodeURIComponent(`Name: ${name}\nEmail: ${email||'(not provided)'}\nPhone: ${phone||'(not provided)'}\nAddress: ${addr||'(not provided)'}\nComing: ${going}\nUp for: ${help}\nHousehold: ${count}\nNote: ${note||'(not provided)'}`)}`;
+    const mail=`mailto:${ADOPT_EMAIL}?subject=${encodeURIComponent('Halloween trick-o-streets interest')}&body=${encodeURIComponent(`Name: ${name}\nEmail: ${email||'(not provided)'}\nPhone: ${phone||'(not provided)'}\nAddress: ${addr||'(not provided)'}\nComing: ${going}\nUp for: ${help}\nHousehold: ${count}\nMailing list: ${wantsList?'yes':'no'}\nNote: ${note||'(not provided)'}`)}`;
     msg.innerHTML=`Couldn't send automatically.<a href="${mail}">Tap here to email us instead</a>.`;
   });
 }
