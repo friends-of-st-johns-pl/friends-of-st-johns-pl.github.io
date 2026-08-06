@@ -215,15 +215,15 @@
 </header>
 
 <nav class="tabs no-print">
-  <!-- CLEANUP TAB HIDDEN, no cleanup day scheduled. Restore this button and the two showTab defaults in the script below to bring it back.
-  <button id="tabBtnCleanup" onclick="showTab('cleanup')">🧹 Trash Cleanup Days</button>
+  <!-- CLEANUP TAB HIDDEN, no cleanup day scheduled. Uncomment this button to bring the tab back; the tab script picks it up on its own.
+  <button id="tabBtnCleanup" data-tab="cleanup" onclick="showTab('cleanup')">🧹 Trash Cleanup Days</button>
   -->
-  <button id="tabBtnRats" onclick="showTab('rats')">🐀 Rats</button>
-  <button id="tabBtnPlanting" onclick="showTab('planting')">🌱 Planting Day</button>
-  <button id="tabBtnHalloween" onclick="showTab('halloween')">🎃 Halloween Trick-o-streets</button>
-  <button id="tabBtnResources" onclick="showTab('resources')">🌱 Free Stuff &amp; Deadlines</button>
-  <button id="tabBtnTrees" onclick="showTab('trees')">🌳 Our 50 Trees</button>
-  <button id="tabBtnPast" onclick="showTab('past')">📖 Past Events</button>
+  <button id="tabBtnRats" data-tab="rats" onclick="showTab('rats')">🐀 Rats</button>
+  <button id="tabBtnPlanting" data-tab="planting" onclick="showTab('planting')">🌱 Planting Day</button>
+  <button id="tabBtnHalloween" data-tab="halloween" onclick="showTab('halloween')">🎃 Halloween Trick-o-streets</button>
+  <button id="tabBtnResources" data-tab="resources" onclick="showTab('resources')">🌱 Free Stuff &amp; Deadlines</button>
+  <button id="tabBtnTrees" data-tab="trees" onclick="showTab('trees')">🌳 Our 50 Trees</button>
+  <button id="tabBtnPast" data-tab="past" onclick="showTab('past')">📖 Past Events</button>
 </nav>
 
 <div class="toolbar no-print">
@@ -916,29 +916,28 @@ function renderPrintNotes(){
 }
 
 /* ---------------- tabs ---------------- */
+/* Everything here reads the tab buttons in the DOM, so reordering them in the
+   markup reorders the site and the default follows automatically. Commenting a
+   button out hides that tab without touching any of this. */
+const TAB_VIEWS=['cleanup','halloween','planting','rats','resources','trees','past'];
+const tabButtons=()=>[...document.querySelectorAll('.tabs button[data-tab]')];
+const firstTab=()=>{ const b=tabButtons()[0]; return b?b.dataset.tab:TAB_VIEWS[0]; };
+const hasTab=n=>tabButtons().some(b=>b.dataset.tab===n);
+
 function showTab(name, setHash){
-  ['cleanup','halloween','planting','rats','resources','trees','past'].forEach(n=>document.body.classList.toggle('tab-'+n, n===name));
-  document.getElementById('tabBtnHalloween').classList.toggle('active', name==='halloween');
-  document.getElementById('tabBtnRats').classList.toggle('active', name==='rats');
-  document.getElementById('tabBtnPlanting').classList.toggle('active', name==='planting');
-  document.getElementById('tabBtnResources').classList.toggle('active', name==='resources');
-  document.getElementById('tabBtnTrees').classList.toggle('active', name==='trees');
-  document.getElementById('tabBtnPast').classList.toggle('active', name==='past');
-  if(setHash!==false) history.replaceState(null,'','#'+({cleanup:'cleanup',halloween:'halloween',planting:'planting',rats:'rats',resources:'resources',trees:'trees',past:'past'})[name]);
+  if(!hasTab(name)) name=firstTab();
+  TAB_VIEWS.forEach(n=>document.body.classList.toggle('tab-'+n, n===name));
+  tabButtons().forEach(b=>b.classList.toggle('active', b.dataset.tab===name));
+  if(setHash!==false) history.replaceState(null,'','#'+name);
   window.scrollTo(0,0);
 }
-/* deep links: #rats, #planting, #halloween, #resources, #trees, #past */
+/* deep links, including a few older spellings that still get shared around */
+const HASH_ALIASES={rodents:'rats', plantandpicnic:'planting', freestuff:'resources', archive:'past', events:'planting'};
 function openFromHash(){
-  const h=location.hash.toLowerCase();
-  if(h==='#trees') showTab('trees');
-  else if(h==='#rats'||h==='#rodents') showTab('rats');
-  else if(h==='#planting'||h==='#plantandpicnic') showTab('planting');
-  else if(h==='#resources'||h==='#freestuff') showTab('resources');
-  else if(h==='#halloween') showTab('halloween');
-  else if(h==='#past'||h==='#archive') showTab('past');
-  else showTab('halloween');   // #cleanup lands here too, that tab is hidden
+  const h=location.hash.toLowerCase().replace(/^#/,'');
+  showTab(HASH_ALIASES[h]||h);   // showTab falls back to the first tab if unknown or hidden
 }
-showTab('halloween', false);   // default: first visible tab
+showTab(firstTab(), false);
 openFromHash();
 window.addEventListener('hashchange',openFromHash);
 
