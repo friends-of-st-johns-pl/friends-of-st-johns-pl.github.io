@@ -403,6 +403,7 @@
     </details>
 
     <p class="hint" style="margin:14px 0 4px"><b>Buildings flagged so far on St Johns Place:</b></p>
+    <p class="hint" style="margin:0 0 6px;font-size:13px">If your building is on this list, file anyway. Several complaints about the same address is what pushes the city to send an inspector, so a second and third report on a building already listed does more than a first report somewhere new.</p>
     <div class="hotspots">
       <span>340</span><span>356</span><span>358</span><span>372</span><span>392</span>
       <span>394</span><span>396</span><span>398</span><span>400</span><span>402</span>
@@ -426,6 +427,24 @@
       </div>
       <button style="margin-top:12px" onclick="submitRodent()">Add my complaint number</button>
       <div id="rtMsg"></div>
+    </div>
+  </div>
+
+  <div class="signup-card" style="margin-top:18px">
+    <h2 style="font-family:Georgia,serif;font-weight:400;margin:0 0 4px">Rat Training 🐀</h2>
+    <p class="hint" style="margin:0 0 10px"><b>Saturday, September 12 at 11am</b><br>In the backyard at <b>365 St Johns Place</b>.</p>
+    <p class="hint" style="margin:0 0 12px">Come learn how rats actually live on a block like ours, what makes a building attractive to them, and what we can change. Free, open to any neighbor, and useful whether or not you have seen one yourself.</p>
+    <div class="evform">
+      <label>Your name *</label><input type="text" id="rtrName" autocomplete="name">
+      <label>Email</label><input type="text" id="rtrEmail" autocomplete="email" placeholder="you@example.com">
+      <label>Phone</label><input type="text" id="rtrPhone" autocomplete="tel" placeholder="(718) …">
+      <label>How many people are you bringing (including you)?</label>
+      <input type="text" id="rtrCount" inputmode="numeric" placeholder="1" style="max-width:110px">
+      <div class="evacts" style="margin-top:12px">
+        <label class="ck"><input type="checkbox" id="rtrHelp"> 🙋 I can help set up or bring chairs</label>
+      </div>
+      <button style="margin-top:12px" onclick="submitRatTraining()">Save me a spot</button>
+      <div id="rtrMsg"></div>
     </div>
   </div>
 </div>
@@ -1136,6 +1155,33 @@ function buildCheat(){
   const d=new Date(); let h=d.getHours(); const ap=h>=12?'PM':'AM'; h=h%12||12;
   el.textContent=`${d.getMonth()+1}/${d.getDate()}/${d.getFullYear()} ${h}:${String(d.getMinutes()).padStart(2,'0')} ${ap}`;
 })();
+
+/* rat training signup → Signups tab of the Google Sheet (email fallback) */
+function submitRatTraining(){
+  const name=document.getElementById('rtrName').value.trim();
+  const email=document.getElementById('rtrEmail').value.trim();
+  const phone=document.getElementById('rtrPhone').value.trim();
+  const count=document.getElementById('rtrCount').value.trim()||'1';
+  const help=document.getElementById('rtrHelp').checked;
+  const msg=document.getElementById('rtrMsg');
+  if(!name){ msg.innerHTML='<span style="color:#c0392b">Please add your name.</span>'; return; }
+  if(!email && !phone){ msg.innerHTML='<span style="color:#c0392b">Please add an email or a phone number.</span>'; return; }
+  msg.textContent='Sending…';
+  const activities='Attending'+(help?' · can help set up':'');
+  const done=()=>{ document.querySelector('#ratsView .signup-card:last-child .evform').innerHTML='<b>🐀 You are in!</b><p class="hint" style="margin:6px 0 0">Thanks '+esc(name)+'. Saturday, September 12 at 11am, backyard at 365 St Johns Place. We will send a reminder closer to the day.</p>'; };
+  const viaEmail=()=>fetch('https://formsubmit.co/ajax/'+ADOPT_EMAIL,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},
+    body:JSON.stringify({_subject:'Rat training signup: '+name,_template:'table',_captcha:'false',
+      name,email:email||'(not provided)',phone:phone||'(not provided)',party_size:count,helping:help?'yes':'no'})})
+    .then(r=>{ if(!r.ok) throw 0; });
+  const payload={type:'event',event:'Rat Training (Sept 12, 2026)',name,email,phone,activities:activities,headcount:count};
+  (CARE_API
+    ? fetch(CARE_API,{method:'POST',body:JSON.stringify(payload)}).then(r=>{ if(!r.ok) throw 0; }).catch(viaEmail)
+    : viaEmail()
+  ).then(done).catch(()=>{
+    const mail=`mailto:${ADOPT_EMAIL}?subject=${encodeURIComponent('Rat training signup')}&body=${encodeURIComponent(`Name: ${name}\nEmail: ${email||'(not provided)'}\nPhone: ${phone||'(not provided)'}\nParty size: ${count}\nCan help set up: ${help?'yes':'no'}`)}`;
+    msg.innerHTML=`Couldn't send automatically. <a href="${mail}">Tap here to email us instead</a>.`;
+  });
+}
 
 /* rodent report → "Rodent Reports" tab of the Google Sheet (email fallback) */
 function submitRodent(){
