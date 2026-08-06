@@ -262,7 +262,7 @@
 <div id="plantingView" class="no-print">
   <div class="signup-card">
     <h2 style="font-family:Georgia,serif;font-weight:400;margin:0 0 4px">St Johns Plants 🌱</h2>
-    <p class="hint" style="margin:0 0 10px"><b>Saturday, October 3, 9am to 2pm</b><br>Our block's <b>City of Forest Day 2026</b>. Planting all morning, lunch together after.</p>
+    <p class="hint" style="margin:0 0 10px"><b>Saturday, October 3, 9am to 2pm</b><br>Our block's <b><a href="https://forestforall.nyc/city-of-forest-day/" target="_blank" rel="noopener" style="color:var(--green-dark)">City of Forest Day 2026</a></b>. Planting all morning, lunch together after.</p>
     <p class="hint" style="margin:0 0 12px">We put plants in the ground along the whole block, then sit down and eat. Bring gloves and a trowel if you have them, and bring nothing at all if you do not. Come for an hour or stay the whole day.</p>
     <div class="evform">
       <label>Your name *</label><input type="text" id="pdName" autocomplete="name">
@@ -324,7 +324,36 @@
 
 <div id="ratsView" class="no-print">
   <div class="signup-card">
-    <h2 style="font-family:Georgia,serif;font-weight:400;margin:0 0 14px">Report Rodent Activity 🐀</h2>
+    <h2 style="font-family:Georgia,serif;font-weight:400;margin:0 0 4px">Rat Training 🐀</h2>
+    <p class="hint" style="margin:0 0 10px"><b>Saturday, September 12 at 11am</b><br>In the backyard at <b>365 St Johns Place</b>.</p>
+    <p class="hint" style="margin:0 0 12px">Come learn how rats actually live on a block like ours, what makes a building attractive to them, and what we can change. Free, open to any neighbor, and useful whether or not you have seen one yourself.</p>
+
+    <div class="evform">
+      <label>Your name *</label><input type="text" id="rtName" autocomplete="name">
+      <label>Email</label><input type="text" id="rtEmail" autocomplete="email" placeholder="you@example.com">
+      <label>Phone</label><input type="text" id="rtPhone" autocomplete="tel" placeholder="(718) …">
+      <label>How many people are you bringing (including you)?</label>
+      <input type="text" id="rtCount" inputmode="numeric" placeholder="1" style="max-width:110px">
+      <div class="evacts" style="margin-top:12px">
+        <label class="ck"><input type="checkbox" id="rtHelp"> 🙋 I can help set up or bring chairs</label>
+      </div>
+
+      <div style="border-top:1px solid var(--line);margin:16px 0 0;padding-top:12px">
+        <label style="margin-top:0">Your 311 complaint number</label>
+        <input type="text" id="rtSR" placeholder="paste it here">
+        <p class="hint" style="margin:6px 0 0;font-size:12.5px">Filed a rat complaint with 311? Add the number and we pass it to the council office. Only adding a number and not coming to the training? Leave your name blank to stay anonymous.</p>
+      </div>
+
+      <label>Want to hear how this goes?</label>
+      <div class="evacts">
+        <label class="ck"><input type="checkbox" id="rtNews"> 📬 Send me the newsletter</label>
+        <label class="ck"><input type="checkbox" id="rtWa"> 💬 Add me to the WhatsApp group</label>
+      </div>
+      <button style="margin-top:12px" onclick="submitRats()">Send this in</button>
+      <div id="rtMsg"></div>
+    </div>
+
+    <h3 style="font-family:Georgia,serif;font-weight:400;font-size:22px;margin:24px 0 10px;padding-top:16px;border-top:1px solid var(--line)">Rat on Rats 🐀</h3>
     <div class="step"><div class="num">1</div><div class="body">
       <b>File the complaint with 311</b>
       <p>This opens the NYC311 form for rats outside a property, on the sidewalk or street. Use the exact building address where you saw activity, not just the block. Complaints tied to a specific property are the ones the Health Department acts on. Not sure what to type? Open the box below, it has a suggested answer for every field with a copy button.</p>
@@ -338,9 +367,10 @@
     </div></div>
 
     <div class="step"><div class="num">3</div><div class="body">
-      <b>Add the number below</b>
-      <p>We keep the running list and send it to Council Member Hudson's office, who passes it to the Health Department. Once per complaint is all it takes.</p>
+      <b>Add the number up top</b>
+      <p>Paste it into the complaint number box above. We keep the running list and send it to Council Member Hudson's office, who passes it to the Health Department. Once per complaint is all it takes.</p>
     </div></div>
+
 
     <details class="cheat">
       <summary><span class="ct">What to put in each 311 field</span><span class="cx">show</span></summary>
@@ -437,43 +467,6 @@
       <span>340</span><span>356</span><span>358</span><span>372</span><span>392</span>
       <span>394</span><span>396</span><span>398</span><span>400</span><span>402</span>
       <span>404</span><span>406</span><span>403</span><span>417</span><span>446</span><span>448</span>
-    </div>
-
-    <div class="evform" style="margin-top:18px;border-top:1px solid var(--line);padding-top:14px">
-      <label>Your 311 complaint number *</label>
-      <input type="text" id="rtSR" placeholder="paste it here">
-      <label>Your name</label>
-      <input type="text" id="rtName" autocomplete="name" placeholder="optional">
-      <label>Email</label>
-      <input type="text" id="rtEmail" autocomplete="email" placeholder="optional">
-      <label>Phone</label>
-      <input type="text" id="rtPhone" autocomplete="tel" placeholder="optional">
-      <p class="hint" style="margin:6px 0 0;font-size:12.5px">Leave all three blank to report anonymously. We only pass complaint numbers to the council office, never your contact details.</p>
-      <label>Want to hear how this goes?</label>
-      <div class="evacts">
-        <label class="ck"><input type="checkbox" id="rtNews"> 📬 Send me the newsletter</label>
-        <label class="ck"><input type="checkbox" id="rtWa"> 💬 Add me to the WhatsApp group</label>
-      </div>
-      <button style="margin-top:12px" onclick="submitRodent()">Add my complaint number</button>
-      <div id="rtMsg"></div>
-    </div>
-  </div>
-
-  <div class="signup-card" style="margin-top:18px">
-    <h2 style="font-family:Georgia,serif;font-weight:400;margin:0 0 4px">Rat Training 🐀</h2>
-    <p class="hint" style="margin:0 0 10px"><b>Saturday, September 12 at 11am</b><br>In the backyard at <b>365 St Johns Place</b>.</p>
-    <p class="hint" style="margin:0 0 12px">Come learn how rats actually live on a block like ours, what makes a building attractive to them, and what we can change. Free, open to any neighbor, and useful whether or not you have seen one yourself.</p>
-    <div class="evform">
-      <label>Your name *</label><input type="text" id="rtrName" autocomplete="name">
-      <label>Email</label><input type="text" id="rtrEmail" autocomplete="email" placeholder="you@example.com">
-      <label>Phone</label><input type="text" id="rtrPhone" autocomplete="tel" placeholder="(718) …">
-      <label>How many people are you bringing (including you)?</label>
-      <input type="text" id="rtrCount" inputmode="numeric" placeholder="1" style="max-width:110px">
-      <div class="evacts" style="margin-top:12px">
-        <label class="ck"><input type="checkbox" id="rtrHelp"> 🙋 I can help set up or bring chairs</label>
-      </div>
-      <button style="margin-top:12px" onclick="submitRatTraining()">Save me a spot</button>
-      <div id="rtrMsg"></div>
     </div>
   </div>
 </div>
@@ -1010,6 +1003,7 @@ const RESOURCES = [
   /* --- Contests & recognition --- */
   {g:"Contests & recognition", n:"Greenest Block in Brooklyn: BBG", u:"https://www.bbg.org/community/greenestblock", d:"Free borough-wide contest open to residential blocks. Categories include Best Street Tree Beds. Winners announced in August.", open:[3,5], w:"Register March through May"},
   /* --- Getting help & reporting --- */
+  {g:"Getting help & reporting", n:"City of Forest Day: register as an event host", u:"https://forestforall.nyc/city-of-forest-day/", d:"Citywide day of urban forest activities run by Forest for All NYC with Trees New York and NYC Parks, held Saturday October 3, 2026. Registering our planting day puts it on the citywide map and brings volunteers who are looking for somewhere to help. Host registration closes August 7, 2026.", open:[6,8], w:"Host registration closes August 7"},
   {g:"Getting help & reporting", n:"SAPO block party permit: file for the Halloween party", u:"https://www.nyc.gov/site/cecm/permitting/permit-types/block-parties.page", d:"Street closure permits must be filed 60 days ahead, so an Oct 31 party means filing by September 1. You also need a block association letter or 20 resident signatures for the Community Board, and there is a fee. Events are capped at 9 hours between 9am and 7pm, one block, and no selling goods. Amplified sound needs a separate $45 NYPD permit, filed no more than 5 days before.", open:[7,8], w:"File in July or August for a Halloween party. Hard deadline September 1"},
   {g:"Getting help & reporting", n:"NYC DOT: Temporary Holiday Lighting registration", u:"https://nycdotsurveys.info/survey/temp-holiday-lighting", d:"Block associations can register to hang holiday and festoon lighting on street light poles for 60 days. Free to register, but you must file before installing, meet the NYC Electrical Code, and get separate NYC Parks approval if any street trees or tree pits are involved.", open:[9,11], w:"Register in the fall, before you install"},
   {g:"Getting help & reporting", n:"Big Reuse: tree care day request", u:"https://www.bigreuse.org/", d:"Fill out their form and they will bring expert staff, tools, compost and mulch to run a street tree care day with you. Built for new groups.", rolling:true, w:"Request anytime"},
@@ -1215,62 +1209,53 @@ function submitPlanting(){
   });
 }
 
-/* rat training signup → Signups tab of the Google Sheet (email fallback) */
-function submitRatTraining(){
-  const name=document.getElementById('rtrName').value.trim();
-  const email=document.getElementById('rtrEmail').value.trim();
-  const phone=document.getElementById('rtrPhone').value.trim();
-  const count=document.getElementById('rtrCount').value.trim()||'1';
-  const help=document.getElementById('rtrHelp').checked;
-  const msg=document.getElementById('rtrMsg');
-  if(!name){ msg.innerHTML='<span style="color:#c0392b">Please add your name.</span>'; return; }
-  if(!email && !phone){ msg.innerHTML='<span style="color:#c0392b">Please add an email or a phone number.</span>'; return; }
-  msg.textContent='Sending…';
-  const activities='Attending'+(help?' · can help set up':'');
-  const done=()=>{ document.querySelector('#ratsView .signup-card:last-child .evform').innerHTML='<b>🐀 You are in!</b><p class="hint" style="margin:6px 0 0">Thanks '+esc(name)+'. Saturday, September 12 at 11am, backyard at 365 St Johns Place. We will send a reminder closer to the day.</p>'; };
-  const viaEmail=()=>fetch('https://formsubmit.co/ajax/'+ADOPT_EMAIL,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},
-    body:JSON.stringify({_subject:'Rat training signup: '+name,_template:'table',_captcha:'false',
-      name,email:email||'(not provided)',phone:phone||'(not provided)',party_size:count,helping:help?'yes':'no'})})
-    .then(r=>{ if(!r.ok) throw 0; });
-  const payload={type:'event',event:'Rat Training (Sept 12, 2026)',name,email,phone,activities:activities,headcount:count};
-  (CARE_API
-    ? fetch(CARE_API,{method:'POST',body:JSON.stringify(payload)}).then(r=>{ if(!r.ok) throw 0; }).catch(viaEmail)
-    : viaEmail()
-  ).then(done).catch(()=>{
-    const mail=`mailto:${ADOPT_EMAIL}?subject=${encodeURIComponent('Rat training signup')}&body=${encodeURIComponent(`Name: ${name}\nEmail: ${email||'(not provided)'}\nPhone: ${phone||'(not provided)'}\nParty size: ${count}\nCan help set up: ${help?'yes':'no'}`)}`;
-    msg.innerHTML=`Couldn't send automatically. <a href="${mail}">Tap here to email us instead</a>.`;
-  });
-}
-
-/* rodent report → "Rodent Reports" tab of the Google Sheet (email fallback) */
-function submitRodent(){
-  const sr=document.getElementById('rtSR').value.trim();
+/* one form on the Rats tab, two destinations:
+   the training signup goes to Signups as an event, the 311 complaint number
+   goes to Rodent Reports. Either half can be filled in on its own. */
+function submitRats(){
   const name=document.getElementById('rtName').value.trim();
   const email=document.getElementById('rtEmail').value.trim();
   const phone=document.getElementById('rtPhone').value.trim();
+  const count=document.getElementById('rtCount').value.trim()||'1';
+  const help=document.getElementById('rtHelp').checked;
+  const sr=document.getElementById('rtSR').value.trim();
   const news=document.getElementById('rtNews').checked;
   const wa=document.getElementById('rtWa').checked;
   const msg=document.getElementById('rtMsg');
-  if(!sr){ msg.innerHTML='<span style="color:#c0392b">Please paste your 311 complaint number.</span>'; return; }
+
+  if(!name && !sr){ msg.innerHTML='<span style="color:#c0392b">Add your name to come to the training, or paste a 311 complaint number.</span>'; return; }
+  if(name && !email && !phone){ msg.innerHTML='<span style="color:#c0392b">Please add an email or a phone number so we can reach you.</span>'; return; }
   if(news && !email){ msg.innerHTML='<span style="color:#c0392b">Please add an email so we can send you the newsletter.</span>'; return; }
   msg.textContent='Sending…';
-  const done=()=>{
+
+  const post=payload=>fetch(CARE_API,{method:'POST',body:JSON.stringify(payload)}).then(r=>{ if(!r.ok) throw 0; });
+  const mailIt=body=>fetch('https://formsubmit.co/ajax/'+ADOPT_EMAIL,{method:'POST',
+    headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify(body)})
+    .then(r=>{ if(!r.ok) throw 0; });
+  const send=(payload,body)=>CARE_API?post(payload).catch(()=>mailIt(body)):mailIt(body);
+
+  const jobs=[];
+  if(name) jobs.push(send(
+    {type:'event',event:'Rat Training (Sept 12, 2026)',name,email,phone,
+     activities:'Attending'+(help?' · can help set up':''),headcount:count},
+    {_subject:'Rat training signup: '+name,_template:'table',_captcha:'false',
+     name,email:email||'(not provided)',phone:phone||'(not provided)',party_size:count,helping:help?'yes':'no'}));
+  if(sr) jobs.push(send(
+    {type:'rodent',sr:sr,name:name,email:email,phone:phone,newsletter:news?'yes':'no',whatsapp:wa?'yes':'no'},
+    {_subject:'311 rodent complaint: '+sr,_template:'table',_captcha:'false',
+     complaint_number:sr,name:name||'(anonymous)',email:email||'(not provided)',phone:phone||'(not provided)',
+     newsletter:news?'yes':'no',whatsapp:wa?'yes':'no'}));
+
+  Promise.all(jobs).then(()=>{
+    let lead='';
+    if(name) lead+='You are signed up for the training: Saturday, September 12 at 11am, backyard at 365 St Johns Place. ';
+    if(sr) lead+='Complaint '+esc(sr)+' is logged and goes to the council office with the next batch. Add another any time you file one, every number counts.';
     let extra='';
     if(news) extra+='<p class="hint" style="margin:8px 0 0">📬 Newsletter: join at <a href="'+NEWSLETTER_URL+'" target="_blank" rel="noopener">our Google Group</a>.</p>';
     if(wa) extra+='<p class="hint" style="margin:8px 0 0">💬 WhatsApp: <a href="'+WHATSAPP_URL+'" target="_blank" rel="noopener">tap here to join the neighbor group</a>.</p>';
-    document.querySelector('#ratsView .evform').innerHTML='<b>🐀 Got it, thank you.</b><p class="hint" style="margin:6px 0 0">Complaint '+esc(sr)+' is logged. It goes to the council office with the next batch. Add another any time you file one, every number counts.</p>'+extra;
-  };
-  const viaEmail=()=>fetch('https://formsubmit.co/ajax/'+ADOPT_EMAIL,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},
-    body:JSON.stringify({_subject:'311 rodent complaint: '+sr,_template:'table',_captcha:'false',
-      complaint_number:sr,name:name||'(anonymous)',email:email||'(not provided)',phone:phone||'(not provided)',
-      newsletter:news?'yes':'no',whatsapp:wa?'yes':'no'})})
-    .then(r=>{ if(!r.ok) throw 0; });
-  const payload={type:'rodent',sr:sr,name:name,email:email,phone:phone,newsletter:news?'yes':'no',whatsapp:wa?'yes':'no'};
-  (CARE_API
-    ? fetch(CARE_API,{method:'POST',body:JSON.stringify(payload)}).then(r=>{ if(!r.ok) throw 0; }).catch(viaEmail)
-    : viaEmail()
-  ).then(done).catch(()=>{
-    const mail=`mailto:${ADOPT_EMAIL}?subject=${encodeURIComponent('311 rodent complaint: '+sr)}&body=${encodeURIComponent(`311 complaint number: ${sr}\nName: ${name||'(anonymous)'}\nEmail: ${email||'(not provided)'}\nPhone: ${phone||'(not provided)'}\nNewsletter: ${news?'yes':'no'}\nWhatsApp: ${wa?'yes':'no'}`)}`;
+    document.querySelector('#ratsView .evform').innerHTML='<b>🐀 Got it, thank you.</b><p class="hint" style="margin:6px 0 0">'+lead+'</p>'+extra;
+  }).catch(()=>{
+    const mail=`mailto:${ADOPT_EMAIL}?subject=${encodeURIComponent('Rat training signup or 311 complaint')}&body=${encodeURIComponent(`Name: ${name||'(anonymous)'}\nEmail: ${email||'(not provided)'}\nPhone: ${phone||'(not provided)'}\nTraining: ${name?'yes, '+count+' people':'no'}\n311 complaint number: ${sr||'(none)'}`)}`;
     msg.innerHTML=`Couldn't send automatically. <a href="${mail}">Tap here to email us instead</a>.`;
   });
 }
