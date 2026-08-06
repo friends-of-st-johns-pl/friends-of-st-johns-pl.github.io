@@ -261,7 +261,7 @@
 
 <div id="plantingView" class="no-print">
   <div class="signup-card">
-    <h2 style="font-family:Georgia,serif;font-weight:400;margin:0 0 4px">Plant &amp; Picnic 🌱</h2>
+    <h2 style="font-family:Georgia,serif;font-weight:400;margin:0 0 4px">St Johns Plants 🌱</h2>
     <p class="hint" style="margin:0 0 10px"><b>Saturday, October 3, 9am to 2pm</b><br>Our block's <b>City of Forest Day 2026</b>. Planting all morning, lunch together after.</p>
     <p class="hint" style="margin:0 0 12px">We put plants in the ground along the whole block, then sit down and eat. Bring gloves and a trowel if you have them, and bring nothing at all if you do not. Come for an hour or stay the whole day.</p>
     <div class="evform">
@@ -1202,16 +1202,16 @@ function submitPlanting(){
   const activities='Attending'+(help!=='none'?' · '+help:'')+(note?' · note: '+note:'');
   const done=()=>{ document.querySelector('#plantingView .evform').innerHTML='<b>🌱 Wonderful, see you there!</b><p class="hint" style="margin:6px 0 0">Thanks '+esc(name)+'. Saturday, October 3, 9am to 2pm on St Johns Place. We will send details closer to the day.</p>'; };
   const viaEmail=()=>fetch('https://formsubmit.co/ajax/'+ADOPT_EMAIL,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},
-    body:JSON.stringify({_subject:'Plant & Picnic signup: '+name,_template:'table',_captcha:'false',
+    body:JSON.stringify({_subject:'St Johns Plants signup: '+name,_template:'table',_captcha:'false',
       name,email:email||'(not provided)',phone:phone||'(not provided)',party_size:count,
       helping_with:help,note:note||'(not provided)'})})
     .then(r=>{ if(!r.ok) throw 0; });
-  const payload={type:'event',event:'Plant & Picnic, City of Forest Day (Oct 3, 2026)',name,email,phone,activities:activities,headcount:count};
+  const payload={type:'event',event:'St Johns Plants, City of Forest Day (Oct 3, 2026)',name,email,phone,activities:activities,headcount:count};
   (CARE_API
     ? fetch(CARE_API,{method:'POST',body:JSON.stringify(payload)}).then(r=>{ if(!r.ok) throw 0; }).catch(viaEmail)
     : viaEmail()
   ).then(done).catch(()=>{
-    const mail=`mailto:${ADOPT_EMAIL}?subject=${encodeURIComponent('Plant & Picnic signup')}&body=${encodeURIComponent(`Name: ${name}\nEmail: ${email||'(not provided)'}\nPhone: ${phone||'(not provided)'}\nParty size: ${count}\nHelping with: ${help}\nNote: ${note||'(not provided)'}`)}`;
+    const mail=`mailto:${ADOPT_EMAIL}?subject=${encodeURIComponent('St Johns Plants signup')}&body=${encodeURIComponent(`Name: ${name}\nEmail: ${email||'(not provided)'}\nPhone: ${phone||'(not provided)'}\nParty size: ${count}\nHelping with: ${help}\nNote: ${note||'(not provided)'}`)}`;
     msg.innerHTML=`Couldn't send automatically. <a href="${mail}">Tap here to email us instead</a>.`;
   });
 }
