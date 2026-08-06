@@ -219,7 +219,7 @@
   <button id="tabBtnCleanup" data-tab="cleanup" onclick="showTab('cleanup')">🧹 Trash Cleanup Days</button>
   -->
   <button id="tabBtnRats" data-tab="rats" onclick="showTab('rats')">🐀 Rat on Rats &amp; Training</button>
-  <button id="tabBtnPlanting" data-tab="planting" onclick="showTab('planting')">🌱 St Johns Plants on Oct 3rd</button>
+  <button id="tabBtnPlanting" data-tab="planting" data-hash="st-johns-plants-2026" onclick="showTab('planting')">🌱 St Johns Plants on Oct 3rd</button>
   <button id="tabBtnHalloween" data-tab="halloween" onclick="showTab('halloween')">🎃 Halloween Trick-o-streets</button>
   <button id="tabBtnResources" data-tab="resources" onclick="showTab('resources')">🌱 Free Stuff &amp; Deadlines</button>
   <button id="tabBtnTrees" data-tab="trees" onclick="showTab('trees')">🌳 Our 50 Trees</button>
@@ -911,24 +911,29 @@ function renderPrintNotes(){
 /* ---------------- tabs ---------------- */
 /* Everything here reads the tab buttons in the DOM, so reordering them in the
    markup reorders the site and the default follows automatically. Commenting a
-   button out hides that tab without touching any of this. */
+   button out hides that tab without touching any of this.
+   A button may carry data-hash to give its tab a prettier URL than its
+   internal name; the internal name still drives the CSS class and the view id. */
 const TAB_VIEWS=['cleanup','halloween','planting','rats','resources','trees','past'];
 const tabButtons=()=>[...document.querySelectorAll('.tabs button[data-tab]')];
 const firstTab=()=>{ const b=tabButtons()[0]; return b?b.dataset.tab:TAB_VIEWS[0]; };
-const hasTab=n=>tabButtons().some(b=>b.dataset.tab===n);
+const btnFor=n=>tabButtons().find(b=>b.dataset.tab===n);
+const hashFor=n=>{ const b=btnFor(n); return (b&&b.dataset.hash)||n; };
 
 function showTab(name, setHash){
-  if(!hasTab(name)) name=firstTab();
+  if(!btnFor(name)) name=firstTab();
   TAB_VIEWS.forEach(n=>document.body.classList.toggle('tab-'+n, n===name));
   tabButtons().forEach(b=>b.classList.toggle('active', b.dataset.tab===name));
-  if(setHash!==false) history.replaceState(null,'','#'+name);
+  if(setHash!==false) history.replaceState(null,'','#'+hashFor(name));
   window.scrollTo(0,0);
 }
 /* deep links, including a few older spellings that still get shared around */
-const HASH_ALIASES={rodents:'rats', plantandpicnic:'planting', freestuff:'resources', archive:'past', events:'planting'};
+const HASH_ALIASES={rodents:'rats', plantandpicnic:'planting', planting:'planting',
+                    freestuff:'resources', archive:'past', events:'planting'};
 function openFromHash(){
   const h=location.hash.toLowerCase().replace(/^#/,'');
-  showTab(HASH_ALIASES[h]||h);   // showTab falls back to the first tab if unknown or hidden
+  const byHash=tabButtons().find(b=>b.dataset.hash===h);
+  showTab(byHash?byHash.dataset.tab:(HASH_ALIASES[h]||h));   // unknown or hidden falls back to the first tab
 }
 showTab(firstTab(), false);
 openFromHash();
