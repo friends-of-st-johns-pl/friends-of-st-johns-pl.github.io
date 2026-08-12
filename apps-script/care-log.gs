@@ -2,6 +2,11 @@
  * Friends of St Johns Pl — shared care log + adoption approvals
  *
  * Web app backing friends-of-st-johns-pl.github.io.
+ *  - POST {type:'event', ...}  → appends a signup row to the "Signups" tab.
+ *      Column order there is Timestamp, Event, Name, Email, Phone, Address,
+ *      Activities, Party size, Note. If you add or move a column in that sheet
+ *      by hand, update EVENT_HEADERS and the appendRow below to match, or every
+ *      new row will land one column out of step.
  *  - POST {type:'care', ...}   → appends a check-in row to the "Care Log" tab
  *  - POST {type:'adopt', ...}  → appends a request row to the "Adoptions" tab
  *  - POST {type:'rodent', ...} → appends a row to the "Rodent Reports" tab
@@ -32,7 +37,8 @@ const EVENT_SHEET_ID = SHEET_ID;
 const CARE_HEADERS = ['Timestamp', 'Tree ID', 'Walk #', 'Species', 'Address', 'Action', 'By'];
 const ADOPT_HEADERS = ['Timestamp', 'Tree ID', 'Walk #', 'Species', 'Address',
                        'Name', 'Email', 'Phone', 'Initials', 'Approved?'];
-const EVENT_HEADERS = ['Timestamp', 'Event', 'Name', 'Email', 'Phone', 'Activities', 'Party size'];
+const EVENT_HEADERS = ['Timestamp', 'Event', 'Name', 'Email', 'Phone', 'Address',
+                       'Activities', 'Party size', 'Note'];
 const RODENT_HEADERS = ['Timestamp', '311 Complaint #', 'Name', 'Email', 'Phone',
                         'Newsletter?', 'WhatsApp?', 'Sent to council?'];
 
@@ -55,7 +61,7 @@ function doPost(e) {
     if (!d.name) throw new Error('missing fields');
     tab_('Signups', EVENT_HEADERS, EVENT_SHEET_ID).appendRow([
       new Date(), s(d.event, 60), s(d.name, 80), s(d.email, 80), s(d.phone, 40),
-      s(d.activities, 120), s(d.headcount, 10)]);
+      s(d.address, 120), s(d.activities, 200), s(d.headcount, 10), s(d.note, 300)]);
   } else if (d.type === 'rodent') {
     if (!d.sr) throw new Error('missing fields');
     tab_('Rodent Reports', RODENT_HEADERS).appendRow([

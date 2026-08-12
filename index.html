@@ -1093,7 +1093,7 @@ function submitHalloween(){
   if(wantsList && !email){ msg.innerHTML='<span style="color:#c0392b">Please add an email so we can add you to the mailing list.</span>'; return; }
   if(wantsList && !phone){ msg.innerHTML='<span style="color:#c0392b">Please add a phone number so we can add you to the WhatsApp group.</span>'; return; }
   msg.textContent='Sending…';
-  const interest=going+(help!=='none'?' · up for: '+help:'')+(wantsList?' · WANTS MAILING LIST + WHATSAPP':'')+(note?' · note: '+note:'');
+  const interest=going+(help!=='none'?' · up for: '+help:'')+(wantsList?' · WANTS MAILING LIST + WHATSAPP':'');
   const done=()=>{ document.querySelector('#halloweenView .evform').innerHTML='<b>🎃 Thank you!</b><p class="hint" style="margin:6px 0 0">Thanks '+esc(name)+'. You are on the list. We are using these responses to apply for the street closure permit, and we will email everyone once we hear back.</p>'; };
   const viaEmail=()=>fetch('https://formsubmit.co/ajax/'+ADOPT_EMAIL,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},
     body:JSON.stringify({_subject:'Halloween interest: '+name,_template:'table',_captcha:'false',name,email:email||'(not provided)',phone:phone||'(not provided)',address:addr||'(not provided)',coming:going,up_for:help,mailing_list:wantsList?'YES, add to mailing list and WhatsApp group':'no',note:note||'(not provided)',household_size:count})})
@@ -1203,14 +1203,14 @@ function submitPlanting(){
   if(!name){ msg.innerHTML='<span style="color:#c0392b">Please add your name.</span>'; return; }
   if(!email && !phone){ msg.innerHTML='<span style="color:#c0392b">Please add an email or a phone number.</span>'; return; }
   msg.textContent='Sending…';
-  const activities='Attending'+(help!=='none'?' · '+help:'')+(note?' · note: '+note:'');
+  const activities='Attending'+(help!=='none'?' · '+help:'');
   const done=()=>{ document.querySelector('#plantingView .evform').innerHTML='<b>🌱 Wonderful, see you there!</b><p class="hint" style="margin:6px 0 0">Thanks '+esc(name)+'. Saturday, October 3, 9am to 2pm on St Johns Place. We will send details closer to the day.</p>'; };
   const viaEmail=()=>fetch('https://formsubmit.co/ajax/'+ADOPT_EMAIL,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},
     body:JSON.stringify({_subject:'St Johns Plants Together signup: '+name,_template:'table',_captcha:'false',
       name,email:email||'(not provided)',phone:phone||'(not provided)',party_size:count,
       helping_with:help,note:note||'(not provided)'})})
     .then(r=>{ if(!r.ok) throw 0; });
-  const payload={type:'event',event:'St Johns Plants Together, City of Forest Day (Oct 3, 2026)',name,email,phone,activities:activities,headcount:count};
+  const payload={type:'event',event:'St Johns Plants Together, City of Forest Day (Oct 3, 2026)',name,email,phone,activities:activities,headcount:count,note:note};
   (CARE_API
     ? fetch(CARE_API,{method:'POST',body:JSON.stringify(payload)}).then(r=>{ if(!r.ok) throw 0; }).catch(viaEmail)
     : viaEmail()
