@@ -324,6 +324,7 @@
 </div>
 
 <div id="ratsView" class="no-print">
+<div id="ratsView" class="no-print">
   <div class="signup-card">
     <h2 style="font-family:Georgia,serif;font-weight:400;margin:0 0 4px">Rat Training 🐀</h2>
     <p class="hint" style="margin:0 0 10px"><b>Saturday, September 12 at 11am</b><br>In the backyard at <b>365 St Johns Place</b>.</p>
@@ -348,37 +349,37 @@
     </div>
 
     <h3 style="font-family:Georgia,serif;font-weight:400;font-size:22px;margin:24px 0 6px;padding-top:16px;border-top:1px solid var(--line)">Rat on Rats 🐀</h3>
-    <p class="hint" style="margin:0 0 14px">Every 311 complaint gets a number. We collect those numbers and send them to Council Member Hudson's office, who passes them to the Health Department. Volume is what gets an inspector sent.</p>
+    <p class="hint" style="margin:0 0 14px">Every 311 complaint gets a number. We collect them and pass them to Council Member Hudson's office, who take them to the Health Department. Volume is what gets an inspector sent, and several complaints about one building beat scattered ones.</p>
 
-    <p class="hint" style="margin:14px 0 4px"><b>Buildings flagged so far on St Johns Place:</b></p>
-    <p class="hint" style="margin:0 0 6px;font-size:13px">If your building is on this list, file anyway. Several complaints about the same address is what pushes the city to send an inspector, so a second and third report on a building already listed does more than a first report somewhere new.</p>
-    <div class="hotspots">
-      <span>340</span><span>356</span><span>358</span><span>372</span><span>392</span>
-      <span>394</span><span>396</span><span>398</span><span>400</span><span>402</span>
-      <span>404</span><span>406</span><span>403</span><span>417</span><span>446</span><span>448</span>
+    <a class="filebtn" href="https://portal.311.nyc.gov/sr-step/?id=4ce09395-3d96-f111-9b47-6045bdc00070" target="_blank" rel="noopener">🐀 File a 311 rat complaint</a>
+    <p class="hint" style="margin:8px 0 0;font-size:12.5px">Takes about five minutes. Not sure what to put in each field? Open the guide below. If that link stops working, start from <a href="https://on.nyc.gov/RatComplaint" target="_blank" rel="noopener">on.nyc.gov/RatComplaint</a>.</p>
+
+    <div class="evform" id="reportForm" style="margin-top:16px">
+      <label>Already filed? Paste your complaint number *</label>
+      <input type="text" id="rtSR" placeholder="paste it here">
+      <label>Your name</label>
+      <input type="text" id="rtSRName" autocomplete="name" placeholder="optional, leave blank to stay anonymous">
+      <button style="margin-top:12px" onclick="submitComplaint()">Log my complaint number</button>
+      <div id="rtSRMsg"></div>
     </div>
 
-    <div class="step"><div class="num">1</div><div class="body">
-      <b>File the complaint with 311</b>
-      <p>This opens the NYC311 form for rats outside a property, on the sidewalk or street. Use the exact building address where you saw activity, not just the block. Complaints tied to a specific property are the ones the Health Department acts on. Not sure what to type? Open the box below, it has a suggested answer for every field with a copy button.</p>
-      <a class="filebtn" href="https://portal.311.nyc.gov/sr-step/?id=043bfa5a-eb90-f111-9b47-6045bdb35676&amp;stepid=4a51f5a5-b04c-e811-a835-000d3a33b1e4" target="_blank" rel="noopener">🐀 File a 311 rat complaint</a>
-      <p class="hint" style="margin:8px 0 0;font-size:12.5px">If that link stops working, start from <a href="https://on.nyc.gov/RatComplaint" target="_blank" rel="noopener">on.nyc.gov/RatComplaint</a>.</p>
-    </div></div>
-
-    <div class="step"><div class="num">2</div><div class="body">
-      <b>Copy your complaint number</b>
-      <p>At the end, 311 shows a service request number. Copy it before you close the tab. Filed one already? Look it up at <a href="https://portal.311.nyc.gov/check-status/" target="_blank" rel="noopener">311 Look Up Service Requests</a>.</p>
-    </div></div>
-
-    <div class="step"><div class="num">3</div><div class="body">
-      <b>Add the number below</b>
-      <p>Paste it into the box below. We keep the running list and send it to Council Member Hudson's office, who passes it to the Health Department. Once per complaint is all it takes.</p>
-    </div></div>
-
-
-
     <details class="cheat">
-      <summary><span class="ct">What to put in each 311 field</span><span class="cx">show</span></summary>
+      <summary><span class="ct">How to file, step by step</span><span class="cx">show</span></summary>
+      <div class="step"><div class="num">1</div><div class="body">
+        <b>File the complaint with 311</b>
+        <p>Use the exact building address where you saw activity, not just the block. Complaints tied to a specific property are the ones the Health Department acts on.</p>
+      </div></div>
+
+      <div class="step"><div class="num">2</div><div class="body">
+        <b>Copy your complaint number</b>
+        <p>311 shows a service request number at the end. Copy it before you close the tab. Filed one already? Look it up at <a href="https://portal.311.nyc.gov/check-status/" target="_blank" rel="noopener">311 Look Up Service Requests</a>.</p>
+      </div></div>
+
+      <div class="step"><div class="num">3</div><div class="body">
+        <b>Log it with us</b>
+        <p>Paste it into the box on this page. Once per complaint is all it takes.</p>
+      </div></div>
+
       <p class="hint" style="margin:0 0 2px;font-size:13px">Answer these five and we will write every 311 answer for you. Or skip straight down and use the defaults.</p>
 
       <div class="quiz">
@@ -464,16 +465,15 @@
 
       <p class="stepname">Screen 4 · Review</p>
       <p class="hint" style="margin:0;font-size:13px">Submit, then copy the complaint number it gives you and paste it into our form below.</p>
-    </details>
 
-    <div class="evform" id="reportForm" style="margin-top:18px;border-top:1px solid var(--line);padding-top:14px">
-      <label>Your 311 complaint number *</label>
-      <input type="text" id="rtSR" placeholder="paste it here">
-      <label>Your name</label>
-      <input type="text" id="rtSRName" autocomplete="name" placeholder="optional, leave blank to stay anonymous">
-      <button style="margin-top:12px" onclick="submitComplaint()">Log my complaint number</button>
-      <div id="rtSRMsg"></div>
-    </div>
+      <p class="hint" style="margin:14px 0 4px"><b>Buildings flagged so far on St Johns Place:</b></p>
+      <p class="hint" style="margin:0 0 6px;font-size:13px">If your building is on this list, file anyway. Several complaints about the same address is what pushes the city to send an inspector, so a second and third report on a building already listed does more than a first report somewhere new.</p>
+      <div class="hotspots">
+        <span>340</span><span>356</span><span>358</span><span>372</span><span>392</span>
+        <span>394</span><span>396</span><span>398</span><span>400</span><span>402</span>
+        <span>404</span><span>406</span><span>403</span><span>417</span><span>446</span><span>448</span>
+      </div>
+    </details>
   </div>
 </div>
 
