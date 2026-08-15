@@ -50,7 +50,8 @@ Current tabs, in order:
 |---|---|---|
 | Rat on Rats & Training | `#rats` | Rat training signup, then 311 reporting |
 | St Johns Plants Together, Oct 3rd | `#st-johns-plants-2026` | Planting day signup |
-| Halloween Trick-o-streets | `#halloween` | Interest form |
+| Halloween Trick-o-streets | `#halloween` | General interest form, links to the volunteer tab |
+| Volunteer for Halloween | `#halloween-volunteer` | Commit 1 to 4 volunteer hours, 5 to 9pm |
 | Free Stuff & Deadlines | `#resources` | Grants, free compost, courses, deadlines |
 | Our 50 Trees | `#trees` | Interactive map and per tree care log |
 | Past Events | `#past` | Archive |

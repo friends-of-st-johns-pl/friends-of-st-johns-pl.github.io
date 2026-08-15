@@ -40,6 +40,8 @@
   .header-links{display:flex;flex-wrap:wrap;gap:9px;justify-content:center;margin-top:14px;font-family:-apple-system,Arial,sans-serif}
   body:not(.tab-halloween) #halloweenView{display:none}
   #halloweenView{max-width:820px;margin:0 auto 22px;padding:0 24px}
+  body:not(.tab-hwvolunteer) #hwVolunteerView{display:none}
+  #hwVolunteerView{max-width:820px;margin:0 auto 22px;padding:0 24px}
   body:not(.tab-rats) #ratsView{display:none}
   #ratsView{max-width:820px;margin:0 auto 22px;padding:0 24px}
   body:not(.tab-planting) #plantingView{display:none}
@@ -221,6 +223,7 @@
   <button id="tabBtnRats" data-tab="rats" onclick="showTab('rats')">🐀 Rat on Rats &amp; Training</button>
   <button id="tabBtnPlanting" data-tab="planting" data-hash="st-johns-plants-2026" onclick="showTab('planting')">🌱 St Johns Plants Together, Oct 3rd</button>
   <button id="tabBtnHalloween" data-tab="halloween" onclick="showTab('halloween')">🎃 Halloween Trick-o-streets</button>
+  <button id="tabBtnHwVolunteer" data-tab="hwvolunteer" data-hash="halloween-volunteer" onclick="showTab('hwvolunteer')">🎃 Volunteer for Halloween</button>
   <button id="tabBtnResources" data-tab="resources" onclick="showTab('resources')">🌱 Free Stuff &amp; Deadlines</button>
   <button id="tabBtnTrees" data-tab="trees" onclick="showTab('trees')">🌳 Our 50 Trees</button>
   <button id="tabBtnPast" data-tab="past" onclick="showTab('past')">📖 Past Events</button>
@@ -288,23 +291,15 @@
 </div>
 
 <div id="halloweenView" class="no-print">
-  <div class="signup-card">
+  <div class="signup-card" id="hwInterestCard">
     <h2 style="font-family:Georgia,serif;font-weight:400;margin:0 0 4px">Halloween Trick-o-streets 🎃</h2>
-    <p class="hint" style="margin:0 0 8px">The city is closing streets in Prospect Heights for trick-or-treating this Halloween. We want to make St Johns Place a destination with trick-o-treating, candy, costumes, and neighbors.</p>
-    <p class="hint" style="margin:0 0 12px"><b>We need 32 volunteer hours to make this happen, about 8 people on the block every hour from 5 to 9pm on Halloween. Without enough hours committed, Halloween cannot happen this year.</b></p>
+    <p class="hint" style="margin:0 0 8px">The city is closing streets in Prospect Heights for trick-or-treating this Halloween. We want to make St Johns Place a destination with trick-o-treating, candy, costumes, and neighbors. Please sign up to show your interest.</p>
+    <p class="hint" style="margin:0 0 12px"><b>This can only happen with 32 volunteer hours, about 8 people on the block every hour from 5 to 9pm.</b> <a href="javascript:void(0)" onclick="showTab('hwvolunteer')">Sign up to volunteer →</a></p>
     <div class="evform">
       <label>Your name *</label><input type="text" id="hwName" autocomplete="name">
       <label>Email</label><input type="text" id="hwEmail" autocomplete="email" placeholder="you@example.com">
       <label>Phone</label><input type="text" id="hwPhone" autocomplete="tel" placeholder="(718) …">
       <label>Your address on the block (optional)</label><input type="text" id="hwAddr" placeholder="e.g. 355 St Johns Pl (helps with the permit)">
-      <label>How many hours can you commit to volunteering, 5 to 9pm on Halloween? *</label>
-      <div class="evacts">
-        <label class="ck"><input type="radio" name="hwHours" class="hwhours" value="4 hours, the whole shift"> 🎃 4 hours, the whole shift</label>
-        <label class="ck"><input type="radio" name="hwHours" class="hwhours" value="3 hours"> 🕒 3 hours</label>
-        <label class="ck"><input type="radio" name="hwHours" class="hwhours" value="2 hours"> 🕑 2 hours</label>
-        <label class="ck"><input type="radio" name="hwHours" class="hwhours" value="1 hour"> 🕐 1 hour</label>
-        <label class="ck"><input type="radio" name="hwHours" class="hwhours" value="Can't volunteer this year"> 💚 I can't volunteer this year, but I support it</label>
-      </div>
       <label>Roughly how many people from your household are coming?</label>
       <input type="text" id="hwCount" inputmode="numeric" placeholder="2" style="max-width:110px">
       <label>Anything you'd be up for? (all optional)</label>
@@ -319,6 +314,29 @@
       <div id="hwMsg"></div>
     </div>
     <img src="halloweeninsta.png" alt="Halloween Block Party" style="max-width:100%;height:auto;margin:20px 0 0;border-radius:4px;display:block">
+  </div>
+</div>
+
+<div id="hwVolunteerView" class="no-print">
+  <div class="signup-card" id="hwVolunteerCard">
+    <h2 style="font-family:Georgia,serif;font-weight:400;margin:0 0 4px">Volunteer for Halloween 🎃</h2>
+    <p class="hint" style="margin:0 0 12px"><b>We need 32 volunteer hours to make this happen, about 8 people on the block every hour from 5 to 9pm on Halloween. Without enough hours committed, Halloween cannot happen this year.</b></p>
+    <div class="evform">
+      <label>Your name *</label><input type="text" id="hvName" autocomplete="name">
+      <label>Email</label><input type="text" id="hvEmail" autocomplete="email" placeholder="you@example.com">
+      <label>Phone</label><input type="text" id="hvPhone" autocomplete="tel" placeholder="(718) …">
+      <label>How many hours can you commit to volunteering, 5 to 9pm on Halloween? *</label>
+      <div class="evacts">
+        <label class="ck"><input type="radio" name="hvHours" class="hvhours" value="4 hours, the whole shift"> 🎃 4 hours, the whole shift</label>
+        <label class="ck"><input type="radio" name="hvHours" class="hvhours" value="3 hours"> 🕒 3 hours</label>
+        <label class="ck"><input type="radio" name="hvHours" class="hvhours" value="2 hours"> 🕑 2 hours</label>
+        <label class="ck"><input type="radio" name="hvHours" class="hvhours" value="1 hour"> 🕐 1 hour</label>
+      </div>
+      <label>Anything else? Ideas welcome</label>
+      <input type="text" id="hvNote" placeholder="optional">
+      <button style="margin-top:12px" onclick="submitHalloweenVolunteer()">Sign me up to volunteer</button>
+      <div id="hvMsg"></div>
+    </div>
   </div>
 </div>
 
@@ -913,7 +931,7 @@ function renderPrintNotes(){
    button out hides that tab without touching any of this.
    A button may carry data-hash to give its tab a prettier URL than its
    internal name; the internal name still drives the CSS class and the view id. */
-const TAB_VIEWS=['cleanup','halloween','planting','rats','resources','trees','past'];
+const TAB_VIEWS=['cleanup','halloween','hwvolunteer','planting','rats','resources','trees','past'];
 const tabButtons=()=>[...document.querySelectorAll('.tabs button[data-tab]')];
 const firstTab=()=>{ const b=tabButtons()[0]; return b?b.dataset.tab:TAB_VIEWS[0]; };
 const btnFor=n=>tabButtons().find(b=>b.dataset.tab===n);
@@ -1076,25 +1094,48 @@ function submitHalloween(){
   const phone=document.getElementById('hwPhone').value.trim();
   const addr=document.getElementById('hwAddr').value.trim();
   const count=document.getElementById('hwCount').value.trim()||'1';
-  const hours=(document.querySelector('.hwhours:checked')||{}).value;
   const help=[...document.querySelectorAll('.hwhelp:checked')].map(c=>c.value).join(', ')||'none';
   const note=document.getElementById('hwNote').value.trim();
   const msg=document.getElementById('hwMsg');
   if(!name){ msg.innerHTML='<span style="color:#c0392b">Please add your name.</span>'; return; }
-  if(!hours){ msg.innerHTML='<span style="color:#c0392b">Please choose how many hours you can volunteer.</span>'; return; }
   if(!email && !phone){ msg.innerHTML='<span style="color:#c0392b">Please add an email or a phone number.</span>'; return; }
   msg.textContent='Sending…';
-  const interest=hours+(help!=='none'?' · up for: '+help:'');
-  const done=()=>{ document.querySelector('#halloweenView .evform').innerHTML='<b>🎃 Thank you!</b><p class="hint" style="margin:6px 0 0">Thanks '+esc(name)+'. You are on the list. We are using these responses to apply for the street closure permit, and we will email everyone once we hear back.</p>'; };
+  const done=()=>{ document.querySelector('#hwInterestCard .evform').innerHTML='<b>🎃 Thank you!</b><p class="hint" style="margin:6px 0 0">Thanks '+esc(name)+'. You are on the list. We are using these responses to apply for the street closure permit, and we will email everyone once we hear back.</p>'; };
   const viaEmail=()=>fetch('https://formsubmit.co/ajax/'+ADOPT_EMAIL,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},
-    body:JSON.stringify({_subject:'Halloween interest: '+name,_template:'table',_captcha:'false',name,email:email||'(not provided)',phone:phone||'(not provided)',address:addr||'(not provided)',volunteer_hours:hours,up_for:help,note:note||'(not provided)',household_size:count})})
+    body:JSON.stringify({_subject:'Halloween interest: '+name,_template:'table',_captcha:'false',name,email:email||'(not provided)',phone:phone||'(not provided)',address:addr||'(not provided)',up_for:help,note:note||'(not provided)',household_size:count})})
     .then(r=>{ if(!r.ok) throw 0; });
-  const payload={type:'event',event:'Halloween Trick-o-streets 2026 (interest)',name,email,phone,address:addr,activities:interest,headcount:count,note:note};
+  const payload={type:'event',event:'Halloween Trick-o-streets 2026 (interest)',name,email,phone,address:addr,activities:help,headcount:count,note:note};
   (CARE_API
     ? fetch(CARE_API,{method:'POST',body:JSON.stringify(payload)}).then(r=>{ if(!r.ok) throw 0; }).catch(viaEmail)
     : viaEmail()
   ).then(done).catch(()=>{
-    const mail=`mailto:${ADOPT_EMAIL}?subject=${encodeURIComponent('Halloween trick-o-streets interest')}&body=${encodeURIComponent(`Name: ${name}\nEmail: ${email||'(not provided)'}\nPhone: ${phone||'(not provided)'}\nAddress: ${addr||'(not provided)'}\nVolunteer hours: ${hours}\nUp for: ${help}\nHousehold: ${count}\nNote: ${note||'(not provided)'}`)}`;
+    const mail=`mailto:${ADOPT_EMAIL}?subject=${encodeURIComponent('Halloween trick-o-streets interest')}&body=${encodeURIComponent(`Name: ${name}\nEmail: ${email||'(not provided)'}\nPhone: ${phone||'(not provided)'}\nAddress: ${addr||'(not provided)'}\nUp for: ${help}\nHousehold: ${count}\nNote: ${note||'(not provided)'}`)}`;
+    msg.innerHTML=`Couldn't send automatically.<a href="${mail}">Tap here to email us instead</a>.`;
+  });
+}
+
+/* halloween volunteer shift sign-up → same Signups tab, tagged separately from general interest */
+function submitHalloweenVolunteer(){
+  const name=document.getElementById('hvName').value.trim();
+  const email=document.getElementById('hvEmail').value.trim();
+  const phone=document.getElementById('hvPhone').value.trim();
+  const hours=(document.querySelector('.hvhours:checked')||{}).value;
+  const note=document.getElementById('hvNote').value.trim();
+  const msg=document.getElementById('hvMsg');
+  if(!name){ msg.innerHTML='<span style="color:#c0392b">Please add your name.</span>'; return; }
+  if(!hours){ msg.innerHTML='<span style="color:#c0392b">Please choose how many hours you can volunteer.</span>'; return; }
+  if(!email && !phone){ msg.innerHTML='<span style="color:#c0392b">Please add an email or a phone number.</span>'; return; }
+  msg.textContent='Sending…';
+  const done=()=>{ document.querySelector('#hwVolunteerCard .evform').innerHTML='<b>🎃 Thank you!</b><p class="hint" style="margin:6px 0 0">Thanks '+esc(name)+'. You are down for '+esc(hours)+'. We will be in touch with the schedule closer to Halloween.</p>'; };
+  const viaEmail=()=>fetch('https://formsubmit.co/ajax/'+ADOPT_EMAIL,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},
+    body:JSON.stringify({_subject:'Halloween volunteer: '+name,_template:'table',_captcha:'false',name,email:email||'(not provided)',phone:phone||'(not provided)',volunteer_hours:hours,note:note||'(not provided)'})})
+    .then(r=>{ if(!r.ok) throw 0; });
+  const payload={type:'event',event:'Halloween Trick-o-streets 2026 (volunteer)',name,email,phone,activities:hours,note:note};
+  (CARE_API
+    ? fetch(CARE_API,{method:'POST',body:JSON.stringify(payload)}).then(r=>{ if(!r.ok) throw 0; }).catch(viaEmail)
+    : viaEmail()
+  ).then(done).catch(()=>{
+    const mail=`mailto:${ADOPT_EMAIL}?subject=${encodeURIComponent('Halloween volunteer sign-up')}&body=${encodeURIComponent(`Name: ${name}\nEmail: ${email||'(not provided)'}\nPhone: ${phone||'(not provided)'}\nVolunteer hours: ${hours}\nNote: ${note||'(not provided)'}`)}`;
     msg.innerHTML=`Couldn't send automatically.<a href="${mail}">Tap here to email us instead</a>.`;
   });
 }
