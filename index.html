@@ -40,6 +40,8 @@
   .header-links{display:flex;flex-wrap:wrap;gap:9px;justify-content:center;margin-top:14px;font-family:-apple-system,Arial,sans-serif}
   body:not(.tab-halloween) #halloweenView{display:none}
   #halloweenView{max-width:820px;margin:0 auto 22px;padding:0 24px}
+  body:not(.tab-hwvolunteer) #hwVolunteerView{display:none}
+  #hwVolunteerView{max-width:820px;margin:0 auto 22px;padding:0 24px}
   body:not(.tab-rats) #ratsView{display:none}
   #ratsView{max-width:820px;margin:0 auto 22px;padding:0 24px}
   body:not(.tab-planting) #plantingView{display:none}
@@ -221,6 +223,7 @@
   <button id="tabBtnRats" data-tab="rats" onclick="showTab('rats')">🐀 Rat on Rats &amp; Training</button>
   <button id="tabBtnPlanting" data-tab="planting" data-hash="st-johns-plants-2026" onclick="showTab('planting')">🌱 St Johns Plants Together, Oct 3rd</button>
   <button id="tabBtnHalloween" data-tab="halloween" onclick="showTab('halloween')">🎃 Halloween Trick-o-streets</button>
+  <button id="tabBtnHwVolunteer" data-tab="hwvolunteer" data-hash="halloween-volunteer" onclick="showTab('hwvolunteer')">🎃 Volunteer for Halloween</button>
   <button id="tabBtnResources" data-tab="resources" onclick="showTab('resources')">🌱 Free Stuff &amp; Deadlines</button>
   <button id="tabBtnTrees" data-tab="trees" onclick="showTab('trees')">🌳 Our 50 Trees</button>
   <button id="tabBtnPast" data-tab="past" onclick="showTab('past')">📖 Past Events</button>
@@ -291,7 +294,7 @@
   <div class="signup-card" id="hwInterestCard">
     <h2 style="font-family:Georgia,serif;font-weight:400;margin:0 0 4px">Halloween Trick-o-streets 🎃</h2>
     <p class="hint" style="margin:0 0 8px">The city is closing streets in Prospect Heights for trick-or-treating this Halloween. We want to make St Johns Place a destination with trick-o-treating, candy, costumes, and neighbors. Please sign up to show your interest.</p>
-    <p class="hint" style="margin:0 0 12px"><b>This can only happen with 32 volunteer hours, about 8 people on the block every hour from 5 to 9pm.</b> <a href="javascript:void(0)" onclick="document.getElementById('hwVolunteerCard').scrollIntoView({behavior:'smooth'})">Sign up to volunteer ↓</a></p>
+    <p class="hint" style="margin:0 0 12px"><b>This can only happen with 32 volunteer hours, about 8 people on the block every hour from 5 to 9pm.</b> <a href="javascript:void(0)" onclick="showTab('hwvolunteer')">Sign up to volunteer →</a></p>
     <div class="evform">
       <label>Your name *</label><input type="text" id="hwName" autocomplete="name">
       <label>Email</label><input type="text" id="hwEmail" autocomplete="email" placeholder="you@example.com">
@@ -312,8 +315,10 @@
     </div>
     <img src="halloweeninsta.png" alt="Halloween Block Party" style="max-width:100%;height:auto;margin:20px 0 0;border-radius:4px;display:block">
   </div>
+</div>
 
-  <div class="signup-card" id="hwVolunteerCard" style="margin-top:16px">
+<div id="hwVolunteerView" class="no-print">
+  <div class="signup-card" id="hwVolunteerCard">
     <h2 style="font-family:Georgia,serif;font-weight:400;margin:0 0 4px">Volunteer for Halloween 🎃</h2>
     <p class="hint" style="margin:0 0 12px"><b>We need 32 volunteer hours to make this happen, about 8 people on the block every hour from 5 to 9pm on Halloween. Without enough hours committed, Halloween cannot happen this year.</b></p>
     <div class="evform">
@@ -926,7 +931,7 @@ function renderPrintNotes(){
    button out hides that tab without touching any of this.
    A button may carry data-hash to give its tab a prettier URL than its
    internal name; the internal name still drives the CSS class and the view id. */
-const TAB_VIEWS=['cleanup','halloween','planting','rats','resources','trees','past'];
+const TAB_VIEWS=['cleanup','halloween','hwvolunteer','planting','rats','resources','trees','past'];
 const tabButtons=()=>[...document.querySelectorAll('.tabs button[data-tab]')];
 const firstTab=()=>{ const b=tabButtons()[0]; return b?b.dataset.tab:TAB_VIEWS[0]; };
 const btnFor=n=>tabButtons().find(b=>b.dataset.tab===n);
