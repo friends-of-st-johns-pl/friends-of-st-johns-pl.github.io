@@ -222,7 +222,7 @@
   -->
   <button id="tabBtnRats" data-tab="rats" onclick="showTab('rats')">🐀 Rat on Rats &amp; Training</button>
   <button id="tabBtnPlanting" data-tab="planting" data-hash="st-johns-plants-2026" onclick="showTab('planting')">🌱 St Johns Plants Together, Oct 3rd</button>
-  <button id="tabBtnHalloween" data-tab="halloween" onclick="showTab('halloween')">🎃 Halloween Trick-o-streets</button>
+  <button id="tabBtnHalloween" data-tab="halloween" data-hash="halloween-interest" onclick="showTab('halloween')">🎃 Halloween Trick-o-streets</button>
   <button id="tabBtnHwVolunteer" data-tab="hwvolunteer" data-hash="halloween-volunteer" onclick="showTab('hwvolunteer')">🎃 Volunteer for Halloween Trick-or-streets</button>
   <button id="tabBtnResources" data-tab="resources" onclick="showTab('resources')">🌱 Free Stuff &amp; Deadlines</button>
   <button id="tabBtnTrees" data-tab="trees" onclick="showTab('trees')">🌳 Our 50 Trees</button>
@@ -948,7 +948,7 @@ function showTab(name, setHash){
 }
 /* deep links, including a few older spellings that still get shared around */
 const HASH_ALIASES={rodents:'rats', plantandpicnic:'planting', planting:'planting',
-                    freestuff:'resources', archive:'past', events:'planting'};
+                    freestuff:'resources', archive:'past', events:'planting', halloween:'hwvolunteer'};
 function openFromHash(){
   const h=location.hash.toLowerCase().replace(/^#/,'');
   const byHash=tabButtons().find(b=>b.dataset.hash===h);
