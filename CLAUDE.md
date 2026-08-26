@@ -52,12 +52,17 @@ Current tabs, in order:
 | St Johns Plants Together, Oct 3rd | `#st-johns-plants-2026` | Planting day signup |
 | Volunteer for Halloween Trick-or-streets | `#halloween-volunteer` (`#halloween` redirects here) | Commit 1 to 4 volunteer hours, 5 to 9pm |
 | Free Stuff & Deadlines | `#resources` | Grants, free compost, courses, deadlines |
+| Native Plant Guide | `#plant-guide` | Embedded Google Doc of native and pollinator friendly tree bed plants |
 | Our 50 Trees | `#trees` | Interactive map and per tree care log |
 | Past Events | `#past` | Archive |
 | About Us | `#about` | Mission, goals, how to become an organizer |
 
 The Trash Cleanup Days tab is commented out, no cleanup is scheduled. Uncomment
 its button to bring it back.
+
+The Native Plant Guide tab embeds a Google Doc by iframe. **That doc's sharing
+must stay set to "Anyone with the link, Viewer"**, or the embed shows a
+permission error to visitors instead of the guide.
 
 ### Forms
 
