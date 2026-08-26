@@ -89,6 +89,12 @@
   .past p{margin:0;font-size:13.5px;color:#5c5648;line-height:1.45}
   body:not(.tab-resources) #resourcesView{display:none}
   #resourcesView{max-width:900px;margin:0 auto 22px;padding:0 24px;font-family:-apple-system,Arial,sans-serif}
+  body:not(.tab-about) #aboutView{display:none}
+  #aboutView{max-width:760px;margin:0 auto 22px;padding:0 24px}
+  #aboutView h3{font-family:Georgia,serif;font-weight:600;color:var(--green-dark);margin:20px 0 8px;font-size:17px}
+  #aboutView p{line-height:1.6;margin:0 0 4px}
+  #aboutView ul{padding-left:22px;line-height:1.65;margin:0}
+  #aboutView li{margin:0 0 8px}
   .res-intro{font-size:14px;color:#6b6455;margin:0 0 16px;line-height:1.5}
   .res-group{margin:0 0 8px;font-family:Georgia,serif;font-size:17px;color:var(--green-dark);border-bottom:1px solid var(--line);padding-bottom:5px}
   .res{background:var(--paper);border:1px solid var(--line);border-radius:9px;padding:13px 15px;margin:0 0 10px;box-shadow:0 1px 5px rgba(0,0,0,.04)}
@@ -224,6 +230,7 @@
   <button id="tabBtnResources" data-tab="resources" onclick="showTab('resources')">🌱 Free Stuff &amp; Deadlines</button>
   <button id="tabBtnTrees" data-tab="trees" onclick="showTab('trees')">🌳 Our 50 Trees</button>
   <button id="tabBtnPast" data-tab="past" onclick="showTab('past')">📖 Past Events</button>
+  <button id="tabBtnAbout" data-tab="about" onclick="showTab('about')">💚 About Us</button>
 </nav>
 
 <div class="toolbar no-print">
@@ -472,6 +479,24 @@
   <p class="res-intro">Grants, free compost and mulch, free trees and bulbs, and gardening courses open to Brooklyn block associations. Badges update automatically based on each program's usual season. Always click through and confirm the current year's dates.</p>
   <div id="resList"></div>
   <p class="res-intro" style="margin-top:18px;border-top:1px solid var(--line);padding-top:12px">Much of this list comes from <b>“Getting Started with Street Gardening”</b>, a guide written by the <b>BJH Garden Club</b> in Crown Heights. Thank you, neighbors. Know of something we're missing? Email <a href="mailto:friendsofstjohnspl@gmail.com">friendsofstjohnspl@gmail.com</a>.</p>
+</div>
+
+<div id="aboutView" class="no-print">
+  <h2 style="font-family:Georgia,serif;font-weight:400;margin:0 0 6px">About Us 🌳</h2>
+  <h3>Mission</h3>
+  <p>Founded in Spring 2026, Friends of St Johns Place is a volunteer-run collective of neighbors on St Johns Place between Underhill and Washington Avenues. First and foremost, we are a block beautification and gardening group with a mission to brighten and green our block, while bringing neighbors together.</p>
+  <h3>Our Goals</h3>
+  <ul>
+    <li><b>Conservation:</b> Protect the trees and plants on this block so that they can thrive. We will focus on planting natives about 80% of the time.</li>
+    <li><b>Beauty:</b> Beautify the street with plants and other decorations.</li>
+    <li><b>Litter:</b> Change the habits around litter by cleaning the street. A cleaner street tells people we care about the block's surroundings.</li>
+    <li><b>Dog waste:</b> Change habits around picking up dog waste and make it easier for folks to do so.</li>
+    <li><b>Education:</b> Educate community members on how to take care of our trees and the benefits of native plants and pollinators.</li>
+    <li><b>Community:</b> Foster community around gardening, and encourage block members to interact and get to know each other to forge lasting bonds.</li>
+    <li><b>Improvements:</b> Advocate for collective block improvements that benefit everyone and help beautify our street, such as rat training and the street light petition.</li>
+  </ul>
+  <h3>Organizers</h3>
+  <p>If you would like to become an organizer, the best way is to get certified as a super steward, keep coming to our events, and let an event lead know you are interested.</p>
 </div>
 
 <div class="layout">
@@ -903,7 +928,7 @@ function renderPrintNotes(){
    button out hides that tab without touching any of this.
    A button may carry data-hash to give its tab a prettier URL than its
    internal name; the internal name still drives the CSS class and the view id. */
-const TAB_VIEWS=['cleanup','hwvolunteer','planting','rats','resources','trees','past'];
+const TAB_VIEWS=['cleanup','hwvolunteer','planting','rats','resources','trees','past','about'];
 const tabButtons=()=>[...document.querySelectorAll('.tabs button[data-tab]')];
 const firstTab=()=>{ const b=tabButtons()[0]; return b?b.dataset.tab:TAB_VIEWS[0]; };
 const btnFor=n=>tabButtons().find(b=>b.dataset.tab===n);

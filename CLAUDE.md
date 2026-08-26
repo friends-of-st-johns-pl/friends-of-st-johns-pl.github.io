@@ -54,6 +54,7 @@ Current tabs, in order:
 | Free Stuff & Deadlines | `#resources` | Grants, free compost, courses, deadlines |
 | Our 50 Trees | `#trees` | Interactive map and per tree care log |
 | Past Events | `#past` | Archive |
+| About Us | `#about` | Mission, goals, how to become an organizer |
 
 The Trash Cleanup Days tab is commented out, no cleanup is scheduled. Uncomment
 its button to bring it back.
