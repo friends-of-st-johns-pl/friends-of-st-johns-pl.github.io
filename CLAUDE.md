@@ -48,7 +48,7 @@ Current tabs, in order:
 
 | Tab | URL | Contents |
 |---|---|---|
-| Rat on Rats | `#rats` | 311 complaint reporting, then notes from the September 12 rat meetup |
+| Rat on Rats | `#rats` | 311 complaint reporting, then a tactical list of what you can do about rats |
 | St Johns Plants Together, Oct 3rd | `#st-johns-plants-2026` | Planting day signup |
 | Free Stuff & Deadlines | `#resources` | Grants, free compost, courses, deadlines |
 | Native Plant Guide | `#plant-guide` | Embedded Google Doc of native and pollinator friendly tree bed plants |
@@ -105,10 +105,10 @@ is what gets the Health Department to send an inspector, and that several
 complaints about the same address beat single complaints spread around. We
 collect complaint numbers and forward them to the district office.
 
-The September 12, 2026 rat meetup notes live on the Rats tab. The headline
-points from it: rats travel only about 600 feet from the nest so the problem is
-local, food supply is the main lever, and 311 volume is what brings city
-agencies. SCRAM runs monthly rat walks and is a possible partner.
+The September 12, 2026 rat meetup produced the nine action list on the Rats
+tab. Keep that list tactical, things a neighbor can actually do, not background
+facts about rat biology. SCRAM runs monthly rat walks and is a possible partner.
+NYC Rat Academy training is free and open to anyone.
 
 NYC has **no public write API for 311**. The Content API is read only. Neighbors
 file on the official NYC311 form and paste the number into our site.
