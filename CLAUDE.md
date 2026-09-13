@@ -50,15 +50,15 @@ Current tabs, in order:
 |---|---|---|
 | Rat on Rats | `#rats` | 311 complaint reporting, then notes from the September 12 rat meetup |
 | St Johns Plants Together, Oct 3rd | `#st-johns-plants-2026` | Planting day signup |
-| Volunteer for Halloween Trick-or-streets | `#halloween-volunteer` (`#halloween` redirects here) | Commit 1 to 4 volunteer hours, 5 to 9pm |
 | Free Stuff & Deadlines | `#resources` | Grants, free compost, courses, deadlines |
 | Native Plant Guide | `#plant-guide` | Embedded Google Doc of native and pollinator friendly tree bed plants |
 | Our 50 Trees | `#trees` | Interactive map and per tree care log |
 | Past Events | `#past` | Archive |
 | About Us | `#about` | Mission, goals, how to become an organizer |
 
-The Trash Cleanup Days tab is commented out, no cleanup is scheduled. Uncomment
-its button to bring it back.
+The Trash Cleanup Days tab is commented out, no cleanup is scheduled. The
+Halloween volunteer tab is commented out and archived, its `#hwVolunteerView`
+markup is still in the file. Uncomment either button to bring that tab back.
 
 The Native Plant Guide tab embeds a Google Doc by iframe. **That doc's sharing
 must stay set to "Anyone with the link, Viewer"**, or the embed shows a
@@ -96,7 +96,7 @@ it or touch the sheet.
 | Date | Event | Where |
 |---|---|---|
 | Sat Oct 3, 9am to 2pm | St Johns Plants Together, our City of Forest Day 2026, lunch 1pm | Whole block, lunch at 365 St Johns Place backyard |
-| Sat Oct 31 | Halloween Trick-o-streets | Block, pending street closure permit |
+| Sat Oct 31 | Halloween Trick-o-streets | Block, pending street closure permit. Volunteer signup tab is archived and off the site |
 
 ## The rat campaign
 
