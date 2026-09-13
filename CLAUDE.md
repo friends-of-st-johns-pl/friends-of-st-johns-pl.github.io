@@ -105,7 +105,7 @@ is what gets the Health Department to send an inspector, and that several
 complaints about the same address beat single complaints spread around. We
 collect complaint numbers and forward them to the district office.
 
-The September 12, 2026 rat meetup produced the eight action list on the Rats
+The September 12, 2026 rat meetup produced the six action list on the Rats
 tab. Keep that list tactical, things a neighbor can actually do, not background
 facts about rat biology. SCRAM runs monthly rat walks and is a possible partner.
 NYC Rat Academy training is free and open to anyone.
