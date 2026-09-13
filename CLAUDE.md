@@ -39,7 +39,7 @@ Tabs are driven by the buttons in `<nav class="tabs">`. Each carries
 `data-tab="<name>"`, and optionally `data-hash="<slug>"` for a prettier URL.
 The script reads the DOM, so:
 
-- the **first button is the default tab**
+- the **first button is the default tab**, currently St Johns Plants Together
 - reordering the buttons reorders the site
 - commenting a button out hides that tab cleanly
 - unknown or hidden hashes fall back to the first tab
@@ -48,8 +48,8 @@ Current tabs, in order:
 
 | Tab | URL | Contents |
 |---|---|---|
-| Rat on Rats | `#rats` | 311 complaint reporting, then a tactical list of what you can do about rats |
 | St Johns Plants Together, Oct 3rd | `#st-johns-plants-2026` | Planting day signup |
+| Rat on Rats | `#rats` | 311 complaint reporting, then a tactical list of what you can do about rats |
 | Free Stuff & Deadlines | `#resources` | Grants, free compost, courses, deadlines |
 | Native Plant Guide | `#plant-guide` | Embedded Google Doc of native and pollinator friendly tree bed plants |
 | Our 50 Trees | `#trees` | Interactive map and per tree care log |
