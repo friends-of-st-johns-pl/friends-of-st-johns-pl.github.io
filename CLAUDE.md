@@ -48,7 +48,7 @@ Current tabs, in order:
 
 | Tab | URL | Contents |
 |---|---|---|
-| Rat on Rats & Training | `#rats` | Rat training signup, then 311 reporting |
+| Rat on Rats | `#rats` | 311 complaint reporting, then notes from the September 12 rat meetup |
 | St Johns Plants Together, Oct 3rd | `#st-johns-plants-2026` | Planting day signup |
 | Volunteer for Halloween Trick-or-streets | `#halloween-volunteer` (`#halloween` redirects here) | Commit 1 to 4 volunteer hours, 5 to 9pm |
 | Free Stuff & Deadlines | `#resources` | Grants, free compost, courses, deadlines |
@@ -95,7 +95,6 @@ it or touch the sheet.
 
 | Date | Event | Where |
 |---|---|---|
-| Sat Sep 12, 11am | Rat Training | 365 St Johns Place backyard |
 | Sat Oct 3, 9am to 2pm | St Johns Plants Together, our City of Forest Day 2026, lunch 1pm | Whole block, lunch at 365 St Johns Place backyard |
 | Sat Oct 31 | Halloween Trick-o-streets | Block, pending street closure permit |
 
@@ -105,6 +104,11 @@ Council Member Hudson's office told us plainly that **volume of 311 complaints**
 is what gets the Health Department to send an inspector, and that several
 complaints about the same address beat single complaints spread around. We
 collect complaint numbers and forward them to the district office.
+
+The September 12, 2026 rat meetup notes live on the Rats tab. The headline
+points from it: rats travel only about 600 feet from the nest so the problem is
+local, food supply is the main lever, and 311 volume is what brings city
+agencies. SCRAM runs monthly rat walks and is a possible partner.
 
 NYC has **no public write API for 311**. The Content API is read only. Neighbors
 file on the official NYC311 form and paste the number into our site.

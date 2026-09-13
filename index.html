@@ -70,6 +70,10 @@
   button.copy{flex:none;background:#fff;color:var(--green-dark);border:1px solid var(--green);border-radius:6px;padding:0 12px;font-size:12.5px;font-weight:600;cursor:pointer}
   button.copy.done{background:var(--green);color:#fff}
   .cfrow textarea.val + button.copy{align-self:flex-start;padding:8px 12px}
+  .minutes h4{margin:16px 0 5px;font-family:Georgia,serif;font-size:16px;font-weight:600;color:var(--green-dark)}
+  .minutes h4:first-child{margin-top:0}
+  .minutes ul{margin:0;padding-left:20px}
+  .minutes li{font-size:13.5px;color:#5c5648;line-height:1.5;margin:0 0 5px}
   .cf .why{font-size:12px;color:#8a8272;margin:3px 0 0;font-family:-apple-system,Arial,sans-serif}
   .quiz{background:#fff;border:1px solid var(--line);border-radius:8px;padding:12px 14px;margin:10px 0 4px}
   .quiz .q{margin:0 0 12px}
@@ -227,7 +231,7 @@
   <!-- CLEANUP TAB HIDDEN, no cleanup day scheduled. Uncomment this button to bring the tab back; the tab script picks it up on its own.
   <button id="tabBtnCleanup" data-tab="cleanup" onclick="showTab('cleanup')">🧹 Trash Cleanup Days</button>
   -->
-  <button id="tabBtnRats" data-tab="rats" onclick="showTab('rats')">🐀 Rat on Rats &amp; Training</button>
+  <button id="tabBtnRats" data-tab="rats" onclick="showTab('rats')">🐀 Rat on Rats</button>
   <button id="tabBtnPlanting" data-tab="planting" data-hash="st-johns-plants-2026" onclick="showTab('planting')">🌱 St Johns Plants Together, Oct 3rd</button>
   <button id="tabBtnHwVolunteer" data-tab="hwvolunteer" data-hash="halloween-volunteer" onclick="showTab('hwvolunteer')">🎃 Volunteer for Halloween Trick-or-streets</button>
   <button id="tabBtnResources" data-tab="resources" onclick="showTab('resources')">🌱 Free Stuff &amp; Deadlines</button>
@@ -451,21 +455,41 @@
         <span>404</span><span>406</span><span>403</span><span>417</span><span>446</span><span>448</span>
       </div>
     </details>
-    <h3 style="font-family:Georgia,serif;font-weight:400;font-size:22px;margin:26px 0 6px;padding-top:18px;border-top:1px solid var(--line)">Rat Training 🐀</h3>
-    <p class="hint" style="margin:0 0 10px"><b>Saturday, September 12 at 11am</b><br>In the backyard at <b>365 St Johns Place</b>.</p>
-    <p class="hint" style="margin:0 0 12px">Come learn how to actually fight rats from folks on Sterling Place. Free and open to any neighbor.</p>
+    <h3 style="font-family:Georgia,serif;font-weight:400;font-size:22px;margin:26px 0 6px;padding-top:18px;border-top:1px solid var(--line)">What we learned at the Rat Meetup 🐀</h3>
+    <p class="hint" style="margin:0 0 14px">Saturday, September 12, 2026, in the backyard at 365 St Johns Place. Notes from the meetup, for anyone who could not make it.</p>
 
-    <div class="evform" id="trainForm">
-      <label>Your name *</label><input type="text" id="rtName" autocomplete="name">
-      <label>Email</label><input type="text" id="rtEmail" autocomplete="email" placeholder="you@example.com">
-      <label>Phone</label><input type="text" id="rtPhone" autocomplete="tel" placeholder="(718) …">
-      <label>How many people are you bringing (including you)?</label>
-      <input type="text" id="rtCount" inputmode="numeric" placeholder="1" style="max-width:110px">
-      <div class="evacts" style="margin-top:12px">
-        <label class="ck"><input type="checkbox" id="rtHelp"> 🙋 I can help set up or bring chairs</label>
-      </div>
-      <button style="margin-top:12px" onclick="submitTraining()">Save me a spot</button>
-      <div id="rtMsg"></div>
+    <div class="minutes">
+      <h4>About rats</h4>
+      <ul>
+        <li>Two rats can become 15,000 in a single year.</li>
+        <li>Rats travel only about 600 feet from their nest. That means a rat problem is local, and so is the fix.</li>
+        <li>Rats communicate by scent released from their whiskers, which is how they lead each other to food and nests. A bleach and water solution wipes that scent trail out.</li>
+        <li>Rats need at least 6 to 8 inches of dirt to burrow.</li>
+        <li>Rat urine carries leptospirosis. One neighbor at the meetup lost a dog to it. Ask your vet about the lepto vaccine, because rat urine is everywhere in this city.</li>
+      </ul>
+
+      <h4>Cutting off food and access</h4>
+      <ul>
+        <li>Less trash means fewer rats. Food supply is the whole game.</li>
+        <li>Composting matters. If your building has no compost bins, or not enough, ask your landlord or management for more.</li>
+        <li>Bins with lids keep rats out of the trash. The large containerized bins reach Prospect Heights at the end of 2027 for buildings over 20 units, with options for smaller buildings. Expect pushback, because they take up parking spots.</li>
+        <li>Pick up after your dog. Rats eat dog waste. We talked about putting bag stations on the block.</li>
+      </ul>
+
+      <h4>Reporting</h4>
+      <ul>
+        <li>The most useful thing any resident can do is give the city data.</li>
+        <li>Call 311 every time you see a rat, so the scale and the location go on the record.</li>
+        <li>Log your complaint number with us using the box above. We pass the numbers to Council Member Hudson's office. Data is what brings the right agencies to our block.</li>
+      </ul>
+
+      <h4>Organizing</h4>
+      <ul>
+        <li>Start anti rat walks and meetups. SCRAM runs monthly rat walks and we can team up with them.</li>
+        <li>SCRAM has raised money through raffles for things like trash cans and compost bins. We could do the same for buildings on our block that need them.</li>
+        <li>Tenants of Meridien properties on St Johns Place talked about connecting with each other about landlord neglect and recurring rat problems.</li>
+        <li>Sign up for Rat Academy training, virtual or in person, to learn more about rat mitigation.</li>
+      </ul>
     </div>
 
   </div>
@@ -1232,37 +1256,7 @@ function submitPlanting(){
   });
 }
 
-/* Rats tab has two independent forms: the training signup writes to the
-   Signups sheet tab, the complaint number writes to Rodent Reports. */
-function submitTraining(){
-  const name=document.getElementById('rtName').value.trim();
-  const email=document.getElementById('rtEmail').value.trim();
-  const phone=document.getElementById('rtPhone').value.trim();
-  const count=document.getElementById('rtCount').value.trim()||'1';
-  const help=document.getElementById('rtHelp').checked;
-  const msg=document.getElementById('rtMsg');
-  if(!name){ msg.innerHTML='<span style="color:#c0392b">Please add your name.</span>'; return; }
-  if(!email && !phone){ msg.innerHTML='<span style="color:#c0392b">Please add an email or a phone number.</span>'; return; }
-  msg.textContent='Sending…';
-  const done=()=>{
-    const extra='<p class="hint" style="margin:8px 0 0">We will add you to the <a href="'+NEWSLETTER_URL+'" target="_blank" rel="noopener">newsletter</a>. There is also a <a href="'+WHATSAPP_URL+'" target="_blank" rel="noopener">neighbor WhatsApp group</a> if you want it.</p>';
-    document.getElementById('trainForm').innerHTML='<b>🐀 You are in!</b><p class="hint" style="margin:6px 0 0">Thanks '+esc(name)+'. Saturday, September 12 at 11am, backyard at 365 St Johns Place. We will send a reminder closer to the day.</p>'+extra;
-  };
-  const viaEmail=()=>fetch('https://formsubmit.co/ajax/'+ADOPT_EMAIL,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},
-    body:JSON.stringify({_subject:'Rat training signup: '+name,_template:'table',_captcha:'false',
-      name,email:email||'(not provided)',phone:phone||'(not provided)',party_size:count,
-      helping:help?'yes':'no'})})
-    .then(r=>{ if(!r.ok) throw 0; });
-  const payload={type:'event',event:'Rat Training (Sept 12, 2026)',name,email,phone,
-    activities:'Attending'+(help?' · can help set up':''),headcount:count};
-  (CARE_API
-    ? fetch(CARE_API,{method:'POST',body:JSON.stringify(payload)}).then(r=>{ if(!r.ok) throw 0; }).catch(viaEmail)
-    : viaEmail()
-  ).then(done).catch(()=>{
-    const mail=`mailto:${ADOPT_EMAIL}?subject=${encodeURIComponent('Rat training signup')}&body=${encodeURIComponent(`Name: ${name}\nEmail: ${email||'(not provided)'}\nPhone: ${phone||'(not provided)'}\nParty size: ${count}\nCan help set up: ${help?'yes':'no'}`)}`;
-    msg.innerHTML=`Couldn't send automatically. <a href="${mail}">Tap here to email us instead</a>.`;
-  });
-}
+/* The Rats tab logs 311 complaint numbers into the Rodent Reports sheet tab. */
 
 function submitComplaint(){
   const sr=document.getElementById('rtSR').value.trim();
