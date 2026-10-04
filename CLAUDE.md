@@ -39,7 +39,7 @@ Tabs are driven by the buttons in `<nav class="tabs">`. Each carries
 `data-tab="<name>"`, and optionally `data-hash="<slug>"` for a prettier URL.
 The script reads the DOM, so:
 
-- the **first button is the default tab**, currently the Halloween volunteer signup
+- the **first button is the default tab**, currently the Halloween tab
 - reordering the buttons reorders the site
 - commenting a button out hides that tab cleanly
 - unknown or hidden hashes fall back to the first tab
@@ -48,7 +48,7 @@ Current tabs, in order:
 
 | Tab | URL | Contents |
 |---|---|---|
-| Volunteer for Halloween Trick-or-streets | `#halloween-volunteer` (`#halloween` redirects here) | Commit 1 to 4 volunteer hours, 5 to 9pm |
+| Halloween Trick-or-streets | `#halloween-volunteer` (`#halloween` redirects here) | Two cards: volunteer hours, 5 to 9pm, then pumpkin painting and candy tables at the Underhill corner |
 | Rat on Rats | `#rats` | 311 complaint reporting, then a tactical list of what you can do about rats |
 | Free Stuff & Deadlines | `#resources` | Grants, free compost, courses, deadlines |
 | Native Plant Guide | `#plant-guide` | Embedded Google Doc of native and pollinator friendly tree bed plants |
@@ -98,7 +98,7 @@ it or touch the sheet.
 
 | Date | Event | Where |
 |---|---|---|
-| Sat Oct 31 | Halloween Trick-o-streets | Block, pending street closure permit. Needs 32 volunteer hours committed, 5 to 9pm |
+| Sat Oct 31 | Halloween Trick-o-streets | Block, pending street closure permit. Needs 32 volunteer hours committed, 5 to 9pm. Pumpkin painting and candy tables at the St Johns and Underhill corner, time still to be set |
 
 ## The rat campaign
 

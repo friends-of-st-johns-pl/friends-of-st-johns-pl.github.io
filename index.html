@@ -234,7 +234,7 @@
   <!-- ST JOHNS PLANTS TOGETHER TAB HIDDEN AND ARCHIVED, the event happened on October 3, 2026. The whole #plantingView section below is kept in this file. Uncomment this button to bring the tab back; the tab script picks it up on its own.
   <button id="tabBtnPlanting" data-tab="planting" data-hash="st-johns-plants-2026" onclick="showTab('planting')">🌱 St Johns Plants Together, Oct 3rd</button>
   -->
-  <button id="tabBtnHwVolunteer" data-tab="hwvolunteer" data-hash="halloween-volunteer" onclick="showTab('hwvolunteer')">🎃 Volunteer for Halloween Trick-or-streets</button>
+  <button id="tabBtnHwVolunteer" data-tab="hwvolunteer" data-hash="halloween-volunteer" onclick="showTab('hwvolunteer')">🎃 Halloween Trick-or-streets</button>
   <button id="tabBtnRats" data-tab="rats" onclick="showTab('rats')">🐀 Rat on Rats</button>
   <button id="tabBtnResources" data-tab="resources" onclick="showTab('resources')">🌱 Free Stuff &amp; Deadlines</button>
   <button id="tabBtnPlantGuide" data-tab="plantguide" data-hash="plant-guide" onclick="showTab('plantguide')">🌼 Native Plant Guide</button>
@@ -326,6 +326,33 @@
       <div id="hvMsg"></div>
     </div>
     <p class="hint" style="margin:14px 0 0;font-size:13px">Signed up already but can no longer make it? Email <a href="mailto:friendsofstjohnspl@gmail.com">friendsofstjohnspl@gmail.com</a> so we can find someone to cover your hours.</p>
+  </div>
+
+  <div class="signup-card" id="hwCraftsCard" style="margin-top:18px">
+    <h2 style="font-family:Georgia,serif;font-weight:400;margin:0 0 4px">Pumpkin painting and candy tables 🎨🎃</h2>
+    <p class="hint" style="margin:0 0 6px">Part of Halloween Trick-or-streets, at the corner of St Johns Place and Underhill Avenue. We will set out small sugar pie pumpkins and Posca paint markers so kids can paint and decorate, plus tables along the block for St Johns Place neighbors handing out candy.</p>
+    <p class="hint" style="margin:0 0 12px">Sign up so we know how many pumpkins and markers to buy and how many tables to set out. Times go out once the street closure permit is confirmed.</p>
+    <div class="evform">
+      <label>Your name *</label><input type="text" id="hcName" autocomplete="name">
+      <label>Email</label><input type="text" id="hcEmail" autocomplete="email" placeholder="you@example.com">
+      <label>Phone</label><input type="text" id="hcPhone" autocomplete="tel" placeholder="(718) …">
+      <label>What are you in for? Pick any *</label>
+      <div class="evacts">
+        <label class="ck"><input type="checkbox" class="hcact" value="Pumpkin painting and decorating"> 🎨 Pumpkin painting and decorating</label>
+        <label class="ck"><input type="checkbox" class="hcact" value="Hosting a candy table outside my building"> 🍬 I will host a candy table outside my building</label>
+        <label class="ck"><input type="checkbox" class="hcact" value="Helping run the crafts corner"> 🧑‍🎨 I can help run the crafts corner, setup, markers, cleanup</label>
+        <label class="ck"><input type="checkbox" class="hcact" value="Donating candy or craft supplies"> 🎁 I can donate candy or craft supplies</label>
+      </div>
+      <label>How many people in your group, kids included?</label>
+      <input type="text" id="hcCount" inputmode="numeric" placeholder="e.g. 3">
+      <label>Your address on the block, if you are hosting a candy table</label>
+      <input type="text" id="hcAddr" placeholder="e.g. 365 St Johns Place">
+      <label>Anything else? Allergies, ideas, supplies you already have</label>
+      <input type="text" id="hcNote" placeholder="optional">
+      <button style="margin-top:12px" onclick="submitHalloweenCrafts()">Count us in</button>
+      <div id="hcMsg"></div>
+    </div>
+    <p class="hint" style="margin:14px 0 0;font-size:13px">Pumpkins and markers are provided. Bring a smock or an old shirt, Posca paint does not come out of clothes.</p>
   </div>
 </div>
 
@@ -1100,6 +1127,35 @@ function submitHalloweenVolunteer(){
     : viaEmail()
   ).then(done).catch(()=>{
     const mail=`mailto:${ADOPT_EMAIL}?subject=${encodeURIComponent('Halloween volunteer sign-up')}&body=${encodeURIComponent(`Name: ${name}\nEmail: ${email||'(not provided)'}\nPhone: ${phone||'(not provided)'}\nVolunteer hours: ${hours}\nNote: ${note||'(not provided)'}`)}`;
+    msg.innerHTML=`Couldn't send automatically.<a href="${mail}">Tap here to email us instead</a>.`;
+  });
+}
+
+/* halloween crafts + candy tables sign-up → same Signups tab, tagged separately */
+function submitHalloweenCrafts(){
+  const name=document.getElementById('hcName').value.trim();
+  const email=document.getElementById('hcEmail').value.trim();
+  const phone=document.getElementById('hcPhone').value.trim();
+  const acts=[...document.querySelectorAll('.hcact:checked')].map(c=>c.value);
+  const count=document.getElementById('hcCount').value.trim();
+  const addr=document.getElementById('hcAddr').value.trim();
+  const note=document.getElementById('hcNote').value.trim();
+  const msg=document.getElementById('hcMsg');
+  if(!name){ msg.innerHTML='<span style="color:#c0392b">Please add your name.</span>'; return; }
+  if(!acts.length){ msg.innerHTML='<span style="color:#c0392b">Please pick at least one thing you are in for.</span>'; return; }
+  if(!email && !phone){ msg.innerHTML='<span style="color:#c0392b">Please add an email or a phone number.</span>'; return; }
+  msg.textContent='Sending…';
+  const activities=acts.join(', ');
+  const done=()=>{ document.querySelector('#hwCraftsCard .evform').innerHTML='<b>🎃 Thank you!</b><p class="hint" style="margin:6px 0 0">Thanks '+esc(name)+'. We have you down for '+esc(activities.toLowerCase())+'. We will email the time and the corner setup once the street closure permit comes through.</p>'; };
+  const viaEmail=()=>fetch('https://formsubmit.co/ajax/'+ADOPT_EMAIL,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},
+    body:JSON.stringify({_subject:'Halloween crafts and candy tables: '+name,_template:'table',_captcha:'false',name,email:email||'(not provided)',phone:phone||'(not provided)',signed_up_for:activities,party_size:count||'(not provided)',address:addr||'(not provided)',note:note||'(not provided)'})})
+    .then(r=>{ if(!r.ok) throw 0; });
+  const payload={type:'event',event:'Halloween Trick-o-streets 2026 (crafts and candy tables)',name,email,phone,address:addr,activities,headcount:count,note:note};
+  (CARE_API
+    ? fetch(CARE_API,{method:'POST',body:JSON.stringify(payload)}).then(r=>{ if(!r.ok) throw 0; }).catch(viaEmail)
+    : viaEmail()
+  ).then(done).catch(()=>{
+    const mail=`mailto:${ADOPT_EMAIL}?subject=${encodeURIComponent('Halloween crafts and candy tables sign-up')}&body=${encodeURIComponent(`Name: ${name}\nEmail: ${email||'(not provided)'}\nPhone: ${phone||'(not provided)'}\nSigned up for: ${activities}\nParty size: ${count||'(not provided)'}\nAddress: ${addr||'(not provided)'}\nNote: ${note||'(not provided)'}`)}`;
     msg.innerHTML=`Couldn't send automatically.<a href="${mail}">Tap here to email us instead</a>.`;
   });
 }
