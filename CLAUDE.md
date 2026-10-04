@@ -156,9 +156,14 @@ south of it. If side ever looks wrong again, re-run that check rather than
 trusting a single address.
 
 The quick care buttons (Watered, Mulched, and the rest) were removed on
-October 4, 2026 because nobody used them. A tree card now holds a name, private
-notes kept in the browser, a box to post a note to the whole block, the block
-log for that tree, and the adopt button.
+October 4, 2026 because nobody used them, and the private "My notes" box went
+with them, since the code overwrote whatever was typed there with the survey
+note on every page load. A tree card now holds a name, a box to post a note to
+the whole block, the block log for that tree, and the adopt button.
+
+The block log shows, newest first, notes neighbors posted, the old care
+check-ins, and last the `note` field from the July 2026 survey, marked "block
+survey, Jul 2026". A tree with none of the three shows no log at all.
 
 The note box posts `type:'care'` with the note text as the Action and the
 neighbor's name as By, so block notes and the old check-ins live in the same

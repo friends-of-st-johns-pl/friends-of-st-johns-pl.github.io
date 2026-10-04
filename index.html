@@ -777,11 +777,8 @@ function renderPanel(){
     </div>
     <label>Give it a name</label>
     <input type="text" id="nick" placeholder="e.g. Grandpa Pin Oak" value="${esc(r.nick)}">
-    <label>My notes (bed size, condition…)</label>
-    <textarea id="notes" placeholder="e.g. bed 62 × 108 in, crabgrass, needs compost">${esc(r.notes)}</textarea>
-    <p class="hint" style="margin:4px 0 0;font-size:12.5px">These notes stay on your own device. Nobody else sees them.</p>
     ${CARE_API?`
-    <label style="margin-top:14px">Tell the block about this tree</label>
+    <label>Tell the block about this tree</label>
     <textarea id="obs" maxlength="200" placeholder="e.g. two dead shrubs need removal, or bed is full of broken glass"></textarea>
     <input type="text" id="steward" placeholder="Your name or initials, shows in the block log" value="${esc(localStorage.getItem('stewardName')||'')}" style="margin-top:6px">
     <button class="ghost no-print" style="margin-top:8px" onclick="submitObservation()">Post to the block log</button>
@@ -801,7 +798,6 @@ function renderPanel(){
         <div id="adoptMsg"></div>
       </div>`}`;
   document.getElementById('nick').addEventListener('input',e=>{rec(t.id).nick=e.target.value;save();});
-  document.getElementById('notes').addEventListener('input',e=>{rec(t.id).notes=e.target.value;save();});
   const st=document.getElementById('steward');
   if(st) st.addEventListener('input',e=>localStorage.setItem('stewardName',e.target.value.trim()));
   renderLog();
@@ -882,13 +878,17 @@ function submitAdopt(){
       msg.innerHTML=`Couldn't send automatically.<a href="${mail}">Tap here to email us instead</a>.`;
     });
 }
-/* The shared block log: notes neighbors posted, plus the old care check-ins
-   from when the card had quick buttons. Hidden when a tree has neither. */
+/* The shared block log: notes neighbors posted, the care check-ins from when the
+   card had quick buttons, and at the bottom whatever the July 2026 field survey
+   recorded about this bed. Hidden when a tree has none of the three. */
 function renderLog(){
   const bl=document.getElementById('blockLog'); if(!bl||!selectedId)return;
-  const shared=CARE_API ? CARELOG.filter(e=>String(e.id)===String(selectedId)).slice(-6).reverse() : [];
-  bl.innerHTML=shared.length
-    ? '<label style="margin-top:14px">Block log for this tree</label><ul class="log">'+shared.map(e=>`<li><span>${esc(e.action)}</span><span style="color:#999">${esc(e.by)||'a neighbor'} · ${new Date(e.t).toLocaleDateString('en-US',{month:'short',day:'numeric'})}</span></li>`).join('')+'</ul>'
+  const t=nodeById[selectedId].t;
+  const rows=(CARE_API ? CARELOG.filter(e=>String(e.id)===String(selectedId)).slice(-6).reverse() : [])
+    .map(e=>`<li><span>${esc(e.action)}</span><span style="color:#999">${esc(e.by)||'a neighbor'} · ${new Date(e.t).toLocaleDateString('en-US',{month:'short',day:'numeric'})}</span></li>`);
+  if(t.note) rows.push(`<li><span>📋 ${esc(t.note)}</span><span style="color:#999">block survey · Jul 2026</span></li>`);
+  bl.innerHTML=rows.length
+    ? '<label style="margin-top:14px">Block log for this tree</label><ul class="log">'+rows.join('')+'</ul>'
     : '';
 }
 
