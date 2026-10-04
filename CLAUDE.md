@@ -99,7 +99,7 @@ it or touch the sheet.
 | Date | Event | Where |
 |---|---|---|
 | Sat Oct 31, 5 to 9pm | Halloween Trick-o-streets | Block, pending street closure permit. Needs 32 volunteer hours committed |
-| Sat Oct 31, 4 to 6pm | Pumpkin painting and decorating, part of Trick-o-streets | St Johns Place and Underhill Avenue corner. Sugar pie pumpkins and Posca markers, anyone can drop in. Candy handed out there until 8pm. Help shifts are setup 3 to 4pm, candy 4 to 8pm, breakdown 8 to 9pm |
+| Sat Oct 31, 4 to 6pm | Pumpkin painting and decorating, part of Trick-o-streets | St Johns Place and Underhill Avenue corner. Sugar pie pumpkins, Posca markers, stickers and googly eyes, plus a limited number of fairy houses to decorate. Anyone can drop in. Candy handed out there until 8pm. Help shifts are setup 3 to 4pm, candy 4 to 8pm come and go, breakdown 8 to 9pm |
 
 ## The rat campaign
 
