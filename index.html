@@ -773,7 +773,7 @@ function renderPanel(){
       ⌀ ${t.dbh}″ trunk &nbsp;·&nbsp; ${t.guard?'🛡 has tree guard':'no tree guard'}<br>
       ${t.planted?`🌱 planted ${t.planted}<br>`:''}
       ${t.insp?`🔍 last NYC Parks checkup: ${t.insp}<br>`:''}
-      ${/^\d+$/.test(String(t.id))?`<a href="https://tree-map.nycgovparks.org/tree-map/tree/${t.id}" target="_blank" rel="noopener">View on NYC Tree Map ↗</a>`:`<span style="color:#8a8272">Not on the NYC Tree Map yet, we only just planted it.</span>`}
+      ${/^\d+$/.test(String(t.id))?`<a href="https://www.nycgovparks.org/tree-map/tree/${t.id}" target="_blank" rel="noopener">View on NYC Tree Map ↗</a>`:`<span style="color:#8a8272">Not on the NYC Tree Map yet, we only just planted it.</span>`}
     </div>
     <label>Give it a name</label>
     <input type="text" id="nick" placeholder="e.g. Grandpa Pin Oak" value="${esc(r.nick)}">
@@ -1053,7 +1053,7 @@ const RESOURCES = [
   {g:"Getting help & reporting", n:"NYC Parks stewardship request", u:"https://www.nycgovparks.org/reg/stewardship", d:"Ask Parks to support a stewardship project, including street tree care on your block.", rolling:true, w:"Rolling"},
   {g:"Getting help & reporting", n:"311: tree service & rat mitigation", u:"https://portal.311.nyc.gov/", d:"Report damaged branches, dead trees, and rat burrows. Parks usually sends an expert within a few weeks. Rat mitigation is a separate request from mulching.", rolling:true, w:"Anytime"},
   {g:"Getting help & reporting", n:"NYC Parks Tree Work Hub", u:"https://www.nycgovparks.org/services/forestry/tree-work", d:"Check the status of tree planting and 311 requests on our block before planning an event.", rolling:true, w:"Anytime"},
-  {g:"Getting help & reporting", n:"NYC Street Tree Map", u:"https://tree-map.nycgovparks.org/", d:"Log the care we do, favorite our trees, and look up any tree on the block.", rolling:true, w:"Anytime"},
+  {g:"Getting help & reporting", n:"NYC Tree Map", u:"https://www.nycgovparks.org/tree-map/", d:"Log the care we do, favorite our trees, and look up any tree on the block.", rolling:true, w:"Anytime"},
 ];
 
 function renderResources(){

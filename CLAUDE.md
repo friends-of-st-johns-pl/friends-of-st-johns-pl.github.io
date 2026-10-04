@@ -173,6 +173,13 @@ new version of the Apps Script is deployed** (Deploy, Manage deployments, pencil
 Version: New version). Until then the live script still truncates the Action
 column at 80 characters, so longer notes land cut off in the sheet.
 
+NYC moved the tree map in 2026. A per tree link is now
+`https://www.nycgovparks.org/tree-map/tree/<id>`. The old
+`tree-map.nycgovparks.org/tree-map/tree/<id>` redirects to the new host but
+keeps the old path on the end, so it lands on `/tree-map/tree-map/tree/<id>`
+and shows Not Found. If tree links break again, check for that doubled path
+before suspecting the ids.
+
 The serviceberry is `#24.5`, id `"sjp-24-5"`, in what had been the empty tree
 pit at 326 St Johns Place. Its id is a string, not a number, because the tree is
 too new to be on the NYC Tree Map. The tree card and the adoption email both
