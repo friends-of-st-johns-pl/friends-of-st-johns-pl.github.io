@@ -16,7 +16,7 @@ member Crystal Hudson.
 - Instagram: https://www.instagram.com/friendsofstjohnspl/
 - Newsletter: https://groups.google.com/g/friendsofstjohnspl
 - WhatsApp group: https://chat.whatsapp.com/KCA3CQHuaLtBGasIB9OqvF
-- GoFundMe: https://www.gofundme.com/f/help-us-beautify-st-johns-pl-with-new-trees
+- Fundraiser (Kindbee): https://kindbee.com/fundraisers/keep-st-johns-place-green-trees-plants-and-neighbors
 
 ## Writing style, applies to everything
 
