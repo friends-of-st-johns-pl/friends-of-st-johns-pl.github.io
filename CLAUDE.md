@@ -48,7 +48,7 @@ Current tabs, in order:
 
 | Tab | URL | Contents |
 |---|---|---|
-| Halloween Trick-or-streets | `#halloween-volunteer` (`#halloween` redirects here) | Two cards: volunteer hours, 5 to 9pm, then pumpkin painting and candy tables at the Underhill corner |
+| Halloween Trick-or-streets | `#halloween-volunteer` (`#halloween` redirects here) | Two cards: volunteer hours, 5 to 9pm, then help shifts for the pumpkin painting and candy corner |
 | Rat on Rats | `#rats` | 311 complaint reporting, then a tactical list of what you can do about rats |
 | Free Stuff & Deadlines | `#resources` | Grants, free compost, courses, deadlines |
 | Native Plant Guide | `#plant-guide` | Embedded Google Doc of native and pollinator friendly tree bed plants |
@@ -84,7 +84,7 @@ One spreadsheet, backed by `apps-script/care-log.gs`. Tabs:
 
 | Tab | Written by | Columns |
 |---|---|---|
-| Signups | any event form, `type:'event'` | Timestamp, Event, Name, Email, Phone, Activities, Party size |
+| Signups | any event form, `type:'event'` | Timestamp, Event, Name, Email, Phone, Address, Activities, Party size, Note |
 | Rodent Reports | 311 complaint form, `type:'rodent'` | Timestamp, 311 Complaint #, Name, Email, Phone, Newsletter?, WhatsApp?, Sent to council? |
 | Adoptions | tree adoption requests | includes an Approved? column, type `yes` to approve |
 | Care Log | per tree check ins | |
@@ -98,7 +98,8 @@ it or touch the sheet.
 
 | Date | Event | Where |
 |---|---|---|
-| Sat Oct 31 | Halloween Trick-o-streets | Block, pending street closure permit. Needs 32 volunteer hours committed, 5 to 9pm. Pumpkin painting and candy tables at the St Johns and Underhill corner, time still to be set |
+| Sat Oct 31, 5 to 9pm | Halloween Trick-o-streets | Block, pending street closure permit. Needs 32 volunteer hours committed |
+| Sat Oct 31, 4 to 6pm | Pumpkin painting and decorating, part of Trick-o-streets | St Johns Place and Underhill Avenue corner. Sugar pie pumpkins and Posca markers, anyone can drop in. Candy handed out there until 8pm. Help shifts are setup 3 to 4pm, candy 4 to 8pm, breakdown 8 to 9pm |
 
 ## The rat campaign
 
@@ -153,6 +154,12 @@ even addresses (326 to 440) are the **south** side. This was verified by fitting
 a centerline to all 51 coordinate pairs: the trees formerly labelled N sit 8.3 m
 south of it. If side ever looks wrong again, re-run that check rather than
 trusting a single address.
+
+Tree cards no longer log care. The quick buttons (Watered, Mulched, and the
+rest) were removed on October 4, 2026 because nobody used them. A tree card now
+holds a name, private notes kept in the browser, any past check-ins already in
+the Care Log tab, and the adopt button. `type:'care'` still works in the Apps
+Script, nothing on the site sends it.
 
 The serviceberry is `#24.5`, id `"sjp-24-5"`, in what had been the empty tree
 pit at 326 St Johns Place. Its id is a string, not a number, because the tree is

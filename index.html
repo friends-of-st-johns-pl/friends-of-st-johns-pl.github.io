@@ -144,12 +144,8 @@
   input[type=text],textarea{width:100%;border:1px solid var(--line);border-radius:6px;padding:8px;font-family:Georgia,serif;font-size:14px;background:#fffdf8}
   textarea{min-height:84px;resize:vertical}
   textarea#journal{min-height:300px}
-  .carebtns{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
-  .carebtns button{background:#eef6ef;color:var(--green-dark);border:1px solid #cfe3d2;border-radius:8px;padding:6px 10px;font-size:12.5px}
   .log{list-style:none;margin:8px 0 0;padding:0;font-size:13px}
   .log li{display:flex;justify-content:space-between;gap:8px;padding:5px 2px;border-bottom:1px dashed var(--line)}
-  .log li .del{cursor:pointer;color:#bbb;border:none;background:none;padding:0 4px;font-size:14px}
-  .log li .del:hover{color:#c0392b}
   .hint{font-size:12.5px;color:#999;font-style:italic}
   .adopted-tag{background:#eef6ef;border:1px solid #cfe3d2;color:var(--green-dark);border-radius:8px;padding:8px 12px;font-size:13.5px;margin-top:14px}
   #adoptForm{background:#f7f4ea;border:1px solid var(--line);border-radius:8px;padding:12px;margin-top:10px}
@@ -189,7 +185,6 @@
     .toolbar{gap:6px;padding:6px 10px 12px}
     .chip{font-size:12px;padding:5px 11px}
     .toolbar button,a.donate{font-size:12.5px;padding:8px 13px}
-    .carebtns button{padding:9px 12px;font-size:13px}
     input[type=text],textarea,.finder select{font-size:16px} /* prevents iOS zoom-on-focus */
   }
 
@@ -329,30 +324,26 @@
   </div>
 
   <div class="signup-card" id="hwCraftsCard" style="margin-top:18px">
-    <h2 style="font-family:Georgia,serif;font-weight:400;margin:0 0 4px">Pumpkin painting and candy tables 🎨🎃</h2>
-    <p class="hint" style="margin:0 0 6px">Part of Halloween Trick-or-streets, at the corner of St Johns Place and Underhill Avenue. We will set out small sugar pie pumpkins and Posca paint markers so kids can paint and decorate, plus tables along the block for St Johns Place neighbors handing out candy.</p>
-    <p class="hint" style="margin:0 0 12px">Sign up so we know how many pumpkins and markers to buy and how many tables to set out. Times go out once the street closure permit is confirmed.</p>
+    <h2 style="font-family:Georgia,serif;font-weight:400;margin:0 0 4px">Help with pumpkin painting and candy 🎨🎃</h2>
+    <p class="hint" style="margin:0 0 6px">Pumpkin painting and decorating runs 4 to 6pm on Halloween at the corner of St Johns Place and Underhill Avenue. We will have small sugar pie pumpkins and Posca paint markers out for kids, and tables for handing out candy to trick or treaters until 8pm.</p>
+    <p class="hint" style="margin:0 0 12px">Anyone can come paint, no signup needed. This form is for neighbors who can lend a hand with one of the shifts below.</p>
     <div class="evform">
       <label>Your name *</label><input type="text" id="hcName" autocomplete="name">
       <label>Email</label><input type="text" id="hcEmail" autocomplete="email" placeholder="you@example.com">
       <label>Phone</label><input type="text" id="hcPhone" autocomplete="tel" placeholder="(718) …">
-      <label>What are you in for? Pick any *</label>
+      <label>Where can you help? Pick any *</label>
       <div class="evacts">
-        <label class="ck"><input type="checkbox" class="hcact" value="Pumpkin painting and decorating"> 🎨 Pumpkin painting and decorating</label>
-        <label class="ck"><input type="checkbox" class="hcact" value="Hosting a candy table outside my building"> 🍬 I will host a candy table outside my building</label>
-        <label class="ck"><input type="checkbox" class="hcact" value="Helping run the crafts corner"> 🧑‍🎨 I can help run the crafts corner, setup, markers, cleanup</label>
-        <label class="ck"><input type="checkbox" class="hcact" value="Donating candy or craft supplies"> 🎁 I can donate candy or craft supplies</label>
+        <label class="ck"><input type="checkbox" class="hcact" value="Set up, 3 to 4pm"> 🪧 Set up, 3 to 4pm</label>
+        <label class="ck"><input type="checkbox" class="hcact" value="Give out candy, 4 to 8pm"> 🍬 Give out candy, 4 to 8pm</label>
+        <label class="ck"><input type="checkbox" class="hcact" value="Break down, 8 to 9pm"> 🧹 Break down, 8 to 9pm</label>
       </div>
-      <label>How many people in your group, kids included?</label>
-      <input type="text" id="hcCount" inputmode="numeric" placeholder="e.g. 3">
-      <label>Your address on the block, if you are hosting a candy table</label>
-      <input type="text" id="hcAddr" placeholder="e.g. 365 St Johns Place">
-      <label>Anything else? Allergies, ideas, supplies you already have</label>
+      <label>Anything else? Ideas, supplies you already have, hours that work better</label>
       <input type="text" id="hcNote" placeholder="optional">
-      <button style="margin-top:12px" onclick="submitHalloweenCrafts()">Count us in</button>
+      <button style="margin-top:12px" onclick="submitHalloweenCrafts()">Sign me up to help</button>
       <div id="hcMsg"></div>
     </div>
-    <p class="hint" style="margin:14px 0 0;font-size:13px">Pumpkins and markers are provided. Bring a smock or an old shirt, Posca paint does not come out of clothes.</p>
+    <p class="hint" style="margin:14px 0 6px;font-size:13px">Cannot make it but want to help? Chip in for pumpkins, markers, and candy.</p>
+    <a class="filebtn" href="https://www.gofundme.com/f/help-us-beautify-st-johns-pl-with-new-trees" target="_blank" rel="noopener">💚 Donate for candy and pumpkins</a>
   </div>
 </div>
 
@@ -756,7 +747,6 @@ speciesSorted.forEach(s=>{
 });
 
 /* ---------------- panel ---------------- */
-const CARE=[['💧','Watered'],['🌱','Mulched'],['🧹','Cleaned tree bed'],['✂️','Pruned suckers'],['📏','Measured bed'],['🐛','Pest or damage']];
 const panel=document.getElementById('panel');
 function esc(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;');}
 function renderPanel(){
@@ -786,10 +776,7 @@ function renderPanel(){
     <input type="text" id="nick" placeholder="e.g. Grandpa Pin Oak" value="${esc(r.nick)}">
     <label>My notes (bed size, condition…)</label>
     <textarea id="notes" placeholder="e.g. bed 62 × 108 in, crabgrass, needs compost">${esc(r.notes)}</textarea>
-    <label>Record care / observation</label>
-    ${CARE_API?`<input type="text" id="steward" placeholder="Your name or initials (shows in the shared block log)" value="${esc(localStorage.getItem('stewardName')||'')}" style="margin-bottom:6px">`:''}
-    <div class="carebtns">${CARE.map(c=>`<button onclick="logCare('${c[0]}','${c[1]}')">${c[0]} ${c[1]}</button>`).join('')}</div>
-    <ul class="log" id="log"></ul>
+    <p class="hint" style="margin:4px 0 0;font-size:12.5px">Notes stay on your own device. Email us if you see something the block should know about.</p>
     <div id="blockLog"></div>
     ${ADOPTED[t.id]
       ? `<div class="adopted-tag">💚 Adopted by <b>${esc(ADOPTED[t.id])}</b></div>`
@@ -806,8 +793,6 @@ function renderPanel(){
       </div>`}`;
   document.getElementById('nick').addEventListener('input',e=>{rec(t.id).nick=e.target.value;save();});
   document.getElementById('notes').addEventListener('input',e=>{rec(t.id).notes=e.target.value;save();});
-  const st=document.getElementById('steward');
-  if(st) st.addEventListener('input',e=>localStorage.setItem('stewardName',e.target.value));
   renderLog();
 }
 
@@ -886,37 +871,15 @@ function submitAdopt(){
       msg.innerHTML=`Couldn't send automatically.<a href="${mail}">Tap here to email us instead</a>.`;
     });
 }
+/* Past check-ins from the shared sheet. Nobody logs care from the site any more,
+   so this only shows when a tree already has entries, and never prompts for one. */
 function renderLog(){
-  const ul=document.getElementById('log'); if(!ul||!selectedId)return;
-  const r=rec(selectedId);
-  ul.innerHTML=r.log.map((e,i)=>`<li><span>${e.emoji} ${esc(e.label)}</span><span style="color:#999">${e.date}</span><button class="del" onclick="delLog(${i})">✕</button></li>`).reverse().join('')
-    || '<li class="hint" style="border:none">No entries yet.</li>';
-  const bl=document.getElementById('blockLog');
-  if(bl){
-    if(!CARE_API){ bl.innerHTML=''; }
-    else{
-      const shared=CARELOG.filter(e=>String(e.id)===String(selectedId)).slice(-6).reverse();
-      bl.innerHTML='<label>Block activity: everyone\'s check-ins</label>'+
-        (shared.length
-          ? '<ul class="log">'+shared.map(e=>`<li><span>${esc(e.action)}</span><span style="color:#999">${esc(e.by)||'a neighbor'} · ${new Date(e.t).toLocaleDateString('en-US',{month:'short',day:'numeric'})}</span></li>`).join('')+'</ul>'
-          : '<p class="hint" style="margin:4px 0 0">No shared check-ins for this tree yet. Be the first!</p>');
-    }
-  }
+  const bl=document.getElementById('blockLog'); if(!bl||!selectedId)return;
+  const shared=CARE_API ? CARELOG.filter(e=>String(e.id)===String(selectedId)).slice(-6).reverse() : [];
+  bl.innerHTML=shared.length
+    ? '<label>Past check-ins</label><ul class="log">'+shared.map(e=>`<li><span>${esc(e.action)}</span><span style="color:#999">${esc(e.by)||'a neighbor'} · ${new Date(e.t).toLocaleDateString('en-US',{month:'short',day:'numeric'})}</span></li>`).join('')+'</ul>'
+    : '';
 }
-function logCare(emoji,label){
-  if(!selectedId)return;
-  rec(selectedId).log.push({emoji,label,date:new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})});
-  save(); renderLog();
-  if(CARE_API){
-    const t=nodeById[selectedId].t;
-    const by=(localStorage.getItem('stewardName')||'').trim();
-    CARELOG.push({t:new Date().toISOString(), id:String(t.id), walk:t.walk, action:emoji+' '+label, by});
-    renderLog();
-    fetch(CARE_API,{method:'POST',body:JSON.stringify({type:'care',treeId:t.id,walk:t.walk,species:t.sp,addr:t.addr,action:emoji+' '+label,by})})
-      .catch(()=>{});
-  }
-}
-function delLog(i){ rec(selectedId).log.splice(i,1); save(); renderLog(); }
 
 /* ---------------- stats ---------------- */
 function updateStats(){
@@ -1137,25 +1100,23 @@ function submitHalloweenCrafts(){
   const email=document.getElementById('hcEmail').value.trim();
   const phone=document.getElementById('hcPhone').value.trim();
   const acts=[...document.querySelectorAll('.hcact:checked')].map(c=>c.value);
-  const count=document.getElementById('hcCount').value.trim();
-  const addr=document.getElementById('hcAddr').value.trim();
   const note=document.getElementById('hcNote').value.trim();
   const msg=document.getElementById('hcMsg');
   if(!name){ msg.innerHTML='<span style="color:#c0392b">Please add your name.</span>'; return; }
-  if(!acts.length){ msg.innerHTML='<span style="color:#c0392b">Please pick at least one thing you are in for.</span>'; return; }
+  if(!acts.length){ msg.innerHTML='<span style="color:#c0392b">Please pick at least one shift you can help with.</span>'; return; }
   if(!email && !phone){ msg.innerHTML='<span style="color:#c0392b">Please add an email or a phone number.</span>'; return; }
   msg.textContent='Sending…';
-  const activities=acts.join(', ');
-  const done=()=>{ document.querySelector('#hwCraftsCard .evform').innerHTML='<b>🎃 Thank you!</b><p class="hint" style="margin:6px 0 0">Thanks '+esc(name)+'. We have you down for '+esc(activities.toLowerCase())+'. We will email the time and the corner setup once the street closure permit comes through.</p>'; };
+  const activities=acts.join('; ');
+  const done=()=>{ document.querySelector('#hwCraftsCard .evform').innerHTML='<b>🎃 Thank you!</b><p class="hint" style="margin:6px 0 0">Thanks '+esc(name)+'. We have you down for '+esc(activities.toLowerCase())+'. We will be in touch closer to Halloween with where to meet at the corner.</p>'; };
   const viaEmail=()=>fetch('https://formsubmit.co/ajax/'+ADOPT_EMAIL,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},
-    body:JSON.stringify({_subject:'Halloween crafts and candy tables: '+name,_template:'table',_captcha:'false',name,email:email||'(not provided)',phone:phone||'(not provided)',signed_up_for:activities,party_size:count||'(not provided)',address:addr||'(not provided)',note:note||'(not provided)'})})
+    body:JSON.stringify({_subject:'Halloween crafts and candy help: '+name,_template:'table',_captcha:'false',name,email:email||'(not provided)',phone:phone||'(not provided)',shifts:activities,note:note||'(not provided)'})})
     .then(r=>{ if(!r.ok) throw 0; });
-  const payload={type:'event',event:'Halloween Trick-o-streets 2026 (crafts and candy tables)',name,email,phone,address:addr,activities,headcount:count,note:note};
+  const payload={type:'event',event:'Halloween Trick-o-streets 2026 (crafts and candy help)',name,email,phone,activities,note:note};
   (CARE_API
     ? fetch(CARE_API,{method:'POST',body:JSON.stringify(payload)}).then(r=>{ if(!r.ok) throw 0; }).catch(viaEmail)
     : viaEmail()
   ).then(done).catch(()=>{
-    const mail=`mailto:${ADOPT_EMAIL}?subject=${encodeURIComponent('Halloween crafts and candy tables sign-up')}&body=${encodeURIComponent(`Name: ${name}\nEmail: ${email||'(not provided)'}\nPhone: ${phone||'(not provided)'}\nSigned up for: ${activities}\nParty size: ${count||'(not provided)'}\nAddress: ${addr||'(not provided)'}\nNote: ${note||'(not provided)'}`)}`;
+    const mail=`mailto:${ADOPT_EMAIL}?subject=${encodeURIComponent('Halloween crafts and candy help')}&body=${encodeURIComponent(`Name: ${name}\nEmail: ${email||'(not provided)'}\nPhone: ${phone||'(not provided)'}\nShifts: ${activities}\nNote: ${note||'(not provided)'}`)}`;
     msg.innerHTML=`Couldn't send automatically.<a href="${mail}">Tap here to email us instead</a>.`;
   });
 }
