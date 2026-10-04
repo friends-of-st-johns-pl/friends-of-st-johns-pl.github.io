@@ -5,7 +5,7 @@ Chrome, or anywhere else. Read this first.
 
 ## Who we are
 
-Friends of St Johns Place is a volunteer neighborhood group caring for the 50
+Friends of St Johns Place is a volunteer neighborhood group caring for the 51
 street trees on **St Johns Place between Underhill Avenue and Washington Avenue**
 in Prospect Heights, Brooklyn. Community District 8, Council District 35, council
 member Crystal Hudson.
@@ -52,7 +52,7 @@ Current tabs, in order:
 | Rat on Rats | `#rats` | 311 complaint reporting, then a tactical list of what you can do about rats |
 | Free Stuff & Deadlines | `#resources` | Grants, free compost, courses, deadlines |
 | Native Plant Guide | `#plant-guide` | Embedded Google Doc of native and pollinator friendly tree bed plants |
-| Our 50 Trees | `#trees` | Interactive map and per tree care log |
+| Our 51 Trees | `#trees` | Interactive map and per tree care log |
 | Past Events | `#past` | Archive |
 | About Us | `#about` | Mission, goals, how to become an organizer |
 
@@ -139,10 +139,17 @@ Rats are **not** seen in the tree beds on this block, do not write copy saying s
 
 ## The tree data
 
-`TREES` in `index.html` holds all 50 trees from the July 2026 field survey:
-species, trunk diameter, bed dimensions in inches, existing tree guards, notes,
-coordinates. This survey is the source for grant applications, so numbers quoted
-anywhere should trace back to it.
+`TREES` in `index.html` holds the 50 trees from the July 2026 field survey plus
+the Canadian serviceberry we planted on October 3, 2026: species, trunk
+diameter, bed dimensions in inches, existing tree guards, notes, coordinates.
+The survey is the source for grant applications, so numbers quoted anywhere
+should trace back to it.
+
+The serviceberry is `#24.5`, id `"sjp-24-5"`, in what had been the empty tree
+pit at 326 St Johns Place. Its id is a string, not a number, because the tree is
+too new to be on the NYC Tree Map. The tree card and the adoption email both
+check `/^\d+$/` against the id and skip the Tree Map link when it does not
+match. Give it the real numeric id once NYC adds it.
 
 ## Open work
 
