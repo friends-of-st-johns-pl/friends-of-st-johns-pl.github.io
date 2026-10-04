@@ -176,7 +176,9 @@
   @media (max-width:900px){
     .layout{flex-direction:column;padding:0 10px 24px;gap:14px}
     .panel{position:static;flex:none;width:100%}
-    .mapwrap{overflow-x:auto;padding:10px;-webkit-overflow-scrolling:touch}
+    /* width and min-width keep this a scroll strip: without them the wrapper grows
+       to the svg's 880px and drags the whole page sideways */
+    .mapwrap{overflow-x:auto;padding:10px;-webkit-overflow-scrolling:touch;width:100%;max-width:100%;min-width:0}
     .mapwrap svg{min-width:880px}
     .finder{display:block}
     .swipe-hint{display:block}
@@ -658,9 +660,14 @@ let streetFit;
   /* avenues sit just outside the block's buildings, not over them */
   const bx=BLDGS.flatMap(b=>b.poly.map(p=>X(p[0])));
   const west=Math.min(x1,...bx)-15, east=Math.max(x2,...bx)+15;
+  /* the avenues meet St Johns at a right angle, so they lean with the block
+     rather than running straight up the page. Each bar is centred where the
+     avenue crosses the street line. */
+  const vh=(H-2*PAD+60)/2, lean=f.b*vh;
   [['UNDERHILL AVENUE',west],['WASHINGTON AVENUE',east]].forEach(([nm,x])=>{
-    el('line',{x1:x,y1:PAD-30,x2:x,y2:H-PAD+30,class:'street','stroke-width':24},gStreets);
-    const lbl=el('text',{class:'street-label','font-size':12,x,y:yMid+4,'text-anchor':'middle',transform:`rotate(-90 ${x} ${yMid})`},gStreets);
+    const cy=f.a+f.b*x;
+    el('line',{x1:x+lean,y1:cy-vh,x2:x-lean,y2:cy+vh,class:'street','stroke-width':24},gStreets);
+    const lbl=el('text',{class:'street-label','font-size':12,x,y:yMid+4,'text-anchor':'middle',transform:`rotate(${ang-90} ${x} ${yMid})`},gStreets);
     lbl.textContent=nm;
   });
 })();

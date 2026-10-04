@@ -148,6 +148,12 @@ diameter, bed dimensions in inches, existing tree guards, notes, coordinates.
 The survey is the source for grant applications, so numbers quoted anywhere
 should trace back to it.
 
+The map is north up and drawn from real coordinates, no basemap tiles. The
+avenue bars lean to meet St Johns at a right angle, since the block runs at
+bearing 104 degrees. Rotating the whole projection to put the street horizontal
+was measured and rejected: it changes the scale from 2.69 to 2.60 px per metre,
+so it costs a true north map and buys nothing.
+
 Every tree's `side` field was inverted in the original survey data, and was
 corrected on October 4, 2026. Odd addresses (325 to 433) are the **north** side,
 even addresses (326 to 440) are the **south** side. This was verified by fitting
@@ -207,5 +213,9 @@ match. Give it the real numeric id once NYC adds it.
 - Push to `main`, that is the deploy.
 - Test changes in a real browser before saying they work. The site is one file
   with inline JavaScript, so a typo breaks the whole page silently.
-- Check phone width, 390px, for horizontal overflow after any layout change.
+- Check phone width, 390px, for horizontal overflow after any layout change. On
+  phones the map is a scroll strip: the svg keeps `min-width:880px` and
+  `.mapwrap` carries `width:100%;max-width:100%;min-width:0` so the swipe
+  scrolls the strip. Drop those three and the wrapper grows to 880px and drags
+  the whole page sideways.
 - Do not put private contact details of neighbors into the repo.
