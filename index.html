@@ -694,7 +694,7 @@ TREES.forEach(t=>{
     const rrec=store.trees[t.id];
     tooltip.style.display='block';
     tooltip.style.left=(ev.clientX+14)+'px'; tooltip.style.top=(ev.clientY+12)+'px';
-    tooltip.innerHTML=`<b>#${t.walk} ${rrec&&rrec.nick?rrec.nick+' / ':''}${t.sp}</b>${t.dead?' (DEAD)':''}<br>${t.addr}<br>${t.meas?'bed '+t.meas+' in · ':''}${t.dbh}″ trunk${t.guard?' · tree guard':''}${ADOPTED[t.id]?'<br>💚 Adopted by '+ADOPTED[t.id]:''}`;
+    tooltip.innerHTML=`<b>#${t.walk} ${rrec&&rrec.nick?rrec.nick+' / ':''}${t.sp}</b>${t.dead?' (DEAD)':''}<br>${t.addr}<br>${t.meas?'bed '+t.meas+' in · ':''}${t.dbh}″ trunk${t.guard?' · tree guard':(ADOPTED[t.id]?' · makeshift tree guard':'')}${ADOPTED[t.id]?'<br>💚 Adopted by '+ADOPTED[t.id]:''}`;
   });
   g.addEventListener('mouseleave',()=>tooltip.style.display='none');
   nodeById[t.id]={g,x,y,r,t};
@@ -752,6 +752,13 @@ speciesSorted.forEach(s=>{
 /* ---------------- panel ---------------- */
 const panel=document.getElementById('panel');
 function esc(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;');}
+/* Adopters put up a makeshift guard, steel posts and rope, so an adopted bed is
+   never really unguarded. t.guard stays as the July survey recorded it, since the
+   grant applications count off that field. */
+function guardLabel(t){
+  if(t.guard) return '🛡 has tree guard';
+  return ADOPTED[t.id] ? '🛡 makeshift tree guard' : 'no tree guard';
+}
 function renderPanel(){
   if(!selectedId){
     panel.innerHTML=`<h2>Block journal</h2>
@@ -770,7 +777,7 @@ function renderPanel(){
     <div class="meta">
       <span class="walkno">#${t.walk}</span> &nbsp;📍 ${t.addr} · ${t.side==='N'?'north':'south'} side<br>
       ${t.meas?`📐 tree bed: <b>${t.meas} in</b><br>`:''}
-      ⌀ ${t.dbh}″ trunk &nbsp;·&nbsp; ${t.guard?'🛡 has tree guard':'no tree guard'}<br>
+      ⌀ ${t.dbh}″ trunk &nbsp;·&nbsp; ${guardLabel(t)}<br>
       ${t.planted?`🌱 planted ${t.planted}<br>`:''}
       ${t.insp?`🔍 last NYC Parks checkup: ${t.insp}<br>`:''}
       ${/^\d+$/.test(String(t.id))?`<a href="https://www.nycgovparks.org/tree-map/tree/${t.id}" target="_blank" rel="noopener">View on NYC Tree Map ↗</a>`:`<span style="color:#8a8272">Not on the NYC Tree Map yet, we only just planted it.</span>`}

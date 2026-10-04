@@ -173,6 +173,12 @@ new version of the Apps Script is deployed** (Deploy, Manage deployments, pencil
 Version: New version). Until then the live script still truncates the Action
 column at 80 characters, so longer notes land cut off in the sheet.
 
+An adopted tree with no guard in the survey shows "makeshift tree guard" on its
+card and in the map tooltip, because adopters put up steel posts and rope. This
+is display only, `guardLabel()` in `index.html`. The `guard` field in `TREES`
+still says what the July survey found, and that is what grant applications count
+off, so never flip it because a bed was adopted.
+
 NYC moved the tree map in 2026. A per tree link is now
 `https://www.nycgovparks.org/tree-map/tree/<id>`. The old
 `tree-map.nycgovparks.org/tree-map/tree/<id>` redirects to the new host but
