@@ -39,7 +39,7 @@ Tabs are driven by the buttons in `<nav class="tabs">`. Each carries
 `data-tab="<name>"`, and optionally `data-hash="<slug>"` for a prettier URL.
 The script reads the DOM, so:
 
-- the **first button is the default tab**, currently St Johns Plants Together
+- the **first button is the default tab**, currently the Halloween volunteer signup
 - reordering the buttons reorders the site
 - commenting a button out hides that tab cleanly
 - unknown or hidden hashes fall back to the first tab
@@ -48,7 +48,7 @@ Current tabs, in order:
 
 | Tab | URL | Contents |
 |---|---|---|
-| St Johns Plants Together, Oct 3rd | `#st-johns-plants-2026` | Planting day signup |
+| Volunteer for Halloween Trick-or-streets | `#halloween-volunteer` (`#halloween` redirects here) | Commit 1 to 4 volunteer hours, 5 to 9pm |
 | Rat on Rats | `#rats` | 311 complaint reporting, then a tactical list of what you can do about rats |
 | Free Stuff & Deadlines | `#resources` | Grants, free compost, courses, deadlines |
 | Native Plant Guide | `#plant-guide` | Embedded Google Doc of native and pollinator friendly tree bed plants |
@@ -57,8 +57,11 @@ Current tabs, in order:
 | About Us | `#about` | Mission, goals, how to become an organizer |
 
 The Trash Cleanup Days tab is commented out, no cleanup is scheduled. The
-Halloween volunteer tab is commented out and archived, its `#hwVolunteerView`
-markup is still in the file. Uncomment either button to bring that tab back.
+St Johns Plants Together tab is commented out and archived, the event happened
+on October 3, 2026, and its `#plantingView` markup is still in the file.
+Uncomment either button to bring that tab back. Archive a tab the morning after
+its event, and move the next event's button to first so it becomes the landing
+page.
 
 The Native Plant Guide tab embeds a Google Doc by iframe. **That doc's sharing
 must stay set to "Anyone with the link, Viewer"**, or the embed shows a
@@ -95,8 +98,7 @@ it or touch the sheet.
 
 | Date | Event | Where |
 |---|---|---|
-| Sat Oct 3, 9am to 2pm | St Johns Plants Together, our City of Forest Day 2026, lunch 1pm | Whole block, lunch at 365 St Johns Place backyard |
-| Sat Oct 31 | Halloween Trick-o-streets | Block, pending street closure permit. Volunteer signup tab is archived and off the site |
+| Sat Oct 31 | Halloween Trick-o-streets | Block, pending street closure permit. Needs 32 volunteer hours committed, 5 to 9pm |
 
 ## The rat campaign
 
