@@ -7,7 +7,9 @@
  *      Activities, Party size, Note. If you add or move a column in that sheet
  *      by hand, update EVENT_HEADERS and the appendRow below to match, or every
  *      new row will land one column out of step.
- *  - POST {type:'care', ...}   → appends a check-in row to the "Care Log" tab
+ *  - POST {type:'care', ...}   → appends a row to the "Care Log" tab. This is now
+ *      how a neighbor posts a note about a tree from the website, so the Action
+ *      column holds free text up to 300 characters, not just a short label.
  *  - POST {type:'adopt', ...}  → appends a request row to the "Adoptions" tab
  *  - POST {type:'rodent', ...} → appends a row to the "Rodent Reports" tab
  *  - GET → JSON {care:[...], adopted:{treeId: initials}}
@@ -76,7 +78,7 @@ function doPost(e) {
     if (!d.treeId || !d.action) throw new Error('missing fields');
     tab_('Care Log', CARE_HEADERS).appendRow([
       new Date(), String(d.treeId), d.walk || '', s(d.species, 60), s(d.addr, 80),
-      s(d.action, 80), s(d.by, 60)]);
+      s(d.action, 300), s(d.by, 60)]);
   }
   return ContentService.createTextOutput(JSON.stringify({ ok: true }))
     .setMimeType(ContentService.MimeType.JSON);

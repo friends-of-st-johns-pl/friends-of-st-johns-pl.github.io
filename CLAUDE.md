@@ -155,11 +155,18 @@ a centerline to all 51 coordinate pairs: the trees formerly labelled N sit 8.3 m
 south of it. If side ever looks wrong again, re-run that check rather than
 trusting a single address.
 
-Tree cards no longer log care. The quick buttons (Watered, Mulched, and the
-rest) were removed on October 4, 2026 because nobody used them. A tree card now
-holds a name, private notes kept in the browser, any past check-ins already in
-the Care Log tab, and the adopt button. `type:'care'` still works in the Apps
-Script, nothing on the site sends it.
+The quick care buttons (Watered, Mulched, and the rest) were removed on
+October 4, 2026 because nobody used them. A tree card now holds a name, private
+notes kept in the browser, a box to post a note to the whole block, the block
+log for that tree, and the adopt button.
+
+The note box posts `type:'care'` with the note text as the Action and the
+neighbor's name as By, so block notes and the old check-ins live in the same
+Care Log tab and show in the same list. Notes are capped at 200 characters in
+the browser, and `care-log.gs` allows 300. **That limit only takes effect once a
+new version of the Apps Script is deployed** (Deploy, Manage deployments, pencil,
+Version: New version). Until then the live script still truncates the Action
+column at 80 characters, so longer notes land cut off in the sheet.
 
 The serviceberry is `#24.5`, id `"sjp-24-5"`, in what had been the empty tree
 pit at 326 St Johns Place. Its id is a string, not a number, because the tree is

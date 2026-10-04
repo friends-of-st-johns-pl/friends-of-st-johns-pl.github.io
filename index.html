@@ -779,7 +779,13 @@ function renderPanel(){
     <input type="text" id="nick" placeholder="e.g. Grandpa Pin Oak" value="${esc(r.nick)}">
     <label>My notes (bed size, condition…)</label>
     <textarea id="notes" placeholder="e.g. bed 62 × 108 in, crabgrass, needs compost">${esc(r.notes)}</textarea>
-    <p class="hint" style="margin:4px 0 0;font-size:12.5px">Notes stay on your own device. Email us if you see something the block should know about.</p>
+    <p class="hint" style="margin:4px 0 0;font-size:12.5px">These notes stay on your own device. Nobody else sees them.</p>
+    ${CARE_API?`
+    <label style="margin-top:14px">Tell the block about this tree</label>
+    <textarea id="obs" maxlength="200" placeholder="e.g. two dead shrubs need removal, or bed is full of broken glass"></textarea>
+    <input type="text" id="steward" placeholder="Your name or initials, shows in the block log" value="${esc(localStorage.getItem('stewardName')||'')}" style="margin-top:6px">
+    <button class="ghost no-print" style="margin-top:8px" onclick="submitObservation()">Post to the block log</button>
+    <div id="obsMsg"></div>`:''}
     <div id="blockLog"></div>
     ${ADOPTED[t.id]
       ? `<div class="adopted-tag">💚 Adopted by <b>${esc(ADOPTED[t.id])}</b></div>`
@@ -796,6 +802,8 @@ function renderPanel(){
       </div>`}`;
   document.getElementById('nick').addEventListener('input',e=>{rec(t.id).nick=e.target.value;save();});
   document.getElementById('notes').addEventListener('input',e=>{rec(t.id).notes=e.target.value;save();});
+  const st=document.getElementById('steward');
+  if(st) st.addEventListener('input',e=>localStorage.setItem('stewardName',e.target.value.trim()));
   renderLog();
 }
 
@@ -874,14 +882,37 @@ function submitAdopt(){
       msg.innerHTML=`Couldn't send automatically.<a href="${mail}">Tap here to email us instead</a>.`;
     });
 }
-/* Past check-ins from the shared sheet. Nobody logs care from the site any more,
-   so this only shows when a tree already has entries, and never prompts for one. */
+/* The shared block log: notes neighbors posted, plus the old care check-ins
+   from when the card had quick buttons. Hidden when a tree has neither. */
 function renderLog(){
   const bl=document.getElementById('blockLog'); if(!bl||!selectedId)return;
   const shared=CARE_API ? CARELOG.filter(e=>String(e.id)===String(selectedId)).slice(-6).reverse() : [];
   bl.innerHTML=shared.length
-    ? '<label>Past check-ins</label><ul class="log">'+shared.map(e=>`<li><span>${esc(e.action)}</span><span style="color:#999">${esc(e.by)||'a neighbor'} · ${new Date(e.t).toLocaleDateString('en-US',{month:'short',day:'numeric'})}</span></li>`).join('')+'</ul>'
+    ? '<label style="margin-top:14px">Block log for this tree</label><ul class="log">'+shared.map(e=>`<li><span>${esc(e.action)}</span><span style="color:#999">${esc(e.by)||'a neighbor'} · ${new Date(e.t).toLocaleDateString('en-US',{month:'short',day:'numeric'})}</span></li>`).join('')+'</ul>'
     : '';
+}
+
+/* Post an observation to the shared Care Log tab, so the whole block sees it. */
+function submitObservation(){
+  if(!selectedId)return;
+  const ta=document.getElementById('obs'), msg=document.getElementById('obsMsg');
+  const text=ta.value.trim();
+  const by=document.getElementById('steward').value.trim();
+  if(!text){ msg.innerHTML='<span style="color:#c0392b;font-size:13px">Write what you saw first.</span>'; return; }
+  if(!by){ msg.innerHTML='<span style="color:#c0392b;font-size:13px">Add your name or initials so we know who to thank.</span>'; return; }
+  localStorage.setItem('stewardName',by);
+  msg.innerHTML='<span class="hint" style="font-size:13px">Sending…</span>';
+  const t=nodeById[selectedId].t;
+  const action='📝 '+text;
+  const done=()=>{ ta.value=''; msg.innerHTML='<span class="hint" style="font-size:13px">Thanks, it is on the block log below.</span>';
+    CARELOG.push({t:new Date().toISOString(), id:String(t.id), walk:t.walk, action, by}); renderLog(); };
+  const viaEmail=()=>fetch('https://formsubmit.co/ajax/'+ADOPT_EMAIL,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},
+    body:JSON.stringify({_subject:'Tree note: #'+t.walk+' '+t.sp,_template:'table',_captcha:'false',tree:'#'+t.walk+' '+t.sp+', '+t.addr+' (id '+t.id+')',note:text,from:by,
+      to_add:'This did not reach the Care Log tab. Add it by hand if you want it on the website.'})})
+    .then(r=>{ if(!r.ok) throw 0; });
+  fetch(CARE_API,{method:'POST',body:JSON.stringify({type:'care',treeId:t.id,walk:t.walk,species:t.sp,addr:t.addr,action,by})})
+    .then(r=>{ if(!r.ok) throw 0; }).catch(viaEmail).then(done)
+    .catch(()=>{ msg.innerHTML='<span style="color:#c0392b;font-size:13px">Could not send. Please email it to <a href="mailto:'+ADOPT_EMAIL+'">'+ADOPT_EMAIL+'</a>.</span>'; });
 }
 
 /* ---------------- stats ---------------- */
