@@ -862,16 +862,26 @@ function submitAdopt(){
   const initials=name.split(/\s+/).map(w=>w[0]).join('.').toUpperCase()+'.';
   msg.textContent='Sending…';
   const subject=`Adopt-a-tree request: #${t.walk} ${t.sp} (${t.addr})`;
-  const body={
-    _subject: subject, _template:'table', _captcha:'false',
-    tree:`#${t.walk} ${t.sp}, ${t.addr} (NYC Tree Map id ${t.id})`,
-    name, email: email||'(not provided)', phone: phone||'(not provided)',
-    to_approve:`Open the group Google Sheet → Adoptions tab → type "yes" in the Approved? column of this request's row.`
-  };
-  if(CARE_API){
-    fetch(CARE_API,{method:'POST',body:JSON.stringify({type:'adopt',treeId:t.id,walk:t.walk,species:t.sp,addr:t.addr,name,email,phone,initials})}).catch(()=>{});
-  }
-  fetch('https://formsubmit.co/ajax/'+ADOPT_EMAIL,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify(body)})
+  const treeLine=`#${t.walk} ${t.sp}, ${t.addr} (NYC Tree Map id ${t.id})`;
+  /* Adoptions always send the email, it is how the crew hears about a request.
+     The sheet write used to fail silently, so a lost row looked exactly like a
+     good one. Now the email says which happened. */
+  const sheetWrite = CARE_API
+    ? fetch(CARE_API,{method:'POST',body:JSON.stringify({type:'adopt',treeId:t.id,walk:t.walk,species:t.sp,addr:t.addr,name,email,phone,initials})})
+        .then(r=>!!r.ok).catch(()=>false)
+    : Promise.resolve(false);
+  sheetWrite.then(ok=>{
+    const body=ok
+      ? { _subject: subject, _template:'table', _captcha:'false',
+          tree:treeLine, name, email: email||'(not provided)', phone: phone||'(not provided)',
+          sheet:'Row written to the Adoptions tab.',
+          to_approve:`Open the group Google Sheet → Adoptions tab → type "yes" in the Approved? column of this request's row.` }
+      : { _subject: 'NOT IN SHEET, add by hand: '+subject, _template:'table', _captcha:'false',
+          tree:treeLine, name, email: email||'(not provided)', phone: phone||'(not provided)',
+          sheet:'FAILED. The Google Sheet did not record this request, so there is no row to approve.',
+          to_approve:`Add a row to the Adoptions tab by hand using the details above, initials ${initials}, then type "yes" in the Approved? column. Also check that the Apps Script web app is still deployed and that CARE_API in index.html matches its /exec URL.` };
+    return fetch('https://formsubmit.co/ajax/'+ADOPT_EMAIL,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify(body)});
+  })
     .then(r=>{ if(!r.ok) throw new Error(); return r.json(); })
     .then(()=>{ document.getElementById('adoptForm').innerHTML='<b>🌳 Request sent!</b><p class="hint" style="margin:6px 0 0">Thanks '+esc(name)+'. The block crew will reach out to confirm, and this tree will show as adopted once approved.</p>'; })
     .catch(()=>{
