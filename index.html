@@ -300,6 +300,7 @@
 </div>
 
 <div id="hwVolunteerView" class="no-print">
+  <!-- Volunteer hours card, archived October 4, 2026. Uncomment to bring it back.
   <div class="signup-card" id="hwVolunteerCard">
     <h2 style="font-family:Georgia,serif;font-weight:400;margin:0 0 4px">Volunteer for Halloween Trick-or-streets 🎃</h2>
     <p class="hint" style="margin:0 0 6px">This is for St Johns Place between Washington Ave and Underhill Ave.</p>
@@ -322,8 +323,9 @@
     </div>
     <p class="hint" style="margin:14px 0 0;font-size:13px">Signed up already but can no longer make it? Email <a href="mailto:friendsofstjohnspl@gmail.com">friendsofstjohnspl@gmail.com</a> so we can find someone to cover your hours.</p>
   </div>
+  -->
 
-  <div class="signup-card" id="hwCraftsCard" style="margin-top:18px">
+  <div class="signup-card" id="hwCraftsCard">
     <h2 style="font-family:Georgia,serif;font-weight:400;margin:0 0 4px">Help with pumpkin painting and candy 🎨🎃</h2>
     <p class="hint" style="margin:0 0 6px">Pumpkin painting and decorating runs 4 to 6pm on Halloween at the corner of St Johns Place and Underhill Avenue. We will have small sugar pie pumpkins and Posca paint markers out for kids, and tables for handing out candy to trick or treaters until 8pm.</p>
     <p class="hint" style="margin:0 0 12px">Anyone can come paint, no signup needed. This form is for neighbors who can lend a hand with one of the shifts below.</p>
@@ -1068,7 +1070,9 @@ function submitCleanup(){
   });
 }
 
-/* halloween volunteer shift sign-up → same Signups tab, tagged separately from general interest */
+/* halloween volunteer shift sign-up → same Signups tab, tagged separately from general interest.
+   Its card is commented out in the markup as of October 4, 2026. Kept so uncommenting the card
+   is all it takes to bring the form back. */
 function submitHalloweenVolunteer(){
   const name=document.getElementById('hvName').value.trim();
   const email=document.getElementById('hvEmail').value.trim();
@@ -1107,7 +1111,7 @@ function submitHalloweenCrafts(){
   if(!email && !phone){ msg.innerHTML='<span style="color:#c0392b">Please add an email or a phone number.</span>'; return; }
   msg.textContent='Sending…';
   const activities=acts.join('; ');
-  const done=()=>{ document.querySelector('#hwCraftsCard .evform').innerHTML='<b>🎃 Thank you!</b><p class="hint" style="margin:6px 0 0">Thanks '+esc(name)+'. We have you down for '+esc(activities.toLowerCase())+'. We will be in touch closer to Halloween with where to meet at the corner.</p>'; };
+  const done=()=>{ document.querySelector('#hwCraftsCard .evform').innerHTML='<b>🎃 Thank you!</b><p class="hint" style="margin:6px 0 0">Thanks '+esc(name)+'. We have you down for: '+esc(activities)+'. We will be in touch closer to Halloween with where to meet at the corner.</p>'; };
   const viaEmail=()=>fetch('https://formsubmit.co/ajax/'+ADOPT_EMAIL,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},
     body:JSON.stringify({_subject:'Halloween crafts and candy help: '+name,_template:'table',_captcha:'false',name,email:email||'(not provided)',phone:phone||'(not provided)',shifts:activities,note:note||'(not provided)'})})
     .then(r=>{ if(!r.ok) throw 0; });

@@ -48,7 +48,7 @@ Current tabs, in order:
 
 | Tab | URL | Contents |
 |---|---|---|
-| Halloween Trick-or-streets | `#halloween-volunteer` (`#halloween` redirects here) | Two cards: volunteer hours, 5 to 9pm, then help shifts for the pumpkin painting and candy corner |
+| Halloween Trick-or-streets | `#halloween-volunteer` (`#halloween` redirects here) | Help shifts for the pumpkin painting and candy corner. The 5 to 9pm volunteer hours card is commented out inside `#hwVolunteerView`, uncomment it to bring it back |
 | Rat on Rats | `#rats` | 311 complaint reporting, then a tactical list of what you can do about rats |
 | Free Stuff & Deadlines | `#resources` | Grants, free compost, courses, deadlines |
 | Native Plant Guide | `#plant-guide` | Embedded Google Doc of native and pollinator friendly tree bed plants |
