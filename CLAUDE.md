@@ -145,6 +145,13 @@ diameter, bed dimensions in inches, existing tree guards, notes, coordinates.
 The survey is the source for grant applications, so numbers quoted anywhere
 should trace back to it.
 
+Every tree's `side` field was inverted in the original survey data, and was
+corrected on October 4, 2026. Odd addresses (325 to 433) are the **north** side,
+even addresses (326 to 440) are the **south** side. This was verified by fitting
+a centerline to all 51 coordinate pairs: the trees formerly labelled N sit 8.3 m
+south of it. If side ever looks wrong again, re-run that check rather than
+trusting a single address.
+
 The serviceberry is `#24.5`, id `"sjp-24-5"`, in what had been the empty tree
 pit at 326 St Johns Place. Its id is a string, not a number, because the tree is
 too new to be on the NYC Tree Map. The tree card and the adoption email both
