@@ -148,6 +148,18 @@ diameter, bed dimensions in inches, existing tree guards, notes, coordinates.
 The survey is the source for grant applications, so numbers quoted anywhere
 should trace back to it.
 
+Each tree card links to Street View with the documented keyless Maps URL
+(`api=1&map_action=pano&viewpoint=lat,lng&heading=...`). Google snaps to the
+nearest panorama, which sits in the roadway, so the heading points the camera
+across at the tree: 14 degrees for a north side tree, 194 for a south side one,
+derived from the block's 104 degree bearing. A true embedded panorama inside the
+card would need a Maps Embed API key, which this static site has nowhere safe to
+keep, so it stays a link.
+
+Pinch zoom on phones is the browser's own: the viewport meta sets no
+`user-scalable=no` or `maximum-scale`, and nothing sets `touch-action`. Do not
+add a custom zoom, it would fight the native gesture.
+
 The map is north up and drawn from real coordinates, no basemap tiles. The
 avenue bars lean to meet St Johns at a right angle, since the block runs at
 bearing 104 degrees. Rotating the whole projection to put the street horizontal
